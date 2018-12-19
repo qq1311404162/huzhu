@@ -1,0 +1,37 @@
+{
+  "name": "huzhu",
+  "version": "1.0.0",
+  "description": "huzhu system",
+  "main": "app.js",
+  "scripts": {
+    "dev": "node-dev app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/qq1311404162/huzhu.git"
+  },
+  "keywords": [
+    "huzhu",
+    "node",
+    "koa2"
+  ],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/qq1311404162/huzhu/issues"
+  },
+  "homepage": "https://github.com/qq1311404162/huzhu#readme",
+  "dependencies": {
+    "koa": "^2.6.2",
+    "koa-bodyparser": "^4.2.1",
+    "koa-router": "^7.4.0",
+    "koa-static": "^5.0.0",
+    "mysql": "^2.16.0",
+    "mysql2": "^1.6.4",
+    "node-dev": "^3.1.3",
+    "sequelize": "^4.41.2",
+    "sequelize-cli": "^5.4.0",
+    "xtemplate": "^4.6.1",
+    "xtpl": "^3.4.0"
+  }
+}

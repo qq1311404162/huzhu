@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>后台管理系统</title>
+    <link rel="stylesheet" href="/layui/css/layui.css">
+    <style>
+        .layui-tab-item {
+            height:100%;
+        }
+        .layui-tab {
+            margin: 0;
+        }
+        .left-operation {
+            position: absolute;
+            left: 205px;
+            top: 18px;
+            cursor: pointer;
+        }
+        .layui-layout-admin .layui-body {
+            bottom: 0;
+        }
+    </style>
+    <!--[if lt IE 9]>
+    <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+    <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+<body class="layui-layout-body">
+<div class="layui-layout layui-layout-admin">
+    <div class="layui-header">
+        <div class="layui-logo">后台管理系统</div>
+        <div class="left-operation">
+            <i title="展开左侧栏" class="layui-icon layui-icon-shrink-right" style="color: white; font-size: 22px;"></i>
+        </div>
+        <!-- 头部区域（可配合layui已有的水平导航） -->
+        <ul class="layui-nav layui-layout-right">
+            <li class="layui-nav-item">
+                <a href="javascript:;">
+                    管理员
+                </a>
+                <dl class="layui-nav-child">
+                    <dd><a href="">基本资料</a></dd>
+                    <dd><a href="">安全设置</a></dd>
+                    <dd><a href="auth/logout">退出</a></dd>
+                </dl>
+            </li>
+        </ul>
+    </div>
+
+    <div class="layui-side layui-bg-black">
+        <div class="layui-side-scroll">
+            <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
+            <ul class="layui-nav layui-nav-tree"  lay-filter="left-nav" lay-shrink="all">
+					<li class="layui-nav-item layui-nav-itemed">
+						<a class="" href="javascript:;">所有商品</a>
+						<dl class="layui-nav-child">
+							<dd><a href="javascript:;" data-url="/admin/list" data-id="1">list</a></dd>
+							<dd><a href="javascript:;" data-url="/admin/form" data-id="2">form</a></dd>
+							<dd><a href="javascript:;">列表三</a></dd>
+							<dd><a href="">超链接</a></dd>
+						</dl>
+					</li>
+					<li class="layui-nav-item">
+						<a href="javascript:;">解决方案</a>
+						<dl class="layui-nav-child">
+							<dd><a href="javascript:;">列表一</a></dd>
+							<dd><a href="javascript:;">列表二</a></dd>
+							<dd><a href="">超链接</a></dd>
+						</dl>
+					</li>
+					<!-- <li class="layui-nav-item"><a href="">云市场</a></li>
+					<li class="layui-nav-item"><a href="">发布商品</a></li> -->
+				</ul>
+        </div>
+    </div>
+
+    <div class="layui-body">
+        <!-- 内容主体区域 -->
+        <div class="layui-tab layui-tab-brief" lay-filter="tabs" lay-allowClose="true">
+            <ul class="layui-tab-title">
+
+            </ul>
+            <div class="layui-tab-content">
+
+            </div>
+        </div>
+    </div>
+</div>
+<script src="/layui/layui.js"></script>
+<script>
+    //JavaScript代码区域
+    layui.use(['element', 'jquery'], function(){
+        var element = layui.element;
+        var $ = layui.jquery;
+        element.on('nav(left-nav)', function(elem){
+            if ($(elem).attr('data-url') != undefined) {
+                var tabId = $(elem).attr('data-id');
+                // 是否已经创建
+                if ($('li[lay-id="' + tabId + '"]').length == 0) {
+                    element.tabAdd('tabs', {
+                        title: $(elem).text(),
+                        content: '<iframe src="' + $(elem).attr('data-url') + '" frameborder="0" scrolling="yes" width="100%" height="100%"></iframe>',
+                        id: tabId
+                    });
+                }
+                // 焦点获取
+                element.tabChange('tabs', tabId);
+            }
+        });
+
+        // 左侧菜单显示与隐藏
+        $('.left-operation i').click(function () {
+            if ($('.layui-side').css('left') == '0px') {
+                $('.layui-side').animate({left: '-200px'}, 100);
+                $('.layui-body').animate({left: '0px'}, 100);
+                $(this).removeClass('layui-icon-shrink-right').addClass('layui-icon-spread-left');
+            }else {
+                $('.layui-side').animate({left: '0px'}, 100);
+                $('.layui-body').animate({left: '200px'}, 100);
+                $(this).removeClass('layui-icon-spread-left').addClass('layui-icon-shrink-right');
+            }
+        });
+
+        // 获取 layui-body 的高度
+        $('.layui-tab-content').css('height', ($('.layui-body').height() - 60) + 'px');
+
+    });
+</script>
+</body>
+</html>

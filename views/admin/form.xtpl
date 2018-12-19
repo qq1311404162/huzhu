@@ -1,0 +1,150 @@
+{{extend('./template')}}
+
+<!-- title -->
+{{#block('title')}}
+xxss
+{{/block}}
+
+<!-- mycss -->
+{{#block('mycss')}}
+{{/block}}
+
+<!-- content -->
+{{#block('content')}}
+
+<div class="layui-layout layui-layout-admin form-group">
+        <form class="layui-form">
+            <input type="hidden" name="id" value="">
+            <div class="layui-form-item">
+                <label class="layui-form-label">登录名</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="username" lay-verify="required|username" placeholder="请输入"
+                           autocomplete="off"
+                           class="layui-input" value="">
+                </div>
+            </div>
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label">密码</label>
+                    <div class="layui-input-inline">
+                        <input id="password" type="password" name="password" lay-verify="required|password"
+                               placeholder="请输入密码"
+                               autocomplete="off" class="layui-input">
+                    </div>
+                    <div class="layui-form-mid layui-word-aux">请填写6到12位密码</div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">重复密码</label>
+                    <div class="layui-input-inline">
+                        <input type="password" name="password_confirmation"
+                               lay-verify="required|password|password_confirmation"
+                               placeholder="请输入重复密码" autocomplete="off" class="layui-input">
+                    </div>
+                    <div class="layui-form-mid layui-word-aux">请填写6到12位密码</div>
+                </div>
+            <div class="layui-form-item">
+                <div class="layui-inline">
+                    <label class="layui-form-label">角色</label>
+                    <div class="layui-input-inline">
+                        <select name="role_id" lay-filter="aihao">
+                            <option value="">name</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <div class="layui-input-block">
+                    <button class="layui-btn" lay-submit="" lay-filter="submit">立即提交</button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+{{/block}}
+
+<!-- myjs -->
+{{#block('myjs')}}
+
+<script>
+
+        var is_active = true;
+        layui.use(['form', 'layedit', 'laydate'], function () {
+            var form = layui.form
+                , layer = layui.layer
+                , $ = layui.jquery;
+
+            // error 显示
+            @if(isset($errors->all()[0]))
+                layer.alert('');
+            @endif
+
+            //自定义验证规则
+            form.verify({
+                username: function (value) {
+                    if (!new RegExp("(.+){6,20}$").test(value)) {
+                        return '用户名必须6到20位';
+                    }
+                    if (!new RegExp("^[a-zA-Z0-9_\u4e00-\u9fa5\\s·]+$").test(value)) {
+                        return '用户名不能有特殊字符';
+                    }
+                    if (/(^\_)|(\__)|(\_+$)/.test(value)) {
+                        return '用户名首尾不能出现下划线\'_\'';
+                    }
+                    if (/^\d+\d+\d$/.test(value)) {
+                        return '用户名不能全为数字';
+                    }
+                }
+                , password: [/(.+){6,12}$/, '密码必须6到12位']
+                , password_confirmation: function (value) {
+
+                    if (!new RegExp($("#password").val()).test(value)) {
+                        return "两次输入密码不一致，请重新输入！";
+                    }
+
+                }
+            });
+            form.on('submit(submit)', function(data){
+
+                if (is_active) {
+
+                    is_active = false;
+                    $.ajax({
+                        type: 'POST',
+                        url: '',
+                        data: data.field,
+                        dataType: 'json',
+                        success: function (res) {
+                            is_active = true;
+                            if (res.status_code = 200) {
+
+                                layer.msg(res.msg, {icon:1,time:1000});
+                                setTimeout(function () {
+                                    var index = parent.layer.getFrameIndex(window.name);
+                                    parent.location.reload();
+                                    parent.layer.close(index);
+                                }, 1000);
+                            }else {
+
+                                layer.msg(res.msg, {icon:2, time:1000});
+                            }
+                        },
+                        error: function (msg) {
+                            is_active = true;
+                            if (msg.status == 422) {
+                                var json=JSON.parse(msg.responseText);
+                                var msgText = '';
+                                $.each(json, function (i, n) {
+                                    msgText += n.length > 0 ? n[0] : n;
+                                });
+                                layer.alert(msgText);
+                            }
+                        }
+                    });
+                }
+                return false;
+            });
+        });
+    </script>
+
+{{/block}}
