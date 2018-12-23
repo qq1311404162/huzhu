@@ -1,0 +1,117 @@
+{{extend('../template')}}
+
+<!-- title -->
+{{#block('title')}}
+xxss
+{{/block}}
+
+<!-- mycss -->
+{{#block('mycss')}}
+{{/block}}
+
+<!-- content -->
+{{#block('content')}}
+
+<div class="layui-layout layui-layout-admin">
+    <div>
+        <span class="layui-breadcrumb"><a href="javascript:;">首页</a><a href="javascript:;">激活码管理</a><a href="javascript:;">激活码列表</a><a><cite>列表</cite></a></span>
+        <a href="" class="layui-btn layui-btn-sm" style="float: right;"><i class="layui-icon layui-icon-refresh-1"></i></a>
+        <hr class="layui-bg-gray">
+    </div>
+
+    <div class="lay-row">
+        <button class="layui-btn layui-btn-sm" id="add"><i class="layui-icon layui-icon-add">添加</i></button>
+    </div>
+    <table class="layui-table" lay-data="{url:'/admin/active_codes/list', page:true, id:'list'}" lay-filter="list">
+        <thead>
+            <tr>
+                <th lay-data="{field:'id', width:50, sort: true}">ID</th>
+                <th lay-data="{field:'code'}">激活码</th>
+                <th lay-data="{field:'user_id', templet: function(d) {
+
+                return d.user_id == 0 ? '未分配' : '已分配';
+            }}">所属用户</th>
+                <th lay-data="{field:'createdAt'}">创建时间</th>
+                <th lay-data="{field:'state', templet: function(d) {
+
+                    return d.state == 2 ? '已使用' : (d.state == 1 ? '已分配' : '未使用'); 
+                }
+            }">状态</th>
+                <th lay-data="{toolbar: '#table-bar'}">操作</th>
+            </tr>
+        </thead>
+    </table>
+    <script type="text/html" id="table-bar">
+        <%# if(d.user_id == 0){ %>
+            <a class="layui-btn layui-btn-xs" lay-event="fenpei">分配</a>
+        <%# } %>
+    </script>
+
+</div>
+
+{{/block}}
+
+<!-- myjs -->
+{{#block('myjs')}}
+
+<script>
+    var createStatus = true;
+    layui.use(['element', 'jquery', 'table', 'layer', 'laytpl'], function () {
+        var element = layui.element,
+            $ = layui.jquery,
+            table = layui.table,
+            layer = layui.layer,
+            laytpl = layui.laytpl;
+
+            laytpl.config({
+                open: '<%',
+                close: '%>'
+            });
+
+        $('#add').click(function () {
+
+            // 生成激活码
+            if (createStatus) {
+                createStatus = false;
+                // loading
+                var index = layer.load(2, {
+                    shade: 0.3
+                });
+
+                $.get('/admin/active_codes/create').success(function (res) {
+
+                    if (res.code === undefined) {
+
+                        layer.msg(res.msg, {
+                            time: 1000,
+                            icon: 1
+                        });
+
+                        setTimeout(function () {
+                            createStatus = true;
+                            layer.close(index);
+                            window.location.href = '';
+                        }, 1000);
+
+                    }
+                }).error(function (err) {
+                    console.log(err);
+                });
+            }
+        });
+
+        // 表格操作
+        table.on('tool(list)', function(obj){
+            var data = obj.data,            // 当前行数据
+                layEvent = obj.event,       // lay-event 对应的值
+                tr = obj.tr;                // 当前行 tr 的 DOM 对象
+
+            if (layEvent == 'fenpei') {
+                alert(1);
+            }
+        });
+
+    });
+</script>
+
+{{/block}}

@@ -1,0 +1,58 @@
+{{extend('../template')}}
+
+<!-- title -->
+{{#block('title')}}
+xxss
+{{/block}}
+
+<!-- mycss -->
+{{#block('mycss')}}
+{{/block}}
+
+<!-- content -->
+{{#block('content')}}
+
+<div class="layui-layout layui-layout-admin">
+    <div>
+        <span class="layui-breadcrumb"><a href="javascript:;">首页</a><a href="javascript:;">管理员管理</a><a href="javascript:;">管理员列表</a><a><cite>列表</cite></a></span>
+        <a href="" class="layui-btn layui-btn-sm" style="float: right;"><i class="layui-icon layui-icon-refresh-1"></i></a>
+        <hr class="layui-bg-gray">
+    </div>
+
+    <div class="lay-row">
+        <button class="layui-btn layui-btn-sm" id="add"><i class="layui-icon layui-icon-add">添加</i></button>
+    </div>
+    <table class="layui-table" lay-data="{height:315, url:'/admin/users/list', page:true, id:'list'}" lay-filter="list">
+        <thead>
+          <tr>
+            <th lay-data="{field:'id', width:50, sort: true}">ID</th>
+            <th lay-data="{field:'username'}">用户名</th>
+            <th lay-data="{field:'realname', sort: true}">姓名</th>
+            <th lay-data="{field:'mobile'}">手机号</th>
+            <th lay-data="{field:'static_wallet'}">静态钱包金额</th>
+            <th lay-data="{field:'dynamic_wallet'}">动态钱包金额</th>
+            <th lay-data="{field:'previous_id', sort: true}">推荐人</th>
+            <th lay-data="{field:'available', sort: true}">当前排单额度</th>
+            <th lay-data="{field:'pai_golds'}">排单币个数</th>
+            <th lay-data="{field:'team_id', sort: true}">团队级别</th>
+            <th lay-data="{field:'state'}">用户状态</th>
+            <th lay-data="{toolbar:'<div>xxx</div>'}">操作</th>
+          </tr>
+        </thead>
+      </table>
+
+</div>
+
+{{/block}}
+
+<!-- myjs -->
+{{#block('myjs')}}
+
+<script>
+    layui.use(['element', 'jquery', 'table', 'layer'], function(){
+        var element = layui.element, $ = layui.jquery, table = layui.table, layer = layui.layer;
+
+    });
+</script>
+
+{{/block}}

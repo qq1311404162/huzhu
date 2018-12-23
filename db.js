@@ -1,24 +1,15 @@
 const Sequelize = require('sequelize');
 
-// const config = require('./config');
+const config = require('./config/config');
 
-const sequelize = new Sequelize('huzhu', 'root', 'root', {
-    host: 'localhost',
-    dialect: 'mysql',
+const sequelize = new Sequelize(config.db.database, config.db.username, config.db.password, {
+    host: config.db.host,
+    dialect: config.db.dialect,
     pool: {
-        max: 5,
-        min: 0,
-        idle: 10000
+        max: config.db.maxPool,
+        min: config.db.minPool,
+        idle: config.db.idlePool
     }
 });
-// var sequelize = new Sequelize(config.database, config.username, config.password, {
-//     host: config.host,
-//     dialect: config.dialect,
-//     pool: {
-//         max: 5,
-//         min: 0,
-//         idle: 10000
-//     }
-// });
 
 module.exports = sequelize;

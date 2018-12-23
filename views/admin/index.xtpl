@@ -54,12 +54,10 @@
             <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
             <ul class="layui-nav layui-nav-tree"  lay-filter="left-nav" lay-shrink="all">
 					<li class="layui-nav-item layui-nav-itemed">
-						<a class="" href="javascript:;">所有商品</a>
+						<a class="" href="javascript:;">用户管理</a>
 						<dl class="layui-nav-child">
-							<dd><a href="javascript:;" data-url="/admin/list" data-id="1">list</a></dd>
-							<dd><a href="javascript:;" data-url="/admin/form" data-id="2">form</a></dd>
-							<dd><a href="javascript:;">列表三</a></dd>
-							<dd><a href="">超链接</a></dd>
+							<dd><a href="javascript:;" data-url="/admin/users" data-id="1">用户管理</a></dd>
+							<dd><a href="javascript:;" data-url="/admin/active_codes" data-id="2">激活码管理</a></dd>
 						</dl>
 					</li>
 					<li class="layui-nav-item">

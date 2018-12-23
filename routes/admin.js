@@ -1,11 +1,21 @@
 const Router = require('koa-router')();
 
-const AdminController = require('./../controllers/AdminController');
+const UserController = require('../controllers/admin/UserController'),
+        ActiveCodeController = require('../controllers/admin/ActiveCodeController');
+
+// 管理员首页
+Router.get('/', (async ctx => {
+    ctx.body = await ctx.render('admin/index');
+}));
+
+// 用户管理
+Router.get('/users', UserController.index)
+    .get('/users/list', UserController.list);
+
+// 激活码管理
+Router.get('/active_codes', ActiveCodeController.index)
+    .get('/active_codes/list', ActiveCodeController.list)
+    .get('/active_codes/create', ActiveCodeController.create);
 
 
-const routers = Router
-    .get('/', AdminController.index)
-    .get('/list', AdminController.list)
-    .get('/form', AdminController.form);
-
-module.exports = routers;
+module.exports = Router;

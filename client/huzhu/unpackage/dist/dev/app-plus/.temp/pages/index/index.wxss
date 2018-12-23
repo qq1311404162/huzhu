@@ -1,0 +1,16 @@
+
+.content {
+  -webkit-box-flex: 1;
+  -webkit-flex: 1;
+  flex: 1;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+  align-items: center;
+}
+.title {
+  font-size: 36rpx;
+  color: #8f8f94;
+}
