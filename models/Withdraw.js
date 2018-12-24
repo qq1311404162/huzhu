@@ -7,6 +7,10 @@ const Withdraw = db.define('withdraw', {
 		primaryKey: true,
 		autoIncrement: true
 	},
+	ident: {
+		type: Sequelize.STRING,
+		comment: '提现编号'
+	},
 	user_id: {
 		type: Sequelize.INTEGER,
 		allowNull: false,

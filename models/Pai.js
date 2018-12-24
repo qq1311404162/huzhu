@@ -7,19 +7,24 @@ const Pai = db.define('paidan', {
 		primaryKey: true,
 		autoIncrement: true
 	},
+	ident: {
+		type: Sequelize.STRING,
+		comment: '排单编号'
+	},
 	user_id: {
 		type: Sequelize.INTEGER,
 		allowNull: false,
 		comment: '用户id'
-    },
+	},
+	amount: {
+		type: Sequelize.DECIMAL(12, 2),
+		defaultValue: '0.00',
+		comment: '排单金额'
+	},
     type: {
         type: Sequelize.TINYINT,
         allowNull: false,
         comment: '排单类型。用户额度 or 用户机会'
-    },
-    match_time: {
-        type: Sequelize.DATE,
-        comment: '匹配时间'
     },
 	state: {
 		type: Sequelize.TINYINT,
