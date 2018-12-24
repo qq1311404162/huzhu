@@ -39,4 +39,4 @@ app.use(Static(Path.join(__dirname, STATICPATH)));
 app.use(Router.routes()).use(Router.allowedMethods());
 
 // 监听
-app.listen(9090);
+app.listen(8080);
