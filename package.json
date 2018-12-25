@@ -29,6 +29,7 @@
     "koa-jwt": "^3.5.1",
     "koa-router": "^7.4.0",
     "koa-static": "^5.0.0",
+    "log4js": "^3.0.6",
     "md5": "^2.2.1",
     "moment": "^2.23.0",
     "mysql": "^2.16.0",
@@ -38,5 +39,8 @@
     "sequelize-cli": "^5.4.0",
     "xtemplate": "^4.6.1",
     "xtpl": "^3.4.0"
+  },
+  "devDependencies": {
+    "eslint": "^5.11.0"
   }
 }

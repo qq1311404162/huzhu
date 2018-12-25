@@ -2,43 +2,34 @@ const User = require('../../models/User');
 
 class UserController {
 
-    // 用户管理首页
-    static async index (ctx) {
-        
-        // User.sync({force: true});
-        // User.create({
-        //     username: 'aa',
-        //     password: 'bb',
-        //     mobile: '1243',
-        //     realname: 'ccc',
+	// 用户管理首页
+	static async index(ctx) {
 
-        // }).catch(function(errors){
+		ctx.body = await ctx.render('admin/user/index');
+	}
 
-        // console.log(errors.errors[0].message);
-        // // console.log(errors.errors);
-        // });
+	// 用户数据
+	static async list(ctx) {
 
-        // User.createUser({});
+		let query = ctx.request.query;
 
-        ctx.body = await ctx.render('admin/user/index');
-    }
-
-    // 用户数据
-    static async list (ctx) {
-        
-        let query = ctx.request.query,
-            result = {'code': 0, 'msg': '', 'count': 0, 'data': []};
+		let [count, result] = await Promise.all([User.count(), User.findAll({
+			offset: (parseInt(query.page) - 1) * parseInt(query.limit),
+			limit: parseInt(query.limit)
+		})]);
 
 
-            result.data = await User.findAll();
+		return ctx.jsonPage({
+			data: result,
+			count: count
+		});
 
-        ctx.body = result;
-    }
+	}
 
-    static async form (ctx) {
-        
-        ctx.body = await ctx.render('admin/form');
-    }
+	static async form(ctx) {
+
+		ctx.body = await ctx.render('admin/form');
+	}
 }
 
 module.exports = UserController;

@@ -1,53 +1,56 @@
 const ActiveCode = require('../../models/ActiveCode');
-const md5 = require('md5');
 
 class ActiveCodeController {
 
-    /**
-     * 激活码管理首页
-     */
-    static async index (ctx) {
+	/**
+	 * 激活码管理首页
+	 */
+	static async index(ctx) {
 
-        ctx.body = await ctx.render('admin/active_code/index');
-    }
+		ctx.body = await ctx.render('admin/active_code/index');
+	}
 
-    // 数据
-    static async list (ctx) {
-        
-        let query = ctx.request.query,
-            result = {'code': 0, 'msg': '', 'count': 0, 'data': []};
-            console.log(query);
+	// 数据
+	static async list(ctx) {
 
-            result.count = await ActiveCode.count();
+		let query = ctx.request.query,
+			result = {
+				'code': 0,
+				'msg': '',
+				'count': 0,
+				'data': []
+			};
 
-            result.data = await ActiveCode.findAll({
-                offset: (parseInt(query.page) - 1) * parseInt(query.limit),
-                limit: parseInt(query.limit)
-            });
+		result.count = await ActiveCode.count();
 
-        ctx.body = result;
-    }
+		result.data = await ActiveCode.findAll({
+			offset: (parseInt(query.page) - 1) * parseInt(query.limit),
+			limit: parseInt(query.limit)
+		});
 
-    /**
-     * 生成激活码
-     * @param {*} ctx 
-     */
-    static async create (ctx) {
+		ctx.body = result;
+	}
 
-        let code = await ActiveCode.setCode();
+	/**
+	 * 生成激活码
+	 * @param {*} ctx 
+	 */
+	static async create(ctx) {
 
-        let result = await ActiveCode.create({
-            code: code
-        });
+		let code = await ActiveCode.setCode();
 
-        if (!result) {
+		let result = await ActiveCode.create({
+			code: code
+		});
 
-            return ctx.sendError(500, '创建失败');
-        }
+		if (!result) {
 
-        return ctx.send({}, '创建成功');
-        
-    }
+			return ctx.sendError(500, '创建失败');
+		}
+
+		return ctx.send({}, '创建成功');
+
+	}
 }
 
 module.exports = ActiveCodeController;
