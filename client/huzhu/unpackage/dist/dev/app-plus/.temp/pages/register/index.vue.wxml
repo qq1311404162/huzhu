@@ -3,23 +3,23 @@
     <view class="_view data-v-a606fbfe input-group">
       <view class="_view data-v-a606fbfe input-row border">
         <text class="_text data-v-a606fbfe title">手机号：</text>
-        <input type="text" value="{{mobile}}" bindinput="handleProxy" placeholder="请输入手机号" data-eventid="{{'A7R-0'}}" data-comkey="{{$k}}" class="_input data-v-a606fbfe" />
+        <input type="text" value="{{mobile}}" bindinput="handleProxy" placeholder="请输入手机号" data-eventid="{{'XqF-0'}}" data-comkey="{{$k}}" class="_input data-v-a606fbfe" />
       </view>
       <view class="_view data-v-a606fbfe input-row border">
         <text class="_text data-v-a606fbfe title">账号：</text>
-        <input type="text" value="{{username}}" bindinput="handleProxy" placeholder="请输入账号" data-eventid="{{'Itt-1'}}" data-comkey="{{$k}}" class="_input data-v-a606fbfe" />
+        <input type="text" value="{{username}}" bindinput="handleProxy" placeholder="请输入账号" data-eventid="{{'gzL-1'}}" data-comkey="{{$k}}" class="_input data-v-a606fbfe" />
       </view>
       <view class="_view data-v-a606fbfe input-row border">
         <text class="_text data-v-a606fbfe title">密码：</text>
-        <input type="text" password="true" value="{{password}}" bindinput="handleProxy" placeholder="请输入密码" data-eventid="{{'bMj-2'}}" data-comkey="{{$k}}" class="_input data-v-a606fbfe" />
+        <input type="text" password="true" value="{{password}}" bindinput="handleProxy" placeholder="请输入密码" data-eventid="{{'HWK-2'}}" data-comkey="{{$k}}" class="_input data-v-a606fbfe" />
       </view>
       <view class="_view data-v-a606fbfe input-row">
         <text class="_text data-v-a606fbfe title">真实姓名：</text>
-        <input type="text" value="{{realname}}" bindinput="handleProxy" placeholder="请输入真实姓名" data-eventid="{{'Dgb-3'}}" data-comkey="{{$k}}" class="_input data-v-a606fbfe" />
+        <input type="text" value="{{realname}}" bindinput="handleProxy" placeholder="请输入真实姓名" data-eventid="{{'gOn-3'}}" data-comkey="{{$k}}" class="_input data-v-a606fbfe" />
       </view>
     </view>
     <view class="_view data-v-a606fbfe btn-row">
-      <button type="primary" class="_button data-v-a606fbfe primary" bindtap="handleProxy" data-eventid="{{'fR8-4'}}" data-comkey="{{$k}}">注册</button>
+      <button type="primary" class="_button data-v-a606fbfe primary" bindtap="handleProxy" data-eventid="{{'FTg-4'}}" data-comkey="{{$k}}">注册</button>
     </view>
   </view>
 </template>

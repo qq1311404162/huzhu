@@ -2,6 +2,7 @@
 	<view class="content">
 		<view class="input-group">
 			<view class="input-row border">
+				
 				<text class="title">手机号：</text>
 				<input type="text" v-model="mobile" placeholder="请输入手机号">
 			</view>
