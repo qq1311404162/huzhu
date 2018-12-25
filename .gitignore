@@ -1,6 +1,6 @@
 .DS_Store
 .vscode/
 node_modules/
-/config/db.js
-/logs/*
-client/huzhu/unpackage/*
+config/db.js
+logs/
+client/huzhu/unpackage/
