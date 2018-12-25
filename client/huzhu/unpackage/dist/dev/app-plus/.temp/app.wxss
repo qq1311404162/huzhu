@@ -17,7 +17,7 @@ page {
   -webkit-flex-direction: column;
   flex-direction: column;
   background-color: #efeff4;
-  padding: 20rpx;
+  padding: 10rpx;
 }
 .input-group {
   background-color: #ffffff;
@@ -57,7 +57,7 @@ page {
   position: relative;
 }
 .input-row .title {
-  width: 20%;
+  width: 25%;
   height: 50rpx;
   min-height: 50rpx;
   padding: 15rpx 0;
@@ -65,7 +65,7 @@ page {
   line-height: 50rpx;
 }
 .input-row ._input {
-  width: 80%;
+  width: 75%;
   height: 50rpx;
   min-height: 50rpx;
   padding: 15rpx 0;

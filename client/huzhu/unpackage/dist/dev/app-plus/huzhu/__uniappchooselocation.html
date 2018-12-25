@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 
-<head>
+  <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title></title>
     <style>
-        html,
+      html,
         body {
             margin: 0;
             padding: 0;
@@ -18,6 +18,10 @@
             background: #ffffff;
         }
 
+		*{
+			margin:0;
+			padding:0;
+		}
         button,
         input,
         input[type=button],
@@ -146,6 +150,7 @@
             height: 45%;
             position: relative;
             top: 46px;
+            width: 100%;
         }
 
         .list-wrap {
@@ -156,23 +161,27 @@
             bottom: 0;
             left: 0;
             overflow: hidden;
+			border-top: 1px solid #d3d3d3;
+			overflow-y: scroll;
         }
 
         .poi-list ul {
             list-style: none;
             width: 100%;
             text-align: left;
-            margin: 0;
-            padding: 0;
+			padding: 0 0 65px;
         }
 
         .suggestion-wrap li,
-        .active-pos {
+        .active-pos,
+		.poi-list li{
             position: relative;
             display: block;
             padding-left: 15px;
             border: none;
             height: 58px;
+			padding-top: 6px;
+			margin: 0;
         }
 
         .poi-list li * {
@@ -180,7 +189,7 @@
         }
 
         .poi-list li p,
-        .active-pos p {
+        .active-pos div p {
             padding-bottom: 10px;
             border-bottom: 1px solid #d3d3d3;
         }
@@ -229,329 +238,432 @@
             padding: 0;
             margin: 0;
         }
+		
+		.list-wrap i {
+			width: 16px;
+			height: 16px;
+			display: none;
+			background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAMAAABEpIrGAAAAaVBMVEUAAAAAef8Aef8Aef8Aef8Aef8Aef8Aef8Aef8Aef8Aef8Aef8Aef8Aef8Aef8Aef8Aef8Aef8Aef8Aef8Aef8Aef8Aef8Aef8Aef8Aef8Aef8Aef8Aef8Aef8Aef8Aef8Aef8Aef8Aef84EEEWAAAAInRSTlMA+QQY6izG8NO6TphC3JReWSMoDLOfgXajf29lZEs7Hcep1l5DEAAAAPxJREFUOMuFU9cSgyAQBDSUgCVgSS/8/0cGc8E5FQdeOGaXud0rBB9mzdFYRtKnGDkVkktB+VgkYE27poCw6aheUxpxPqHn6SyaRe66NKsfpqyRll6+Njlfsp/jS1WkRFeXf/QUh6Stg3iCAHndMX6VPxltlaiMNdPXqp1iftviR+qHcN34ZJm6FO4/4XY0FOeuknhpp0jdCamHJA7GhjqQ2n2ctCpofPw8K+22OHm8I+HjvXIYj4SYYvSBwTAeU0SROjA6hnEQCTYjg2McbEKhZgbGoVC41HqJQ6lxs1iP8blZuN3WrdudG5jcyGWHNj/2+cXJr15+ebPr/wWbNBG/n/A0GgAAAABJRU5ErkJggg==) no-repeat right center;
+			background-size: 16px 16px;
+			position: absolute;
+			right: 15px;
+			top: 50%;
+			margin-top: -8px;
+		}
+		.list-wrap i.active {
+			right: 30px;
+			display: inline-block;
+		}
     </style>
-</head>
+  </head>
 
-<body>
+  <body>
     <div class="search-wrap init-status">
-        <div class="search-bar">
-            <form name="poi-search" id="poiSearch" onsubmit="return false;">
-                <input type="search" class="keyword" id="searchword" placeholder=" ">
-                <button type="reset" class="clear-input hide"></button>
-                <button type="submit" class="submit hide">搜索</button>
-            </form>
-            <a class="cancel">取消</a>
-        </div>
+      <div class="search-bar">
+        <form name="poi-search" id="poiSearch" onsubmit="return false;">
+          <input type="search" class="keyword" id="searchword" placeholder=" ">
+          <button type="reset" class="clear-input hide"></button>
+          <button type="submit" class="submit hide">搜索</button>
+        </form>
+        <a class="cancel">取消</a>
+      </div>
     </div>
     <div class="suggestion-wrap hide">
-        <div class="poi-list">
-            <ul>
+      <div class="poi-list">
+        <ul>
 
-            </ul>
-        </div>
-        <div class="no-results hide">
-            <p>对不起，没有搜索到相关数据！</p>
-        </div>
-        <div class="no-more-results hide">
-            <p>亲，没有更多了~</p>
-        </div>
+        </ul>
+      </div>
+      <div class="no-results hide">
+        <p>对不起，没有搜索到相关数据！</p>
+      </div>
+      <div class="no-more-results hide">
+        <p>亲，没有更多了~</p>
+      </div>
     </div>
     <div id="map" class="map-wrap"></div>
     <div class="list-wrap">
-        <div class="active-pos">
+      <div class="active-pos">
 
-        </div>
-        <div class="poi-list">
-            <ul>
+      </div>
+      <div class="poi-list">
+        <ul>
 
-            </ul>
-            <div class="no-results hide">
-                <p>对不起，没有搜索到相关数据！</p>
-            </div>
+        </ul>
+        <div class="no-results hide">
+          <p>对不起，没有搜索到相关数据！</p>
         </div>
+      </div>
     </div>
     <script>
-        var loc;
-        var serviceWebview;
-        var back = function () {
-            var webview = plus.webview.currentWebview()
-            if (webview.__uniapp_dark) {
-                plus.navigator.setStatusBarStyle('dark')
-            }
-            webview.close('auto');
-        };
-        window.__chooseLocationConfirm__ = function () {
-            if (!loc) {
-                plus.nativeUI.alert('您尚未选择位置!');
-                return;
-            }
-            serviceWebview.evalJS('window.__chooseLocationCallback__&&__chooseLocationCallback__(' + JSON.stringify(
-                loc) + ')');
-            back();
+      var loc;
+      var serviceWebview;
+      var back = function() {
+        var webview = plus.webview.currentWebview()
+        console.log('webview.__uniapp_statusbar_style:::' + webview.__uniapp_statusbar_style)
+        if (webview.__uniapp_statusbar_style === 'dark') {
+          plus.navigator.setStatusBarStyle('dark')
         }
-        var searchWrapElem = document.querySelector('.search-wrap');
-        var searchWordElem = document.getElementById('searchword');
-        var resetElem = document.querySelector('[type="reset"]');
-        var cancelElem = document.querySelector('.cancel');
+        webview.close('auto');
+      };
+      window.__chooseLocationConfirm__ = function() {
+        if (!loc) {
+          plus.nativeUI.alert('您尚未选择位置!');
+          return;
+        }
+        serviceWebview.evalJS(
+          'window.__chooseLocationCallback__&&__chooseLocationCallback__(' + JSON
+          .stringify(
+            loc) + ')');
+        back();
+      }
+      var searchWrapElem = document.querySelector('.search-wrap');
+      var searchWordElem = document.getElementById('searchword');
+      var resetElem = document.querySelector('[type="reset"]');
+      var cancelElem = document.querySelector('.cancel');
 
-        var suggestionWrapElem = document.querySelector('.suggestion-wrap');
-        var mapElem = document.getElementById('map');
-        var listWrapElem = document.querySelector('.list-wrap');
+      var suggestionWrapElem = document.querySelector('.suggestion-wrap');
+      var mapElem = document.getElementById('map');
+      var listWrapElem = document.querySelector('.list-wrap');
 
-        var suggestionPoiListElem = suggestionWrapElem.querySelector('.poi-list ul');
-        var suggestionPoiNoResultsElem = suggestionWrapElem.querySelector('.no-results');
-        var suggestionPoiNoMoreResultsElem = suggestionWrapElem.querySelector('.no-more-results');
+      var suggestionPoiListElem = suggestionWrapElem.querySelector('.poi-list ul');
+      var suggestionPoiNoResultsElem = suggestionWrapElem.querySelector('.no-results');
+      var suggestionPoiNoMoreResultsElem = suggestionWrapElem.querySelector(
+        '.no-more-results');
 
-        var activePosElem = document.querySelector('.active-pos');
-        var nearbyPoiListElem = listWrapElem.querySelector('.poi-list ul');
-        var nearbyPoiNoResultsElem = listWrapElem.querySelector('.no-results');
+      var activePosElem = document.querySelector('.active-pos');
+      var nearbyPoiListElem = listWrapElem.querySelector('.poi-list ul');
+      var nearbyPoiNoResultsElem = listWrapElem.querySelector('.no-results');
 
-        listWrapElem.style.top = mapElem.offsetHeight + 47 + 'px';
+      listWrapElem.style.top = mapElem.offsetHeight + 47 + 'px';
 
-        var debounce = function (func, wait, immediate) {
-            var timeout, result;
-            return function () {
-                var context = this,
-                    args = arguments,
-                    later, callNow;
-                later = function () {
-                    timeout = null;
-                    if (!immediate) {
-                        result = func.apply(context, args);
-                    }
-                };
-                callNow = immediate && !timeout;
-                clearTimeout(timeout);
-                timeout = setTimeout(later, wait);
-                if (callNow) {
-                    result = func.apply(context, args);
-                }
-                return result;
-            };
+
+      var debounce = function(func, wait, immediate) {
+        var timeout, result;
+        return function() {
+          var context = this,
+            args = arguments,
+            later, callNow;
+          later = function() {
+            timeout = null;
+            if (!immediate) {
+              result = func.apply(context, args);
+            }
+          };
+          callNow = immediate && !timeout;
+          clearTimeout(timeout);
+          timeout = setTimeout(later, wait);
+          if (callNow) {
+            result = func.apply(context, args);
+          }
+          return result;
         };
+      };
 
 
-        document.addEventListener('plusready', function () {
-            serviceWebview = plus.webview.getWebviewById('__W2A_CONTEXT_') || plus.webview.getLaunchWebview();
-            plus.key.addEventListener('backbutton', back);
+      // document.addEventListener('plusready', function() {});
+      var plusReady = function(callback) {
+        if (window.plus) {
+          callback()
+        } else {
+          document.addEventListener('plusready', callback)
+        }
+      }
+      var ZOOM = 13
+      window.__chooseLocation__ = function(params) {
+        plusReady(function() {
+          serviceWebview = plus.webview.getWebviewById('__W2A_CONTEXT_') ||
+            plus.webview
+            .getLaunchWebview();
+          plus.key.addEventListener('backbutton', back);
 
-            var nativeMarker = false;
+          var nativeMarker = false;
 
-            var nativeMap = new plus.maps.Map('map', {
-                zoom: 18
+          var nativeMap = new plus.maps.Map('map', {
+            zoom: ZOOM
+          });
+
+
+          var centerPoint = false
+
+          var reverseGeocode = debounce(function(point) {
+            plus.maps.Map.reverseGeocode(point, {}, function(res) {
+              activePosElem.innerHTML =
+                '<div data-name="' + (res.address || '') +
+                '" data-address="' + (res.address || '') +
+                '" data-lat="' + res.coord.getLat() +
+                '" data-lng="' + res.coord.getLng() +
+                '"><h2 class="poi-title">地图位置</h2><p><span class="poi-address">' +
+                (res.address ||
+                  '') +
+                '</span><span class="poi-latlng">' +
+                res.coord
+                .getLat() +
+                ',' + res.coord.getLng() +
+                '</span><i></i></p></div>';
+            }, function(err) {
+              console.log(err);
             });
-            nativeMap.showUserLocation(true);
+            searchNearbyPoi.poiSearchNearBy('', point, 1000);
+          }, 10)
 
-            var centerPoint = false
 
-            var reverseGeocode = function (point) {
-                plus.maps.Map.reverseGeocode(point, {}, function (res) {
-                    console.log(res);
-                    activePosElem.innerHTML = '<p><span class="poi-address">' + (res.address || '') +
-                        '</span><span class="poi-latlng">' + res.coord.getLat() + ',' + res.coord.getLng() +
-                        '</span></p>';
-                }, function (err) {
-                    console.log(err);
-                });
-                searchNearbyPoi.poiSearchNearBy('', centerPoint, 1000);
+          nativeMap.getUserLocation(function(state, point) { //获取当前用户坐标
+            if (state === 0) {
+              nativeMarker = new plus.maps.Marker(point);
+              nativeMarker.setIcon('__uniappmarker@3x.png');
+              nativeMap.addOverlay(nativeMarker);
+              centerPoint = point;
+              nativeMap.showUserLocation(true);
+              if(plus.os.name!=='Android'){
+                nativeMap.setCenter(point);
+              }
+              // reverseGeocode(centerPoint);
+            } else {
+              console.log('获取用户坐标失败');
             }
 
+          });
 
 
-            nativeMap.getUserLocation(function (state, point) { //获取当前用户坐标
-                if (state === 0) {
-                    nativeMarker = new plus.maps.Marker(point);
-                    nativeMarker.setIcon('__uniappmarker.png');
-                    nativeMap.addOverlay(nativeMarker);
-                    nativeMap.setCenter(point);
-                    centerPoint = point;
-                    reverseGeocode(centerPoint);
-                } else {
-                    console.log('获取用户坐标失败');
-                }
-            });
 
-            nativeMap.onstatuschanged = function (evt) { //切换坐标中心
-                centerPoint = evt.center
-                if (nativeMarker) {
-                    nativeMarker.setPoint(centerPoint);
-                }
+          nativeMap.onstatuschanged = function(evt) { //切换坐标中心
+            if (!centerPoint) {
+              return;
+            }
+            if (centerPoint && evt.center) {
+              if (centerPoint.latitude === evt.center.latitude &&
+                centerPoint.longitude === evt.center.longitude) {
+                return;
+              }
+            }
+            console.log('onstatuschanged:centerPoint', centerPoint, evt
+              .center)
+            centerPoint = evt.center
+            if (nativeMarker) {
+              nativeMarker.setPoint(centerPoint);
+            }
+            reverseGeocode(centerPoint);
+          };
+
+          plus.webview.currentWebview().append(nativeMap);
+
+          var searchPoi = new plus.maps.Search(nativeMap);
+          var searchNearbyPoi = new plus.maps.Search(nativeMap);
+
+          var showMap = function(centerPoint) {
+            nativeMap.show();
+            if (centerPoint) {
+              if (nativeMarker) {
+                nativeMarker.setPoint(centerPoint);
+              }
+              nativeMap.setCenter(centerPoint);
+//               setTimeout(function() {
+//                 nativeMap.setZoom(ZOOM);
+//               }, 150);
+              // reverseGeocode(centerPoint);
+            }
+            searchWordElem.value = '';
+            cancelElem.className = 'cancel hide';
+            searchWrapElem.className = 'search-wrap init-status';
+            suggestionWrapElem.className = 'suggestion-wrap hide';
+            resetSuggestionPoiList();
+          }
+
+          var resetSuggestionPoiList = function() {
+            suggestionPoiListElem.innerHTML = '';
+            suggestionPoiNoResultsElem.className = 'no-results hide';
+            suggestionPoiNoMoreResultsElem.className =
+              'no-more-results hide';
+          }
+
+          var showSuggestionPoiList = function() {
+            nativeMap.hide();
+            resetSuggestionPoiList();
+          }
+
+          var showSuggestionPoiNoResults = function() {
+            suggestionPoiListElem.innerHTML = '';
+            suggestionPoiNoResultsElem.className = 'no-results';
+            suggestionPoiNoMoreResultsElem.className =
+              'no-more-results hide';
+          }
+
+          var renderPoiResults = function(poiList) {
+            var html = [];
+            for (var i = 0; i < poiList.length; i++) {
+              var poi = poiList[i];
+              if (poi.point) {
+                html.push('<li data-name="' + (poi.name || '') +
+                  '" data-address="' + (poi.address || '') +
+                  '" data-lat="' + poi.point.getLat() +
+                  '" data-lng="' + poi.point.getLng() +
+                  '"><p><span class="poi-title">' + poi.name +
+                  '</span><span class="poi-address">' + (poi.address ||
+                    '') +
+                  '</span><span class="poi-latlng">' + poi.point
+                  .getLat() +
+                  ',' + poi.point.getLng() +
+                  '</span><span class="poi-city">' + poi.city +
+                  '</span></p><i></i></li>');
+              }
+            }
+            return html.join('');
+          }
+          var showNearbyPoiNoResults = function() {
+            nearbyPoiListElem.innerHTML = '';
+            nearbyPoiNoResultsElem.className = 'no-results';
+          }
+          var showNearbyPoiResults = function(poiList) {
+            var html = renderPoiResults(poiList);
+            if (html) {
+              nearbyPoiListElem.innerHTML = html;
+              nearbyPoiNoResultsElem.className = 'no-results hide';
+            } else {
+              showNearbyPoiNoResults();
+            }
+          }
+          var showSuggestionPoiResults = function(poiList) {
+            var html = renderPoiResults(poiList);
+            if (html) {
+              suggestionPoiListElem.innerHTML = html;
+              suggestionPoiNoResultsElem.className =
+                'no-results hide';
+              suggestionPoiNoMoreResultsElem.className =
+                'no-more-results';
+            } else {
+              showSuggestionPoiNoResults();
+            }
+          }
+
+          searchPoi.onPoiSearchComplete = function(state, res) {
+            if (state === 0) {
+              if (res.poiList.length) {
+                showSuggestionPoiResults(res.poiList);
+              } else {
+                showSuggestionPoiNoResults();
+              }
+            } else {
+              showSuggestionPoiNoResults();
+            }
+            console.log(JSON.stringify({
+              state:state,
+              res:res
+            }));
+          };
+
+          searchNearbyPoi.onPoiSearchComplete = function(state, res) {
+            if (state === 0) {
+              if (res.poiList.length) {
+                showNearbyPoiResults(res.poiList);
+              } else {
+                showNearbyPoiNoResults();
+              }
+            } else {
+              showNearbyPoiNoResults();
+            }
+            console.log(state, res);
+          };
+
+          var getSuggestion = debounce(function(q) {
+            if (q.trim()) {
+              searchPoi.poiSearchNearBy(q, centerPoint, 50000)
+            } else {
+              console.log('清空')
+            }
+          }, 10);
+
+          suggestionPoiListElem.addEventListener('click', function(evt) {
+            var target = evt.target;
+            for (; target && target !== suggestionPoiListElem; target =
+              target.parentNode) {
+              if (target && target.tagName === 'LI') {
+                var laglng = target.querySelector('.poi-latlng')
+                  .innerText
+                  .split(',');
+                centerPoint = new plus.maps.Point(Number(laglng[1]), Number(laglng[0]));
+                showMap(centerPoint);
                 reverseGeocode(centerPoint);
-            };
-
-            plus.webview.currentWebview().append(nativeMap);
-
-            var searchPoi = new plus.maps.Search(nativeMap);
-            var searchNearbyPoi = new plus.maps.Search(nativeMap);
-
-            var showMap = function (centerPoint) {
-                if (centerPoint) {
-                    if (nativeMarker) {
-                        nativeMarker.setPoint(centerPoint);
-                    }
-                    nativeMap.setCenter(centerPoint);
-                    nativeMap.setZoom(18);
-                    reverseGeocode(centerPoint);
-                }
-                searchWordElem.value = '';
-                cancelElem.className = 'cancel hide';
-                searchWrapElem.className = 'search-wrap init-status';
-                suggestionWrapElem.className = 'suggestion-wrap hide';
-                resetSuggestionPoiList();
-                nativeMap.show();
+                break;
+              }
             }
+          });
 
-            var resetSuggestionPoiList = function () {
-                suggestionPoiListElem.innerHTML = '';
-                suggestionPoiNoResultsElem.className = 'no-results hide';
-                suggestionPoiNoMoreResultsElem.className = 'no-more-results hide';
+          searchWordElem.addEventListener('click', function() {
+            searchWrapElem.className = 'search-wrap';
+            suggestionWrapElem.className = 'suggestion-wrap';
+            cancelElem.className = 'cancel';
+            showSuggestionPoiList();
+          });
+
+          var oldHasValue = false;
+
+          var setInputState = function(hasValue) {
+            if (hasValue !== oldHasValue) {
+              if (hasValue) {
+                resetElem.className = 'clear-input'
+              } else {
+                resetElem.className = 'clear-input hide'
+              }
+              oldHasValue = hasValue;
             }
+          }
 
-            var showSuggestionPoiList = function () {
-                nativeMap.hide();
-                resetSuggestionPoiList();
+          searchWordElem.addEventListener('input', function() {
+            var value = this.value.replace(/^\s+|\s+$/g, '');
+            setInputState(!!value);
+            getSuggestion(value);
+          });
+
+          resetElem.addEventListener('click', function(e) {
+            setInputState(false);
+            setTimeout(function() {
+              searchWordElem.focus();
+            }, 0);
+          });
+          cancelElem.addEventListener('click', function() {
+            showMap();
+          });
+
+          listWrapElem.addEventListener('click', function(e) {
+            var target = e.target;
+            for (; target && target !== listWrapElem; target =
+              target.parentNode) {
+              if (target.className === 'active-pos' || target.tagName ===
+                'LI') {
+                var lastActiveElem = listWrapElem.querySelector(
+                  'i.active');
+                if (lastActiveElem) {
+                  lastActiveElem.className = '';
+                }
+                if(target.className === 'active-pos'){
+                    target = target.children[0]
+                }
+                target.querySelector('i').className = 'active';
+                loc = {
+                  poiname: target.getAttribute('data-name'),
+                  poiaddress: target.getAttribute(
+                    'data-address'),
+                  latlng: {
+                    lat: target.getAttribute(
+                      'data-lat'),
+                    lng: target.getAttribute(
+                      'data-lng'),
+                  }
+                }
+                if (nativeMarker) {
+                  nativeMarker.setPoint(new plus.maps.Point(
+                    loc.latlng.lng, loc.latlng.lat));
+                }
+                break;
+              }
             }
-
-            var showSuggestionPoiNoResults = function () {
-                suggestionPoiListElem.innerHTML = '';
-                suggestionPoiNoResultsElem.className = 'no-results';
-                suggestionPoiNoMoreResultsElem.className = 'no-more-results hide';
-            }
-
-            var renderPoiResults = function (poiList) {
-                var html = [];
-                for (var i = 0; i < poiList.length; i++) {
-                    var poi = poiList[i];
-                    if (poi.point) {
-                        html.push('<li><p><span class="poi-title">' + poi.name +
-                            '</span><span class="poi-address">' + (poi.address || '') +
-                            '</span><span class="poi-latlng">' + poi.point.getLat() + ',' + poi.point.getLng() +
-                            '</span><span class="poi-city">' + poi.city + '</span></p></li>');
-                    }
-                }
-                return html.join('');
-            }
-            var showNearbyPoiNoResults = function () {
-                nearbyPoiListElem.innerHTML = '';
-                nearbyPoiNoResultsElem.className = 'no-results';
-            }
-            var showNearbyPoiResults = function (poiList) {
-                var html = renderPoiResults(poiList);
-                if (html) {
-                    nearbyPoiListElem.innerHTML = html.join('');
-                    nearbyPoiNoResultsElem.className = 'no-results hide';
-                } else {
-                    showNearbyPoiNoResults();
-                }
-            }
-            var showSuggestionPoiResults = function (poiList) {
-                var html = renderPoiResults(poiList);
-                if (html) {
-                    suggestionPoiListElem.innerHTML = html.join('');
-                    suggestionPoiNoResultsElem.className = 'no-results hide';
-                    suggestionPoiNoMoreResultsElem.className = 'no-more-results';
-                } else {
-                    showSuggestionPoiNoResults();
-                }
-            }
-
-            searchPoi.onPoiSearchComplete = function (state, res) {
-                if (state === 0) {
-                    if (res.poiList.length) {
-                        showSuggestionPoiResults(res.poiList);
-                    } else {
-                        showSuggestionPoiNoResults();
-                    }
-                } else {
-                    showSuggestionPoiNoResults();
-                }
-                console.log(state, res);
-            };
-
-            searchNearbyPoi.onPoiSearchComplete = function (state, res) {
-                if (state === 0) {
-                    if (res.poiList.length) {
-                        showNearbyPoiResults(res.poiList);
-                    } else {
-                        showNearbyPoiNoResults();
-                    }
-                } else {
-                    showNearbyPoiNoResults();
-                }
-                console.log(state, res);
-            };
-
-            var getSuggestion = debounce(function (q) {
-                if (q.trim()) {
-                    searchPoi.poiSearchNearBy(q, centerPoint, 50000)
-                } else {
-                    console.log('清空')
-                }
-            }, 10);
-
-            suggestionPoiListElem.addEventListener('click', function (evt) {
-                var target = evt.target;
-                for (; target && target !== suggestionPoiListElem; target = target.parentNode) {
-                    if (target && target.tagName === 'LI') {
-                        var laglng = target.querySelector('.poi-latlng').innerText.split(',');
-                        showMap(new plus.maps.Point(laglng[1], laglng[0]));
-                        break;
-                    }
-                }
-            });
-            searchWordElem.addEventListener('click', function () {
-                searchWrapElem.className = 'search-wrap';
-                suggestionWrapElem.className = 'suggestion-wrap';
-                cancelElem.className = 'cancel';
-                showSuggestionPoiList();
-            });
-
-            var oldHasValue = false;
-
-            var setInputState = function (hasValue) {
-                if (hasValue !== oldHasValue) {
-                    if (hasValue) {
-                        resetElem.className = 'clear-input'
-                    } else {
-                        resetElem.className = 'clear-input hide'
-                    }
-                    oldHasValue = hasValue;
-                }
-            }
-
-            searchWordElem.addEventListener('input', function () {
-                var value = this.value.replace(/^\s+|\s+$/g, '');
-                setInputState(!!value);
-                getSuggestion(value);
-            });
-
-            resetElem.addEventListener('click', function (e) {
-                setInputState(false);
-                setTimeout(function () {
-                    searchWordElem.focus();
-                }, 0);
-            });
-            cancelElem.addEventListener('click', function () {
-                showMap();
-            });
+          })
 
 
         });
-
-
-        window.__chooseLocation__ = function (params) {
-            //             var params = params || {};
-            //             var key = params.key || defaultKey;
-            //             var referer = params.referer = defaultReferer;
-            //             var coord = params.coord || {};
-            //             var lat = coord.lat;
-            //             var lng = coord.lng;
-            //             var coordtype = coord.type || 5;
-            //             var url = 'http://apis.map.qq.com/tools/locpicker?type=1&search=1&coord=' + (lat && lng ? (lat + ',' +
-            //                 lng) : '') + '&coordtype=' + coordtype + '&key=' + defaultKey + '&referer=' + referer;
-            //             mapElem.src = url;
-        };
+      };
     </script>
-</body>
+  </body>
 
 </html>

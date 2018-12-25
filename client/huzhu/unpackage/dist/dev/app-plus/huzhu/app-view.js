@@ -1083,7 +1083,7 @@ Z([3,'账号：'])
 Z([3,'handleProxy'])
 Z([3,'_input data-v-63cefbbe'])
 Z([[7],[3,'$k']])
-Z([1,'0'])
+Z([1,'sFp-0'])
 Z([3,'请输入账号'])
 Z([3,'text'])
 Z([[7],[3,'username']])
@@ -1093,7 +1093,7 @@ Z([3,'密码：'])
 Z(z[6])
 Z(z[7])
 Z(z[8])
-Z([1,'1'])
+Z([1,'QBJ-1'])
 Z([3,'true'])
 Z([3,'请输入密码'])
 Z(z[11])
@@ -1102,7 +1102,7 @@ Z([3,'_view data-v-63cefbbe btn-row'])
 Z(z[6])
 Z([3,'_button data-v-63cefbbe primary'])
 Z(z[8])
-Z([1,'2'])
+Z([1,'km3-2'])
 Z([3,'primary'])
 Z([3,'登录'])
 Z([3,'_view data-v-63cefbbe action-row'])
@@ -1137,7 +1137,7 @@ Z([3,'手机号：'])
 Z([3,'handleProxy'])
 Z([3,'_input data-v-a606fbfe'])
 Z([[7],[3,'$k']])
-Z([1,'0'])
+Z([1,'A7R-0'])
 Z([3,'请输入手机号'])
 Z([3,'text'])
 Z([[7],[3,'mobile']])
@@ -1147,7 +1147,7 @@ Z([3,'账号：'])
 Z(z[6])
 Z(z[7])
 Z(z[8])
-Z([1,'1'])
+Z([1,'Itt-1'])
 Z([3,'请输入账号'])
 Z(z[11])
 Z([[7],[3,'username']])
@@ -1157,7 +1157,7 @@ Z([3,'密码：'])
 Z(z[6])
 Z(z[7])
 Z(z[8])
-Z([1,'2'])
+Z([1,'bMj-2'])
 Z([3,'true'])
 Z([3,'请输入密码'])
 Z(z[11])
@@ -1168,7 +1168,7 @@ Z([3,'真实姓名：'])
 Z(z[6])
 Z(z[7])
 Z(z[8])
-Z([1,'3'])
+Z([1,'Dgb-3'])
 Z([3,'请输入真实姓名'])
 Z(z[11])
 Z([[7],[3,'realname']])
@@ -1176,7 +1176,7 @@ Z([3,'_view data-v-a606fbfe btn-row'])
 Z(z[6])
 Z([3,'_button data-v-a606fbfe primary'])
 Z(z[8])
-Z([1,'4'])
+Z([1,'fR8-4'])
 Z([3,'primary'])
 Z([3,'注册'])
 })(__WXML_GLOBAL__.ops_cached.$gwx_7);return __WXML_GLOBAL__.ops_cached.$gwx_7
@@ -1595,7 +1595,7 @@ var setCssToHead = function(file, _xcInvalid, info) {
 var Ca = {};
 var css_id;
 var info = info || {};
-var _C= [["body { min-height: 100%; display: -webkit-box; display: -webkit-flex; display: flex; }\n.",[1],"content { display: -webkit-box; display: -webkit-flex; display: flex; -webkit-box-flex: 1; -webkit-flex: 1; flex: 1; -webkit-box-orient: vertical; -webkit-box-direction: normal; -webkit-flex-direction: column; flex-direction: column; background-color: #efeff4; padding: ",[0,20],"; }\n.",[1],"input-group { background-color: #ffffff; margin-top: ",[0,40],"; position: relative; }\n.",[1],"input-group::before { position: absolute; right: 0; top: 0; left: 0; height: ",[0,1],"; content: \x27\x27; -webkit-transform: scaleY(.5); transform: scaleY(.5); background-color: #c8c7cc; }\n.",[1],"input-group::after { position: absolute; right: 0; bottom: 0; left: 0; height: ",[0,1],"; content: \x27\x27; -webkit-transform: scaleY(.5); transform: scaleY(.5); background-color: #c8c7cc; }\n.",[1],"input-row { display: -webkit-box; display: -webkit-flex; display: flex; -webkit-box-orient: horizontal; -webkit-box-direction: normal; -webkit-flex-direction: row; flex-direction: row; position: relative; }\n.",[1],"input-row .",[1],"title { width: 20%; height: ",[0,50],"; min-height: ",[0,50],"; padding: ",[0,15]," 0; padding-left: ",[0,30],"; line-height: ",[0,50],"; }\n.",[1],"input-row .",[1],"_input { width: 80%; height: ",[0,50],"; min-height: ",[0,50],"; padding: ",[0,15]," 0; padding-right: ",[0,30],"; line-height: ",[0,50],"; }\n.",[1],"input-row.",[1],"border::after { position: absolute; right: 0; bottom: 0; left: ",[0,15],"; height: ",[0,1],"; content: \x27\x27; -webkit-transform: scaleY(.5); transform: scaleY(.5); background-color: #c8c7cc; }\n.",[1],"btn-row { margin-top: ",[0,50],"; padding: ",[0,20],"; }\n.",[1],"_button.",[1],"primary { background-color: #0faeff; }\n",],];
+var _C= [["body { min-height: 100%; display: -webkit-box; display: -webkit-flex; display: flex; }\n.",[1],"content { display: -webkit-box; display: -webkit-flex; display: flex; -webkit-box-flex: 1; -webkit-flex: 1; flex: 1; -webkit-box-orient: vertical; -webkit-box-direction: normal; -webkit-flex-direction: column; flex-direction: column; background-color: #efeff4; padding: ",[0,10],"; }\n.",[1],"input-group { background-color: #ffffff; margin-top: ",[0,40],"; position: relative; }\n.",[1],"input-group::before { position: absolute; right: 0; top: 0; left: 0; height: ",[0,1],"; content: \x27\x27; -webkit-transform: scaleY(.5); transform: scaleY(.5); background-color: #c8c7cc; }\n.",[1],"input-group::after { position: absolute; right: 0; bottom: 0; left: 0; height: ",[0,1],"; content: \x27\x27; -webkit-transform: scaleY(.5); transform: scaleY(.5); background-color: #c8c7cc; }\n.",[1],"input-row { display: -webkit-box; display: -webkit-flex; display: flex; -webkit-box-orient: horizontal; -webkit-box-direction: normal; -webkit-flex-direction: row; flex-direction: row; position: relative; }\n.",[1],"input-row .",[1],"title { width: 25%; height: ",[0,50],"; min-height: ",[0,50],"; padding: ",[0,15]," 0; padding-left: ",[0,30],"; line-height: ",[0,50],"; }\n.",[1],"input-row .",[1],"_input { width: 75%; height: ",[0,50],"; min-height: ",[0,50],"; padding: ",[0,15]," 0; padding-right: ",[0,30],"; line-height: ",[0,50],"; }\n.",[1],"input-row.",[1],"border::after { position: absolute; right: 0; bottom: 0; left: ",[0,15],"; height: ",[0,1],"; content: \x27\x27; -webkit-transform: scaleY(.5); transform: scaleY(.5); background-color: #c8c7cc; }\n.",[1],"btn-row { margin-top: ",[0,50],"; padding: ",[0,20],"; }\n.",[1],"_button.",[1],"primary { background-color: #0faeff; }\n",],];
 function makeup(file, opt) {
 var _n = typeof(file) === "number";
 if ( _n && Ca.hasOwnProperty(file)) return "";
@@ -1661,4 +1661,12 @@ return rewritor;
 }
 setCssToHead([])();setCssToHead([[2,0]],undefined,{path:"./app.wxss"})();
 
+__wxAppCode__['app.wxss']=setCssToHead([[2,0]],undefined,{path:"./app.wxss"});    
+__wxAppCode__['app.wxml']=$gwx('./app.wxml');
+
 ;var __pageFrameEndTime__ = Date.now();
+if(!window.__uniAppViewReady__){
+	window.__uniAppViewReady__ = true;
+	document.dispatchEvent(new CustomEvent('uniAppViewReady'));
+}
+
