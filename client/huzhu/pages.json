@@ -39,7 +39,7 @@
 	},
 	"tabBar": {
 		"color": "#444444",
-		"selectedColor": "#FF80AB",
+		"selectedColor": "#f11312",
 		"borderStyle": "black",
 		"backgroundColor": "#ffffff",
 		"list": [{
@@ -49,13 +49,13 @@
 			"text": "首页"
 		}, {
 			"pagePath": "pages/index/pai",
-			"iconPath": "static/hot-0.png",
-			"selectedIconPath": "static/hot-1.png",
+			"iconPath": "static/pai-0.png",
+			"selectedIconPath": "static/pai-1.png",
 			"text": "排单"
 		}, {
 			"pagePath": "pages/index/my",
-			"iconPath": "static/center-0.png",
-			"selectedIconPath": "static/center-1.png",
+			"iconPath": "static/my-0.png",
+			"selectedIconPath": "static/my-1.png",
 			"text": "我的"
 		}]
 	}

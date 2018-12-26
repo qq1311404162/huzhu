@@ -3,7 +3,10 @@
 
 <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <script>
+        var coverSupport = 'CSS' in window && typeof CSS.supports === 'function' && (CSS.supports('top: env(a)') || CSS.supports('top: constant(a)'))
+        document.write('<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0' + (coverSupport ? ', viewport-fit=cover' : '') + '" />')
+    </script>
     <title></title>
     <style>
         html,
@@ -121,6 +124,7 @@
 
 
         })
+        var ZOOM = 13
         window.__openLocation__ = function (params) {
             var mapElem = document.getElementById('map');
             var poiNameElem = document.querySelector('.poi-name');
@@ -134,7 +138,7 @@
             var point = new plus.maps.Point(longitude, latitude);
             var map = plus.maps.create('map', {
                 center: point,
-                zoom: scale || 18,
+                zoom: scale || ZOOM,
                 top: 0,
                 left: 0,
                 width: '100%',
@@ -142,7 +146,7 @@
 
             });
             var marker = new plus.maps.Marker(point);
-            marker.setIcon('__uniappmarker.png');
+            marker.setIcon('__uniappmarker@3x.png');
             if (name) {
                 poiNameElem.innerText = name;
                 // marker.setLabel(name);

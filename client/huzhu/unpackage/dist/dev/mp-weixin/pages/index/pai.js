@@ -1,0 +1,4 @@
+require("../../common/manifest.js");
+require("../../common/vendor.js");
+global.webpackJsonp([5],{22:function(e,t,u){"use strict";var n=o(u(1)),s=o(u(23));function o(e){return e&&e.__esModule?e:{default:e}}Page((0,n.default)(s.default))},23:function(e,t,u){"use strict";Object.defineProperty(t,"__esModule",{value:!0});var n=u(25),s=u.n(n),o=!1;var l=function(e){o||u(24)},r=u(0)(s.a,null,l,null,null);r.options.__file="Users/weiliang/Desktop/test/huzhu/client/huzhu/pages/index/pai.vue",r.esModule&&Object.keys(r.esModule).some(function(e){return"default"!==e&&"__"!==e.substr(0,2)})&&console.error("named exports are not supported in *.vue files."),t.default=r.exports},24:function(e,t){},25:function(e,t,u){"use strict"}},[22]);
+//# sourceMappingURL=../../../.sourcemap/mp-weixin/pages/index/pai.js.map

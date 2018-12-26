@@ -1,0 +1,27 @@
+
+.input-group {
+  margin-top: 40rpx;
+}
+.input-row {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: row;
+  flex-direction: row;
+  position: relative;
+  line-height: 60rpx;
+  padding: 10rpx;
+}
+.border {
+  border-bottom: 5rpx solid #f5f5f5;
+}
+.input-row .title {
+  width: 25%;
+}
+.input-row ._input {
+  width: 75%;
+  min-height: 50rpx;
+  padding-right: 30rpx;
+}

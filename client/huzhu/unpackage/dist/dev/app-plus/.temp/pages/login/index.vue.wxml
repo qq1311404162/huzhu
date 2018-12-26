@@ -1,22 +1,22 @@
-<template name="f6d63260">
-  <view class="_view data-v-63cefbbe content">
-    <view class="_view data-v-63cefbbe input-group">
-      <view class="_view data-v-63cefbbe input-row border">
-        <text class="_text data-v-63cefbbe title">账号：</text>
-        <input type="text" value="{{username}}" bindinput="handleProxy" placeholder="请输入账号" data-eventid="{{'0'}}" data-comkey="{{$k}}" class="_input data-v-63cefbbe" />
+<template name="38aa6292">
+  <view class="_view data-v-1f9a3161 content">
+    <view class="_view data-v-1f9a3161 input-group">
+      <view class="_view data-v-1f9a3161 input-row border">
+        <text class="_text data-v-1f9a3161 title">账号：</text>
+        <input type="text" value="{{username}}" bindinput="handleProxy" placeholder="请输入账号" data-eventid="{{'ec1-0'}}" data-comkey="{{$k}}" class="_input data-v-1f9a3161" />
       </view>
-      <view class="_view data-v-63cefbbe input-row">
-        <text class="_text data-v-63cefbbe title">密码：</text>
-        <input type="text" password="true" value="{{password}}" bindinput="handleProxy" placeholder="请输入密码" data-eventid="{{'1'}}" data-comkey="{{$k}}" class="_input data-v-63cefbbe" />
+      <view class="_view data-v-1f9a3161 input-row">
+        <text class="_text data-v-1f9a3161 title">密码：</text>
+        <input type="text" password="true" value="{{password}}" bindinput="handleProxy" placeholder="请输入密码" data-eventid="{{'3fw-1'}}" data-comkey="{{$k}}" class="_input data-v-1f9a3161" />
       </view>
     </view>
-    <view class="_view data-v-63cefbbe btn-row">
-      <button type="primary" class="_button data-v-63cefbbe primary" bindtap="handleProxy" data-eventid="{{'2'}}" data-comkey="{{$k}}">登录</button>
+    <view class="_view data-v-1f9a3161 btn-row">
+      <button type="primary" class="_button data-v-1f9a3161 primary" bindtap="handleProxy" data-eventid="{{'vLP-2'}}" data-comkey="{{$k}}">登录</button>
     </view>
-    <view class="_view data-v-63cefbbe action-row">
-      <navigator url="../register/index" class="_navigator data-v-63cefbbe">注册账号</navigator>
-      <text class="_text data-v-63cefbbe">|</text>
-      <navigator url="../pwd/pwd" class="_navigator data-v-63cefbbe">忘记密码</navigator>
+    <view class="_view data-v-1f9a3161 action-row">
+      <navigator url="../register/index" class="_navigator data-v-1f9a3161">注册账号</navigator>
+      <text class="_text data-v-1f9a3161">|</text>
+      <navigator url="../pwd/pwd" class="_navigator data-v-1f9a3161">忘记密码</navigator>
     </view>
   </view>
 </template>

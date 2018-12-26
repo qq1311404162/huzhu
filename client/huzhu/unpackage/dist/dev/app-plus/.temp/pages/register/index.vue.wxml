@@ -1,25 +1,25 @@
-<template name="7a75aa1c">
-  <view class="_view data-v-a606fbfe content">
-    <view class="_view data-v-a606fbfe input-group">
-      <view class="_view data-v-a606fbfe input-row border">
-        <text class="_text data-v-a606fbfe title">手机号：</text>
-        <input type="text" value="{{mobile}}" bindinput="handleProxy" placeholder="请输入手机号" data-eventid="{{'0'}}" data-comkey="{{$k}}" class="_input data-v-a606fbfe" />
+<template name="52d1fff0">
+  <view class="_view data-v-a0f4ea7e content">
+    <view class="_view data-v-a0f4ea7e input-group">
+      <view class="_view data-v-a0f4ea7e input-row border">
+        <text class="_text data-v-a0f4ea7e title">手机号：</text>
+        <input type="text" value="{{mobile}}" bindinput="handleProxy" placeholder="请输入手机号" data-eventid="{{'Z0b-0'}}" data-comkey="{{$k}}" class="_input data-v-a0f4ea7e" />
       </view>
-      <view class="_view data-v-a606fbfe input-row border">
-        <text class="_text data-v-a606fbfe title">账号：</text>
-        <input type="text" value="{{username}}" bindinput="handleProxy" placeholder="请输入账号" data-eventid="{{'1'}}" data-comkey="{{$k}}" class="_input data-v-a606fbfe" />
+      <view class="_view data-v-a0f4ea7e input-row border">
+        <text class="_text data-v-a0f4ea7e title">账号：</text>
+        <input type="text" value="{{username}}" bindinput="handleProxy" placeholder="请输入账号" data-eventid="{{'jBz-1'}}" data-comkey="{{$k}}" class="_input data-v-a0f4ea7e" />
       </view>
-      <view class="_view data-v-a606fbfe input-row border">
-        <text class="_text data-v-a606fbfe title">密码：</text>
-        <input type="text" password="true" value="{{password}}" bindinput="handleProxy" placeholder="请输入密码" data-eventid="{{'2'}}" data-comkey="{{$k}}" class="_input data-v-a606fbfe" />
+      <view class="_view data-v-a0f4ea7e input-row border">
+        <text class="_text data-v-a0f4ea7e title">密码：</text>
+        <input type="text" password="true" value="{{password}}" bindinput="handleProxy" placeholder="请输入密码" data-eventid="{{'3gQ-2'}}" data-comkey="{{$k}}" class="_input data-v-a0f4ea7e" />
       </view>
-      <view class="_view data-v-a606fbfe input-row">
-        <text class="_text data-v-a606fbfe title">真实姓名：</text>
-        <input type="text" value="{{realname}}" bindinput="handleProxy" placeholder="请输入真实姓名" data-eventid="{{'3'}}" data-comkey="{{$k}}" class="_input data-v-a606fbfe" />
+      <view class="_view data-v-a0f4ea7e input-row">
+        <text class="_text data-v-a0f4ea7e title">真实姓名：</text>
+        <input type="text" value="{{realname}}" bindinput="handleProxy" placeholder="请输入真实姓名" data-eventid="{{'Ei5-3'}}" data-comkey="{{$k}}" class="_input data-v-a0f4ea7e" />
       </view>
     </view>
-    <view class="_view data-v-a606fbfe btn-row">
-      <button type="primary" class="_button data-v-a606fbfe primary" bindtap="handleProxy" data-eventid="{{'4'}}" data-comkey="{{$k}}">注册</button>
+    <view class="_view data-v-a0f4ea7e btn-row">
+      <button type="primary" class="_button data-v-a0f4ea7e primary" bindtap="handleProxy" data-eventid="{{'oB3-4'}}" data-comkey="{{$k}}">注册</button>
     </view>
   </view>
 </template>

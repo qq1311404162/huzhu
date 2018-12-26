@@ -1,11 +1,13 @@
 <template>
     <view class="content">
-        <view class="input-group">
+        <view class="input-group mt20">
+			<view class="input-row border">
+			</view>
             <view class="input-row border">
                 <text class="title">账号：</text>
                 <input type="text" v-model="username" placeholder="请输入账号">
             </view>
-            <view class="input-row">
+            <view class="input-row border">
                 <text class="title">密码：</text>
                 <input type="text" password="true" v-model="password" placeholder="请输入密码">
             </view>
@@ -116,10 +118,14 @@
 </script>
 
 <style>
+	@import '../../common/css/form.css';
+	@import '../../common/css/common.css';
+	
     .action-row {
         display: flex;
         flex-direction: row;
         justify-content: center;
+		margin-top: 25upx;
     }
 
     .action-row navigator {

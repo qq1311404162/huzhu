@@ -1,0 +1,29 @@
+<template name="f4f9ecda">
+  <view class="_view data-v-b1b175b8 content">
+    <view class="_view data-v-b1b175b8 flex-column user-info">
+      <image src="../../static/dynamic.png" mode class="_image data-v-b1b175b8"></image>
+      <text class="_text data-v-b1b175b8">闲庭梦若</text>
+      <text class="_text data-v-b1b175b8">黄金</text>
+    </view>
+    <view class="_view data-v-b1b175b8 lists">
+      <view class="_view data-v-b1b175b8 item">
+        <text class="_text data-v-b1b175b8">我的推广</text>
+      </view>
+      <view class="_view data-v-b1b175b8 item">
+        <text class="_text data-v-b1b175b8">个人资料</text>
+      </view>
+      <view class="_view data-v-b1b175b8 item">
+        <text class="_text data-v-b1b175b8">推广链接</text>
+      </view>
+      <view class="_view data-v-b1b175b8 item">
+        <text class="_text data-v-b1b175b8">修改密码</text>
+      </view>
+      <view class="_view data-v-b1b175b8 item">
+        <text class="_text data-v-b1b175b8">修改交易密码</text>
+      </view>
+    </view>
+    <view class="_view data-v-b1b175b8 btn-row">
+      <button type="primary" class="_button data-v-b1b175b8 primary">退出登录</button>
+    </view>
+  </view>
+</template>
