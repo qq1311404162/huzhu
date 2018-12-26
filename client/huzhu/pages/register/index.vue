@@ -2,6 +2,36 @@
 	<view class="content">
 		<view class="input-group">
 			<view class="input-row border">
+<<<<<<< HEAD
+				<text class="title">用户名：</text>
+				<input type="text" v-model="username" placeholder="请输入用户名">
+			</view>
+			<view class="input-row border">
+				<text class="title">上级推荐人：</text>
+				<input type="text" v-model="username" placeholder="请输入上级账号">
+			</view>
+			<view class="input-row border">
+				<text class="title">登录密码：</text>
+				<input type="text" password="true" v-model="password" placeholder="请输入登录密码">
+			</view>
+			<view class="input-row border">
+				<text class="title">确认密码：</text>
+				<input type="text" password="true" v-model="repassword" placeholder="请输入确认密码">
+			</view>
+			<view class="input-row border">
+				<text class="title">真实姓名：</text>
+				<input type="text" v-model="realname" placeholder="请输入真实姓名">
+			</view>
+			<view class="input-row border">
+				<text class="title">手机号：</text>
+				<input type="text" v-model="mobile" placeholder="请输入手机号">
+			</view>
+			<view class="input-row border">
+				<input type="text" v-model="vcode" placeholder="请输入验证码">
+				<text class="vcode">获取验证码</text>
+			</view>
+		</view>
+=======
 				<text class="title">手机号：</text>
 				<input type="text" v-model="mobile" placeholder="请输入手机号">
 			</view>
@@ -19,6 +49,7 @@
 			</view>
 		</view>
 
+>>>>>>> 40401cd9b82b097c275ede64b889ad3e0484f468
 		<view class="btn-row">
 			<button type="primary" class="primary" @tap="register">注册</button>
 		</view>
@@ -98,5 +129,5 @@
 </script>
 
 <style>
-
+	@import '../../common/css/form.css';
 </style>

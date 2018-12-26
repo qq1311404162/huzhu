@@ -13,9 +13,12 @@
 </script>
 
 <style>
+<<<<<<< HEAD
+=======
 	/*每个页面公共css */
 	/* uni-app默认全局使用flex布局。因为flex布局有利于跨更多平台，尤其是采用原生渲染的平台。如不了解flex布局，请参考http://www.w3.org/TR/css3-flexbox/。如不使用flex布局，请删除或注释掉本行。*/
 
+>>>>>>> 40401cd9b82b097c275ede64b889ad3e0484f468
 	page {
 		min-height: 100%;
 		display: flex;
@@ -25,6 +28,8 @@
 		display: flex;
 		flex: 1;
 		flex-direction: column;
+<<<<<<< HEAD
+=======
 		background-color: #efeff4;
 		padding: 10px;
 	}
@@ -102,5 +107,6 @@
 
 	button.primary {
 		background-color: #0faeff;
+>>>>>>> 40401cd9b82b097c275ede64b889ad3e0484f468
 	}
 </style>

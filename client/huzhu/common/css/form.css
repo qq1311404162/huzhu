@@ -1,0 +1,55 @@
+.input-group {
+
+	margin-bottom: 40upx;
+}
+
+.input-row {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	position: relative;
+
+	padding: 10upx;
+}
+
+.border {
+	border-bottom: 10upx solid #f5f5f5;
+}
+
+.input-row .title,
+	{
+	width: 35%;
+	line-height: 70upx;
+
+}
+
+.input-row .vcode {
+
+	line-height: 60upx;
+
+	border-radius: 25upx;
+	padding: 0 25upx;
+	border: 1upx solid #999;
+	margin-right: 10upx;
+	font-size: 25upx;
+}
+
+.input-row .vcode:active {
+
+	background: #ADADAD;
+}
+
+
+.input-row input {
+
+	width: 65%;
+	height: 70upx;
+	line-height: 70upx;
+	padding-left: 10upx;
+
+}
+
+.btn-row {
+	width: 80%;
+	margin: 10% auto 0 auto;
+}
