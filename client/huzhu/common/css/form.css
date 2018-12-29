@@ -6,19 +6,19 @@
 .input-row {
 	display: flex;
 	flex-direction: row;
+	align-items: center;
 	justify-content: space-between;
 	position: relative;
 
-	padding: 10upx;
+	padding: 10upx 30upx;
 }
 
 .border {
 	border-bottom: 10upx solid #f5f5f5;
 }
 
-.input-row .title,
-	{
-	width: 35%;
+.input-row .title {
+	flex: auto;
 	line-height: 70upx;
 
 }
@@ -26,7 +26,6 @@
 .input-row .vcode {
 
 	line-height: 60upx;
-
 	border-radius: 25upx;
 	padding: 0 25upx;
 	border: 1upx solid #999;
@@ -42,10 +41,11 @@
 
 .input-row input {
 
-	width: 65%;
-	height: 70upx;
+	/* width: 65%; */
+	height: 40upx;
 	line-height: 70upx;
 	padding-left: 10upx;
+	padding: 15upx 10upx;
 
 }
 

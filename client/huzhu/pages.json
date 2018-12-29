@@ -29,6 +29,24 @@
 			"style": {
 				"navigationBarTitleText": "注册"
 			}
+		},
+		{
+			"path": "pages/my/edit-info",
+			"style": {
+				"navigationBarTitleText": "个人资料"
+			}
+		},
+		{
+			"path": "pages/my/edit-pwd",
+			"style": {
+				"navigationBarTitleText": "修改密码"
+			}
+		},
+		{
+			"path": "pages/my/edit-payword",
+			"style": {
+				"navigationBarTitleText": "修改交易密码"
+			}
 		}
 	],
 	"globalStyle": {
@@ -47,11 +65,6 @@
 			"iconPath": "static/index-0.png",
 			"selectedIconPath": "static/index-1.png",
 			"text": "首页"
-		}, {
-			"pagePath": "pages/index/pai",
-			"iconPath": "static/pai-0.png",
-			"selectedIconPath": "static/pai-1.png",
-			"text": "排单"
 		}, {
 			"pagePath": "pages/index/my",
 			"iconPath": "static/my-0.png",

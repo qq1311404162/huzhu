@@ -2,7 +2,6 @@
 	<view class="content">
 		<view class="input-group">
 			<view class="input-row border">
-<<<<<<< HEAD
 				<text class="title">用户名：</text>
 				<input type="text" v-model="username" placeholder="请输入用户名">
 			</view>
@@ -31,25 +30,6 @@
 				<text class="vcode">获取验证码</text>
 			</view>
 		</view>
-=======
-				<text class="title">手机号：</text>
-				<input type="text" v-model="mobile" placeholder="请输入手机号">
-			</view>
-			<view class="input-row border">
-				<text class="title">账号：</text>
-				<input type="text" v-model="username" placeholder="请输入账号">
-			</view>
-			<view class="input-row border">
-				<text class="title">密码：</text>
-				<input type="text" password="true" v-model="password" placeholder="请输入密码">
-			</view>
-			<view class="input-row">
-				<text class="title">真实姓名：</text>
-				<input type="text" v-model="realname" placeholder="请输入真实姓名">
-			</view>
-		</view>
-
->>>>>>> 40401cd9b82b097c275ede64b889ad3e0484f468
 		<view class="btn-row">
 			<button type="primary" class="primary" @tap="register">注册</button>
 		</view>
@@ -130,4 +110,5 @@
 
 <style>
 	@import '../../common/css/form.css';
+	
 </style>

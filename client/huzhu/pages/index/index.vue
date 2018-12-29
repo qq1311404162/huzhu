@@ -4,17 +4,17 @@
 			<view>
 				<image class="icon" src="../../static/dynamic.png" mode=""></image>
 				<text class="title">动态钱包</text>
-				<text>100 MYB</text>
+				<text class="value"><text>100</text>MYB</text>
 			</view>
 			<view>
 				<image class="icon" src="../../static/static.png" mode=""></image>
 				<text class="title">静态钱包</text>
-				<text>100 MYB</text>
+				<text class="value"><text>100</text>MYB</text>
 			</view>
 			<view>
 				<image class="icon" src="../../static/team.png" mode=""></image>
 				<text class="title">我的团队</text>
-				<text>100 人数</text>
+				<text class="value"><text>100</text>人</text>
 			</view>
 		</view>
 		
@@ -29,7 +29,7 @@
 			</button>
 		</view>
 		
-		<view class="flex-row list">
+		<!-- <view class="flex-row list">
 			<view>
 				<image class="list-icon" src="../../static/pai_gold.png" mode=""></image>
 				<text class="title">排单币</text>
@@ -42,6 +42,20 @@
 				<image class="list-icon" src="../../static/my_rate.png" mode=""></image>
 				<text class="title">我的收益</text>
 			</view>
+		</view> -->
+		<view class="flex-row list">
+			<view>
+				<image class="list-icon" src="../../static/static_rate.png" mode=""></image>
+				<text class="title">静态收益</text>
+			</view>
+			<view>
+				<image class="list-icon" src="../../static/dynamic_rate.png" mode=""></image>
+				<text class="title">动态收益</text>
+			</view>
+			<view>
+				<image class="list-icon" src="../../static/my_tg.png" mode=""></image>
+				<text class="title">我的团队</text>
+			</view>
 		</view>
 		<view class="flex-row list">
 			<view>
@@ -49,26 +63,12 @@
 				<text class="title">代注册</text>
 			</view>
 			<view>
-				<image class="list-icon" src="../../static/tg_link.png" mode=""></image>
-				<text class="title">推广链接</text>
+				<image class="list-icon" src="../../static/pai_gold.png" mode=""></image>
+				<text class="title">排单币</text>
 			</view>
 			<view>
-				<image class="list-icon" src="../../static/my_tg.png" mode=""></image>
-				<text class="title">我的推广</text>
-			</view>
-		</view>
-		<view class="flex-row list">
-			<view>
-				<image class="list-icon" src="../../static/dynamic_rate.png" mode=""></image>
-				<text class="title">动态收益</text>
-			</view>
-			<view>
-				<image class="list-icon" src="../../static/static_rate.png" mode=""></image>
-				<text class="title">静态收益</text>
-			</view>
-			<view>
-				<image class="list-icon" src="../../static/pay_list.png" mode=""></image>
-				<text class="title">我的交易</text>
+				<image class="list-icon" src="../../static/active_code.png" mode=""></image>
+				<text class="title">激活码</text>
 			</view>
 		</view>
 	</view>
@@ -131,14 +131,25 @@
 		
 	}
 	
-	.wallets view text {
-		font-size: 30upx;
-		font-weight: bold;
+	.wallets view .value {
+		
+		font-size: 26upx;
+
+		
+	}
+	
+	.wallets view .value text {
+
+		color: red;
+		margin-right: 10upx;
+		
 	}
 	
 	.wallets view .title {
 		
+		font-size: 30upx;
 		padding-top: 25upx;
+		font-weight: bold;
 	}
 	
 	.icon {
@@ -152,6 +163,7 @@
 		
 		justify-content: space-between;
 		padding-top: 45px;
+		padding-bottom: 15upx;
 	}
 	
 	.pai button {
@@ -171,6 +183,7 @@
 		border-bottom: 4upx solid #f5f5f5;
 		padding: 45upx 0;
 		justify-content: space-between;
+		
 	}
 	
 	.list:last-child {
@@ -179,15 +192,15 @@
 	
 	.list-icon {
 		display: inline-block;
-		width: 80upx;
-		height: 80upx;
-		padding-bottom: 10upx;
+		width: 70upx;
+		height: 70upx;
+		padding-bottom: 15upx;
 	}
 	
 	.list view text {
 		font-size: 30upx;
-		letter-spacing: 10upx;
-		padding-left: 15upx;
+		letter-spacing: 5upx;
+		/* padding-left: 10upx; */
 	}
 	
 </style>

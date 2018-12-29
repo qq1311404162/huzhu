@@ -21,11 +21,12 @@ const Pai = db.define('paidan', {
 		defaultValue: '0.00',
 		comment: '排单金额'
 	},
-    type: {
-        type: Sequelize.TINYINT,
-        allowNull: false,
-        comment: '排单类型。用户额度 or 用户机会'
-    },
+	type: {
+		type: Sequelize.TINYINT,
+		allowNull: false,
+		defaultValue: 1,
+		comment: '排单类型。1:用户额度; 2:用户机会'
+	},
 	state: {
 		type: Sequelize.TINYINT,
 		allowNull: false,
@@ -33,7 +34,7 @@ const Pai = db.define('paidan', {
 		comment: '状态。0：初始化成功，待匹配；1：匹配成功，待确认订单；2：订单完成'
 	}
 }, {
-	paranoid: true,
+	// paranoid: true,
 	comment: '排单表'
 });
 
