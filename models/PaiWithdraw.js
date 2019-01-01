@@ -7,15 +7,15 @@ const PaiWithdraw = db.define('pai_withdraw', {
 		primaryKey: true,
 		autoIncrement: true
 	},
-	pai_id: {
+	pai_info_id: {
 		type: Sequelize.INTEGER,
 		allowNull: false,
-		comment: '排单id'
+		comment: '排单拆分id'
     },
-    withdraw_id: {
+    withdraw_info_id: {
         type: Sequelize.INTEGER,
         allowNull: false,
-        comment: '提现id'
+        comment: '提现拆分id'
     },
     amount: {
         type: Sequelize.DECIMAL(12, 2),

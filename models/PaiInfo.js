@@ -1,16 +1,20 @@
 const Sequelize = require('sequelize');
 const db = require('../db');
 
-const Pai = db.define('paidan', {
+const PaiInfo = db.define('paidan_info', {
 	id: {
 		type: Sequelize.INTEGER,
 		primaryKey: true,
 		autoIncrement: true
 	},
-	ident: {
-		type: Sequelize.STRING,
-		comment: '排单编号'
-	},
+	pai_id: {
+		type: Sequelize.INTEGER,
+		comment: '排单id'
+    },
+    ident: {
+        type: Sequelize.STRING,
+        comment: '排单订单号'
+    },
 	user_id: {
 		type: Sequelize.INTEGER,
 		allowNull: false,
@@ -40,9 +44,7 @@ const Pai = db.define('paidan', {
 	}
 }, {
 	// paranoid: true,
-	comment: '排单表'
+	comment: '排单拆分表'
 });
 
-module.exports = Pai;
-
-// 排单时，创建排单表和排单拆分表，匹配时根据金额拆分拆分表中的金额，最终打款完成时，两个表一起改变状态
+module.exports = PaiInfo;
