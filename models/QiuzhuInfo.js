@@ -1,20 +1,20 @@
 const Sequelize = require('sequelize');
 const db = require('../db');
 
-const PaiInfo = db.define('paidan_info', {
+const QiuzhuInfo = db.define('qiuzhu_info', {
 	id: {
 		type: Sequelize.INTEGER,
 		primaryKey: true,
 		autoIncrement: true
 	},
-	pai_id: {
+	qiuzhu_id: {
 		type: Sequelize.INTEGER,
-		comment: '排单id'
-    },
-    ident: {
-        type: Sequelize.STRING,
-        comment: '排单订单号'
-    },
+		comment: '提现id'
+	},
+	ident: {
+		type: Sequelize.STRING,
+		comment: '提现编号'
+	},
 	user_id: {
 		type: Sequelize.INTEGER,
 		allowNull: false,
@@ -23,18 +23,12 @@ const PaiInfo = db.define('paidan_info', {
 	amount: {
 		type: Sequelize.DECIMAL(12, 2),
 		defaultValue: '0.00',
-		comment: '排单金额'
+		comment: '提现金额'
 	},
 	type: {
 		type: Sequelize.TINYINT,
 		allowNull: false,
-		defaultValue: 1,
-		comment: '排单类型。1:用户额度; 2:用户机会'
-	},
-	is_first: {
-		type: Sequelize.TINYINT,
-		defaultValue: 0,
-		comment: '是否首次排单'
+		comment: '提现类型。静态钱包提现 or 动态钱包提现'
 	},
 	state: {
 		type: Sequelize.TINYINT,
@@ -44,7 +38,7 @@ const PaiInfo = db.define('paidan_info', {
 	}
 }, {
 	// paranoid: true,
-	comment: '排单拆分表'
+	comment: '求助拆分表'
 });
 
-module.exports = PaiInfo;
+module.exports = QiuzhuInfo;

@@ -19,11 +19,11 @@
 		</view>
 		
 		<view class="flex-row pai">
-			<button type="primary">
+			<button type="primary" @click="gotoBangzhu()">
 				<image src="../../static/folder_in.png" class="btn-icon" mode=""></image>
 				<text>帮助</text>
 			</button>
-			<button type="primary">
+			<button type="primary" @click="gotoQizhu()">
 				<image src="../../static/folder_out.png" class="btn-icon" mode=""></image>
 				<text>求助</text>
 			</button>
@@ -58,15 +58,15 @@
 			</view>
 		</view>
 		<view class="flex-row list">
-			<view>
+			<view @click="gotoRegister()">
 				<image class="list-icon" src="../../static/register.png" mode=""></image>
 				<text class="title">代注册</text>
 			</view>
-			<view>
+			<view @click="gotoCoin()">
 				<image class="list-icon" src="../../static/pai_gold.png" mode=""></image>
 				<text class="title">排单币</text>
 			</view>
-			<view>
+			<view @click="gotoActivation()">
 				<image class="list-icon" src="../../static/active_code.png" mode=""></image>
 				<text class="title">激活码</text>
 			</view>
@@ -107,6 +107,31 @@
 // 					}
 // 				});
 // 			}
+		},
+		methods:{
+			gotoRegister(){
+				this.goto('../register/index');
+			},
+			gotoBangzhu() {
+				
+				this.goto('../bangzhu/index')
+			},
+			gotoQizhu() {
+				
+				this.goto('../qiuzhu/index')
+			},
+			gotoCoin(){
+				this.goto('../coin/index')
+			},
+			gotoActivation(){
+				this.goto('../activation/index');
+			},
+			goto(url) {
+				
+				uni.navigateTo({
+					url: url
+				});
+			}
 		}
 	}
 </script>

@@ -20,10 +20,10 @@ const ActiveLog = db.define('active_log', {
 		allowNull: false,
 		comment: '被赠送用户id'
 	},
-    active_nums: {
-        type: Sequelize.INTEGER,
-        allowNull: false,
-        comment: '激活码数量'
+	active_nums: {
+		type: Sequelize.INTEGER,
+		allowNull: false,
+		comment: '激活码数量'
 	},
 	type: {
 		type: Sequelize.TINYINT,
@@ -35,7 +35,7 @@ const ActiveLog = db.define('active_log', {
 		comment: '描述'
 	}
 }, {
-	paranoid: true,
+	// paranoid: true,
 	comment: '激活码使用记录表'
 });
 

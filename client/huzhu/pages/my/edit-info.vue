@@ -1,35 +1,49 @@
 <template>
 	<view class="content">
-		<view class="input-group">
-			<view class="input-row border img">
-				<text class="title">头像：</text>
-				<input type="text" v-model="avatar" placeholder="请输入账号">
+		
+		<uni-cell title="头像">
+			<view class="" slot="content">
+				<input type="text" v-model="mobile" placeholder="请输入手机号码"/>
 			</view>
-			<view class="input-row border">
-				<text class="title">手机号码：</text>
-				<input type="text" v-model="mobile" disabled="true" placeholder="请输入账号" value="12312312">
+		</uni-cell>
+		
+		<uni-cell title="手机号码">
+			<view class="" slot="content">
+				<input type="text" v-model="mobile" placeholder="请输入手机号码"/>
 			</view>
-			<view class="input-row border">
-				<text class="title">真实姓名：</text>
-				<input type="text" v-model="realname" disabled="true" placeholder="请输入账号">
+		</uni-cell>
+		
+		<uni-cell title="真实姓名">
+			<view class="" slot="content">
+				<input type="text" v-model="realname" placeholder="请输入真实姓名"/>
 			</view>
-			<view class="input-row border">
-				<text class="title">银行名称：</text>
-				<input type="text" v-model="card_name" placeholder="请输入账号">
+		</uni-cell>
+		
+		<uni-cell title="银行名称">
+			<view class="" slot="content">
+				<input type="text" v-model="realname" placeholder="请输入银行名称"/>
 			</view>
-			<view class="input-row border">
-				<text class="title">银行卡号：</text>
-				<input type="text" v-model="card_nums" placeholder="请输入账号">
+		</uni-cell>
+		
+		<uni-cell title="银行卡号">
+			<view class="" slot="content">
+				<input type="text" v-model="realname" placeholder="请输入银行卡号"/>
 			</view>
-			<view class="input-row border img">
-				<text class="title">微信收款码：</text>
-				<input type="text" v-model="wechat_qrcode" placeholder="请输入账号">
+		</uni-cell>
+		
+		<uni-cell title="微信收款码">
+			<view class="" slot="content">
+				<input type="text" v-model="realname" placeholder="请输入银行卡号"/>
 			</view>
-			<view class="input-row border img">
-				<text class="title">支付宝收款码：</text>
-				<input type="text" v-model="alipay_qrcode" placeholder="请输入账号">
+		</uni-cell>
+		
+		<uni-cell title="支付宝收款码">
+			<view class="" slot="content">
+				<input type="text" v-model="realname" placeholder="请输入银行卡号"/>
 			</view>
-		</view>
+		</uni-cell>
+		
+		
 		<view class="btn-row">
 			<button type="primary" class="primary" @tap="edit">修改</button>
 		</view>
@@ -37,7 +51,13 @@
 </template>
 <script>
 	
+	import uniCell from '@/components/uni-cell/uni-cell.vue';
+	
+	
 	export default {
+		components: {
+			uniCell
+		},
 		
 		data() {
 			
@@ -54,7 +74,8 @@
 	}
 </script>
 <style>
-	@import '../../common/css/form.css';
+	
+	@import '../../common/css/common.css';
 	
 	.input-row input {
 		text-align: right;
@@ -65,5 +86,6 @@
 		line-height: 200upx;
 		height: 200upx;
 	}
+	
 	
 </style>

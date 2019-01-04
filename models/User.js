@@ -64,6 +64,11 @@ const User = db.define('user', {
 		defaultValue: '0.00',
 		comment: '静态钱包金额'
 	},
+	freeze: {
+		type: Sequelize.DECIMAL,
+		defaultValue: '0.00',
+		comment: '静态钱包冻结金额'
+	},
 	dynamic_wallet: {
 		type: Sequelize.DECIMAL(12, 2),
 		defaultValue: '0.00',
@@ -99,13 +104,13 @@ const User = db.define('user', {
 		defaultValue: 1,
 		comment: '用户派单额度倍数'
 	},
-	pai_nums: {
+	bangzhu_nums: {
 		type: Sequelize.INTEGER,
 		allowNull: false,
 		defaultValue: 0,
 		comment: '每月赠送派单次数'
 	},
-	pai_golds: {
+	bangzhu_golds: {
 		type: Sequelize.INTEGER,
 		defaultValue: 0,
 		comment: '排单币数量'
@@ -129,7 +134,7 @@ const User = db.define('user', {
 	}
 
 }, {
-	paranoid: true,
+	// paranoid: true,
 	comment: '用户表',
 
 });

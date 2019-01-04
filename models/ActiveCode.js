@@ -42,7 +42,7 @@ const ActiveCode = db.define('active_code', {
 		}
 	},
 }, {
-	paranoid: true,
+	// paranoid: true,
 	comment: '激活码表'
 });
 
@@ -55,6 +55,6 @@ function setCode() {
 ActiveCode.setCode = async () => {
 
 	return setCode();
-}
+};
 
 module.exports = ActiveCode;

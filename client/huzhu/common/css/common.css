@@ -11,3 +11,14 @@
 	display: flex;
 	flex-direction: column;
 }
+
+.btn-row {
+	width: 80%;
+	margin: 10% auto 0 auto;
+}
+
+.btn-row button {
+	
+	height: 100upx;
+	line-height: 100upx;
+}

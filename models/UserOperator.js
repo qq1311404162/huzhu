@@ -11,13 +11,13 @@ const UserOperator = db.define('user_operator', {
 		type: Sequelize.INTEGER,
 		allowNull: false,
 		comment: '用户id'
-    },
-    content: {
-        type: Sequelize.STRING,
-        comment: '操作描述'
-    }
+	},
+	content: {
+		type: Sequelize.STRING,
+		comment: '操作描述'
+	}
 }, {
-	paranoid: true,
+	// paranoid: true,
 	comment: '用户操作表'
 });
 

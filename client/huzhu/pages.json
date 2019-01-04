@@ -13,12 +13,6 @@
 			}
 		},
 		{
-			"path": "pages/index/pai",
-			"style": {
-				"navigationBarTitleText": "排单"
-			}
-		},
-		{
 			"path": "pages/login/index",
 			"style": {
 				"navigationBarTitleText": "登录"
@@ -46,6 +40,30 @@
 			"path": "pages/my/edit-payword",
 			"style": {
 				"navigationBarTitleText": "修改交易密码"
+			}
+		},
+		{
+			"path": "pages/bangzhu/index",
+			"style": {
+				"navigationBarTitleText": "帮助"
+			}
+		},
+		{
+			"path": "pages/qiuzhu/index",
+			"style": {
+				"navigationBarTitleText": "求助"
+			}
+		},
+		{
+			"path": "pages/coin/index",
+			"style": {
+				"navigationBarTitleText": "排单币"
+			}
+		},
+		{
+			"path": "pages/activation/index",
+			"style": {
+				"navigationBarTitleText": "激活码"
 			}
 		}
 	],

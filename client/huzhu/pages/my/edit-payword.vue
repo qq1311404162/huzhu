@@ -1,19 +1,23 @@
 <template>
 	<view class="content">
-		<view class="input-group">
-			<view class="input-row border">
-				<text class="title">旧支付密码：</text>
-				<input type="text" v-model="payword" placeholder="请输入旧支付密码">
+		<uni-cell title="旧支付密码">
+			<view class="" slot="content">
+				<input type="text" v-model="realname" placeholder="请输入旧支付密码"/>
 			</view>
-			<view class="input-row border">
-				<text class="title">新支付密码：</text>
-				<input type="text" v-model="new_payword" placeholder="请输入新支付密码">
+		</uni-cell>
+		
+		<uni-cell title="新支付密码">
+			<view class="" slot="content">
+				<input type="text" v-model="realname" placeholder="请输入新支付密码"/>
 			</view>
-			<view class="input-row border">
-				<text class="title">登录密码：</text>
-				<input type="password" v-model="password" disabled="true" placeholder="请输入登录密码">
+		</uni-cell>
+		
+		<uni-cell title="登录密码">
+			<view class="" slot="content">
+				<input type="text" v-model="realname" placeholder="请输入登录密码"/>
 			</view>
-		</view>
+		</uni-cell>
+		
 		<view class="btn-row">
 			<button type="primary" class="primary" @tap="edit">修改支付密码</button>
 		</view>
@@ -21,7 +25,12 @@
 </template>
 <script>
 	
+	import uniCell from '@/components/uni-cell/uni-cell.vue';
+	
 	export default {
+		components: {
+			uniCell
+		},
 		
 		data() {
 			
@@ -34,10 +43,7 @@
 	}
 </script>
 <style>
-	@import '../../common/css/form.css';
+	@import '../../common/css/common.css';
 	
-	.input-row input {
-		text-align: right;
-	}
 	
 </style>

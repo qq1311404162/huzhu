@@ -1,4 +1,5 @@
 const User = require('../../models/User');
+const errCode = require('../../config/error-code');
 
 class LoginController {
 
@@ -14,34 +15,22 @@ class LoginController {
 
 		if (!request.mobile || !request.username || !request.password || !request.realname || !request.repassword) {
 
-			return ctx.json({
-				code: 10001,
-				msg: '参数不足'
-			});
+			return ctx.json(errCode.less_params);
 		}
 
 		// 密码验证
 		if (request.password !== request.repassword) {
-			return ctx.json({
-				code: 10002,
-				msg: '两次输入密码不一致'
-			});
+			return ctx.json(errCode.illegal_pwd);
 		}
 
 		// 通用验证
 		let [mobileStatus, usernameStatus] = await Promise.all([User.validateMobile(request.mobile), User.validateUsername(request.username)]);
 
 		if (!mobileStatus)
-			return ctx.json({
-				code: 10003,
-				msg: '该手机号已被注册'
-			});
+			return ctx.json(errCode.illegal_mobile);
 
 		if (!usernameStatus)
-			return ctx.json({
-				code: 10004,
-				msg: '该用户名已被注册'
-			});
+			return ctx.json(errCode.illegal_username);
 
 		// 有上级
 		if (request.prename != '') {
@@ -54,10 +43,7 @@ class LoginController {
 			});
 
 			if (!preUser)
-				return ctx.json({
-					code: 10005,
-					msg: '上级推荐人不存在'
-				});
+				return ctx.json(errCode.illegal_prevoius);
 
 			let preArr = preUser.previous_two === '' ? [] : preUser.previous_two.split(',');
 			preArr.push(preUser.id);
@@ -65,10 +51,7 @@ class LoginController {
 			let realnameStatus = await User.validateRealname(request.realname, preArr);
 
 			if (!realnameStatus)
-				return ctx.json({
-					code: 10006,
-					msg: '真实姓名不能同名'
-				});
+				return ctx.json(errCode.illegal_realname);
 			// 添加用户
 
 			data.previous_id = preUser.id || '';
@@ -94,10 +77,7 @@ class LoginController {
 
 		}).catch(() => {
 
-			return ctx.json({
-				code: 10007,
-				msg: '注册失败'
-			});
+			return ctx.json(errCode.err_register);
 		});
 
 	}
@@ -113,10 +93,7 @@ class LoginController {
 
 		if (!request.mobile || !request.password) {
 
-			return ctx.json({
-				code: 10001,
-				msg: '参数不足'
-			});
+			return ctx.json(errCode.less_params);
 		}
 
 		// 获取加密的密码
@@ -130,10 +107,7 @@ class LoginController {
 
 		if (!result) {
 
-			return ctx.json({
-				code: 10010,
-				msg: '用户名或密码错误'
-			});
+			return ctx.json(errCode.err_user);
 		}
 
 		return ctx.json({
@@ -153,10 +127,7 @@ class LoginController {
 
 		if (!request.user_id || !request.password) {
 
-			return ctx.json({
-				code: 10001,
-				msg: '参数不足'
-			});
+			return ctx.json(errCode.less_params);
 		}
 
 		let user = await User.findOne({
@@ -168,10 +139,7 @@ class LoginController {
 
 		if (user === null) {
 
-			return ctx.json({
-				code: 10010,
-				msg: '该用户不存在'
-			});
+			return ctx.json(errCode.illegal_user);
 		}
 
 		// 获取加密的密码

@@ -1,7 +1,7 @@
 const Sequelize = require('sequelize');
 const db = require('../db');
 
-const Pai = db.define('paidan', {
+const Qiuzhu = db.define('qiuzhu', {
 	id: {
 		type: Sequelize.INTEGER,
 		primaryKey: true,
@@ -9,7 +9,7 @@ const Pai = db.define('paidan', {
 	},
 	ident: {
 		type: Sequelize.STRING,
-		comment: '排单编号'
+		comment: '求助编号'
 	},
 	user_id: {
 		type: Sequelize.INTEGER,
@@ -19,18 +19,12 @@ const Pai = db.define('paidan', {
 	amount: {
 		type: Sequelize.DECIMAL(12, 2),
 		defaultValue: '0.00',
-		comment: '排单金额'
+		comment: '求助金额'
 	},
 	type: {
 		type: Sequelize.TINYINT,
 		allowNull: false,
-		defaultValue: 1,
-		comment: '排单类型。1:用户额度; 2:用户机会'
-	},
-	is_first: {
-		type: Sequelize.TINYINT,
-		defaultValue: 0,
-		comment: '是否首次排单'
+		comment: '求助类型。静态钱包求助 or 动态钱包求助'
 	},
 	state: {
 		type: Sequelize.TINYINT,
@@ -40,9 +34,7 @@ const Pai = db.define('paidan', {
 	}
 }, {
 	// paranoid: true,
-	comment: '排单表'
+	comment: '求助表'
 });
 
-module.exports = Pai;
-
-// 排单时，创建排单表和排单拆分表，匹配时根据金额拆分拆分表中的金额，最终打款完成时，两个表一起改变状态
+module.exports = Qiuzhu;
