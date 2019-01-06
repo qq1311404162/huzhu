@@ -1,13 +1,3 @@
 module.exports = {
-    db: {
-        host: 'localhost',
-        database: 'huzhu',
-        username: 'root',
-        password: 'root',
-        dialect: 'mysql',
-        maxPool: 5,
-        minPool: 0,
-        idlePool: 1000
-
-    }
+    token: '6ff16d3b2957297735fbf4299a3c8c64', // user_token md5加密
 }

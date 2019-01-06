@@ -3,7 +3,7 @@ const Static = require('koa-static');
 const Path = require('path');
 const Json = require('koa-json');
 const Bodyparser = require('koa-bodyparser');
-// const Jwt = require('koa-jwt');
+const Jwt = require('koa-jwt');
 
 const myLog = require('./my-log');
 const myJsonRender = require('./my-json-render');
@@ -11,6 +11,8 @@ const myError = require('./my-error');
 
 const STATICPATH = '../static';
 const VIEAPATH = './views';
+
+const config = require('../config/config');
 
 
 module.exports = (app) => {
@@ -33,13 +35,15 @@ module.exports = (app) => {
 	// 静态资源，需要在认证前面，否则会没有权限
 	app.use(Static(Path.join(__dirname, STATICPATH)));
 
+	app.use(myError());
+
 	// 认证
-	// app.use(Jwt({
-	//   secret: 'user_token'
-	// }).unless({
-	//   path: [/\/admin\/*/]
-	// }));
+	app.use(Jwt({
+	  secret: config.token
+	}).unless({
+	  path: [/^\/admin\/*/, /^\/api\/login/, /^\/api\/register/]
+	}));
 
 	// 错误捕获
-	app.use(myError());
+	
 };

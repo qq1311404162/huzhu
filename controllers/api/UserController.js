@@ -1,5 +1,8 @@
 const User = require('../../models/User');
 const errCode = require('../../config/error-code');
+const config = require('../../config/config');
+
+const jwt = require('jsonwebtoken');
 
 class UserController {
 
@@ -88,6 +91,10 @@ class UserController {
 	 * 手机号	密码
 	 */
 	static async login(ctx) {
+
+		let token = jwt.sign({name: 'aaa', id: 'bbb'}, config.token, {expiresIn: 60});
+
+		return ctx.json({data: 'Bearer ' + token});
 
 		let request = ctx.request.body;
 
