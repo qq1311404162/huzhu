@@ -105,5 +105,9 @@ module.exports = {
 	err_bangzhu: {
 		code: 11008,
 		msg: '排单失败'
+	},
+	err_user_info: {
+		code: 11009,
+		msg: '获取用户信息失败'
 	}
 };

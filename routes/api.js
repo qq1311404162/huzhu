@@ -27,6 +27,8 @@ Router.post('/give-activation', LoginController.giveActivation);
 Router.post('/register', UserController.register);
 // 用户登录
 Router.post('/login', UserController.login);
+// 我的页面获取信息
+Router.get('/user-info', UserController.userInfo);
 // 用户激活
 Router.post('/activation', UserController.activation);
 // 修改个人资料

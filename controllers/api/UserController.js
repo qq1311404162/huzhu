@@ -127,6 +127,33 @@ class UserController {
 		});
 	}
 
+
+	/**
+	 * 获取用户信息
+	 * @param {*} ctx 
+	 */
+	static async userInfo(ctx) {
+
+		let requestUser = ctx.state.user;
+
+		// 获取用户信息
+		let user = await User.findOne({
+			attributes: ['id', 'username', 'mobile', 'realname', 'avatar', 'team_id', 'state'],
+			where: {
+				id: requestUser.id
+			}
+		});
+
+		if (user === null) {
+
+			return ctx.json(errCode.err_user_info);
+		}
+
+		return ctx.json({
+			data: user
+		});
+	}
+
 	/**
 	 * 用户激活
 	 * @param {*} ctx 

@@ -22,7 +22,6 @@ import uniList from '@/components/uni-list/uni-list.vue';
 import uniListItem from '@/components/uni-list-item/uni-list-item.vue';
 import ajax from '@/utils/ajax';
 
-
 export default {
     components: {
         uniList,
@@ -30,14 +29,14 @@ export default {
     },
 	onLoad() {
 		ajax({
-			url: 'http://localhost:8000',
+			url: '/api/activation',
 			method: 'POST',
 			data: {},
 			success: function(res){
-				console.log(res);
+				console.log('success', res);
 			},
 			fail: function(err) {
-				console.log(err);
+				console.log('fail', err);
 			}
 		});
 	},
