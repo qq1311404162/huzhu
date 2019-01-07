@@ -92,10 +92,6 @@ class UserController {
 	 */
 	static async login(ctx) {
 
-		let token = jwt.sign({name: 'aaa', id: 'bbb'}, config.token, {expiresIn: 60});
-
-		return ctx.json({data: 'Bearer ' + token});
-
 		let request = ctx.request.body;
 
 		if (!request.mobile || !request.password) {
@@ -117,10 +113,17 @@ class UserController {
 			return ctx.json(errCode.err_user);
 		}
 
+		let token = jwt.sign(result.dataValues, config.jwt.token, {
+			expiresIn: config.jwt.express
+		});
+
 		return ctx.json({
 			code: 0,
 			msg: '登录成功',
-			data: result
+			data: {
+				user: result,
+				token: config.jwt.pre + token
+			}
 		});
 	}
 
@@ -130,9 +133,9 @@ class UserController {
 	 */
 	static async activation(ctx) {
 
-		let request = ctx.request.body;
+		let requestUser = ctx.state.user;
 
-		if (!request.user_id) {
+		if (!requestUser.id) {
 
 			return ctx.json(errCode.less_params);
 		}
@@ -140,7 +143,7 @@ class UserController {
 		let user = await User.findOne({
 			attributes: ['id', 'active_golds', 'state'],
 			where: {
-				id: request.user_id
+				id: requestUser.id
 			}
 		});
 
@@ -164,7 +167,7 @@ class UserController {
 			active_golds: user.active_golds - 1
 		}, {
 			where: {
-				id: request.user_id
+				id: requestUser.id
 			}
 		}).then(() => {
 
@@ -188,10 +191,11 @@ class UserController {
 	static async editInfo(ctx) {
 
 		let request = ctx.request.body,
-			data = {};
+			data = {},
+			requestUser = ctx.state.user;
 
 		// 银行卡号和开户行必须
-		if (!request.card_nums || !request.card_name || !request.user_id) {
+		if (!request.card_nums || !request.card_name) {
 
 			return ctx.json(errCode.less_params);
 		}
@@ -199,7 +203,7 @@ class UserController {
 		let user = await User.findOne({
 			attributes: ['id'],
 			where: {
-				id: request.user_id
+				id: requestUser.id
 			}
 		});
 
@@ -210,7 +214,7 @@ class UserController {
 
 		for (let name in request) {
 
-			if (request.hasOwnProperty(name) && request[name] != '' && name != 'user_id') {
+			if (request.hasOwnProperty(name) && request[name] != '') {
 
 				data[name] = request[name];
 			}
@@ -220,7 +224,7 @@ class UserController {
 		// 保存信息
 		await User.update(data, {
 			where: {
-				id: request.user_id
+				id: requestUser.id
 			}
 		}).then(() => {
 
@@ -240,9 +244,10 @@ class UserController {
 	 */
 	static async editPwd(ctx) {
 
-		let request = ctx.request.body;
+		let request = ctx.request.body,
+			requestUser = ctx.state.user;
 
-		if (!request.user_id || !request.password) {
+		if (!request.password) {
 
 			return ctx.json(errCode.less_params);
 		}
@@ -250,7 +255,7 @@ class UserController {
 		let user = await User.findOne({
 			attributes: ['id'],
 			where: {
-				id: request.user_id
+				id: requestUser.id
 			}
 		});
 
@@ -266,7 +271,7 @@ class UserController {
 			password: request.password
 		}, {
 			where: {
-				id: request.user_id
+				id: requestUser.id
 			}
 		}).then(() => {
 
@@ -291,9 +296,10 @@ class UserController {
 	 */
 	static async editPayword(ctx) {
 
-		let request = ctx.request.body;
+		let request = ctx.request.body,
+			requestUser = ctx.state.user;
 
-		if (!request.user_id || !request.payword) {
+		if (!request.payword) {
 
 			return ctx.json(errCode.less_params);
 		}
@@ -301,7 +307,7 @@ class UserController {
 		let user = await User.findOne({
 			attributes: ['id'],
 			where: {
-				id: request.user_id
+				id: requestUser.id
 			}
 		});
 
@@ -315,7 +321,7 @@ class UserController {
 			payword: request.payword
 		}, {
 			where: {
-				id: request.user_id
+				id: requestUser.id
 			}
 		}).then(() => {
 
@@ -335,7 +341,7 @@ class UserController {
 	 * @param {*} ctx 
 	 */
 	static async logout(ctx) {
-
+		// 直接返回 token 为空字符串
 		return ctx.json({});
 	}
 }

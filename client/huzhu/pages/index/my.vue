@@ -20,6 +20,7 @@
 <script>
 import uniList from '@/components/uni-list/uni-list.vue';
 import uniListItem from '@/components/uni-list-item/uni-list-item.vue';
+import ajax from '@/utils/ajax';
 
 
 export default {
@@ -27,6 +28,19 @@ export default {
         uniList,
         uniListItem
     },
+	onLoad() {
+		ajax({
+			url: 'http://localhost:8000',
+			method: 'POST',
+			data: {},
+			success: function(res){
+				console.log(res);
+			},
+			fail: function(err) {
+				console.log(err);
+			}
+		});
+	},
     methods: {
         // 跳转到指定页面
         goto(url) {

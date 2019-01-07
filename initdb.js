@@ -16,7 +16,7 @@ for (let f of js_files) {
 	model.sync({
 		force: true
 	});
-	model.sync();
+	// model.sync();
 
 	switch (f) {
 

@@ -1,5 +1,8 @@
 const ajax = (options = {}) => {
 	
+	let token = uni.getStorageSync('token') || '';
+	
+	
 	uni.request({
 		
 		url: options.url || '', 
@@ -12,7 +15,8 @@ const ajax = (options = {}) => {
 		
 		header: {
 			
-			'custom-header': 'hello' //自定义请求头信息
+			// 'Accept': 'application/json',
+			'Authorization': token
 		},
 		success: (res) => {
 			

@@ -39,11 +39,11 @@ module.exports = (app) => {
 
 	// 认证
 	app.use(Jwt({
-	  secret: config.token
+		secret: config.jwt.token
 	}).unless({
-	  path: [/^\/admin\/*/, /^\/api\/login/, /^\/api\/register/]
+		path: [/^\/admin\/*/, /^\/api\/login/, /^\/api\/register/]
 	}));
 
 	// 错误捕获
-	
+
 };
