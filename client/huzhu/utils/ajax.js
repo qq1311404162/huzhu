@@ -42,13 +42,20 @@ const ajax = (options = {}) => {
 						}
 					}
 				});
-				
-			}else {
-				
+
+			} else if (res.statusCode !== 200) {
+
+				uni.showToast({
+					icon: 'none',
+					title: res.data,
+
+				});
+			} else {
+
 				options.success(res.data);
 			}
 
-			
+
 		},
 		fail: (err) => {
 

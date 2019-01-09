@@ -30,7 +30,7 @@ Router.post('/login', UserController.login);
 // 我的页面获取信息
 Router.get('/user-info', UserController.userInfo);
 // 用户激活
-Router.post('/activation', UserController.activation);
+Router.get('/activation', UserController.activation);
 // 修改个人资料
 Router.post('/edit-info', UserController.editInfo);
 // 显示我的推广二维码

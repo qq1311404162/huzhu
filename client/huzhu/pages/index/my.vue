@@ -1,11 +1,13 @@
 <template>
 	<view class="content">
 		<view class="flex-column user-info">
-			<image src="../../static/dynamic.png" mode=""></image>
-			<text class="name">闲庭梦若</text>
-			<text>未激活</text>
+			<image :src="avatar" mode=""></image>
+			<text class="name">{{realname}}</text>
+			<text v-if="state == 0">未激活</text>
+			<text v-if="state == 1">{{team}}</text>
 		</view>
 		<uni-list>
+			<uni-list-item title="激活账户" @click="activation()" v-if="state == 0"></uni-list-item>
 			<uni-list-item title="个人资料" @click="goto('edit-info')"></uni-list-item>
 			<uni-list-item title="我的推广"></uni-list-item>
 			<uni-list-item title="修改密码" @click="goto('edit-pwd')"></uni-list-item>
@@ -27,24 +29,60 @@ export default {
         uniList,
         uniListItem
     },
-	onLoad() {
-		ajax({
-			url: '/api/activation',
-			method: 'POST',
-			data: {},
-			success: function(res){
-				console.log('success', res);
-			},
-			fail: function(err) {
-				console.log('fail', err);
-			}
-		});
-	},
+    data() {
+        return {
+            avatar: '../../static/dynamic.png',
+            realname: '',
+            team: '',
+            state: 0
+        };
+    },
+    onLoad() {
+        this.getInfo();
+    },
     methods: {
+        // 获取个人信息
+        getInfo() {
+            ajax({
+                url: '/api/user-info',
+                data: {},
+                success: res => {
+                    this.realname = res.data.realname;
+                    this.avatar =
+                        res.data.avatar == '' ? '../../static/dynamic.png' : res.data.avatar;
+                    this.state = res.data.state;
+                    this.team = res.data.team_id;
+                },
+                fail: function(err) {
+                    console.log('fail', err);
+                }
+            });
+        },
         // 跳转到指定页面
         goto(url) {
             uni.navigateTo({
                 url: '../my/' + url
+            });
+        },
+        // 激活账户
+        activation() {
+            ajax({
+                url: '/api/activation',
+                data: {},
+                success: res => {
+                    
+					uni.showToast({
+						icon: 'none',
+						title: res.msg,
+						success: () => {
+							// 重新获取个人信息
+							this.getInfo();
+						}
+					});
+                },
+                fail: function(err) {
+                    console.log('fail', err);
+                }
             });
         }
     }
@@ -76,5 +114,4 @@ export default {
     font-size: 40upx;
     font-weight: bold;
 }
-
 </style>

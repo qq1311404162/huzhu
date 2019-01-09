@@ -43,7 +43,8 @@ const ActiveCode = db.define('active_code', {
 	},
 }, {
 	// paranoid: true,
-	comment: '激活码表'
+	comment: '激活码表',
+	underscored: true
 });
 
 

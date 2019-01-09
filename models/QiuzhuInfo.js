@@ -1,6 +1,9 @@
 const Sequelize = require('sequelize');
 const db = require('../db');
 
+const User = require('./User');
+const Qiuzhu = require('./Qiuzhu');
+
 const QiuzhuInfo = db.define('qiuzhu_info', {
 	id: {
 		type: Sequelize.INTEGER,
@@ -9,7 +12,11 @@ const QiuzhuInfo = db.define('qiuzhu_info', {
 	},
 	qiuzhu_id: {
 		type: Sequelize.INTEGER,
-		comment: '提现id'
+		comment: '提现id',
+		references: {
+			model: Qiuzhu,
+			key: 'id'
+		}
 	},
 	ident: {
 		type: Sequelize.STRING,
@@ -18,7 +25,11 @@ const QiuzhuInfo = db.define('qiuzhu_info', {
 	user_id: {
 		type: Sequelize.INTEGER,
 		allowNull: false,
-		comment: '用户id'
+		comment: '用户id',
+		references: {
+			model: User,
+			key: 'id'
+		}
 	},
 	amount: {
 		type: Sequelize.DECIMAL(12, 2),
@@ -38,7 +49,11 @@ const QiuzhuInfo = db.define('qiuzhu_info', {
 	}
 }, {
 	// paranoid: true,
-	comment: '求助拆分表'
+	comment: '求助拆分表',
+	underscored: true
 });
+
+QiuzhuInfo.belongsTo(User);
+QiuzhuInfo.belongsTo(Qiuzhu);
 
 module.exports = QiuzhuInfo;

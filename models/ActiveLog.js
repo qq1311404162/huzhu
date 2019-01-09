@@ -36,7 +36,8 @@ const ActiveLog = db.define('active_log', {
 	}
 }, {
 	// paranoid: true,
-	comment: '激活码使用记录表'
+	comment: '激活码使用记录表',
+	underscored: true
 });
 
 module.exports = ActiveLog;

@@ -13,12 +13,12 @@
 }
 
 .btn-row {
-	width: 80%;
-	margin: 10% auto 0 auto;
+	width: 70%;
+	margin: 15% auto 0 auto;
 }
 
 .btn-row button {
 	
-	height: 100upx;
-	line-height: 100upx;
+	height: 90upx;
+	line-height: 90upx;
 }

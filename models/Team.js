@@ -50,7 +50,8 @@ const Team = db.define('team', {
 	}
 }, {
 	// paranoid: true,
-	comment: '团队表'
+	comment: '团队表',
+	underscored: true
 });
 
 module.exports = Team;

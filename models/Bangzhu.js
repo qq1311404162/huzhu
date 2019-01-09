@@ -2,7 +2,8 @@ const Sequelize = require('sequelize');
 const db = require('../db');
 const moment = require('moment');
 
-const BangzhuInfo = require('./BangzhuInfo');
+// const BangzhuInfo = require('./BangzhuInfo');
+const User = require('./User');
 
 const Bangzhu = db.define('bangzhu', {
 	id: {
@@ -17,7 +18,11 @@ const Bangzhu = db.define('bangzhu', {
 	user_id: {
 		type: Sequelize.INTEGER,
 		allowNull: false,
-		comment: '用户id'
+		comment: '用户id',
+		references: {
+			model: User,
+			key: 'id'
+		}
 	},
 	amount: {
 		type: Sequelize.DECIMAL(12, 2),
@@ -38,8 +43,11 @@ const Bangzhu = db.define('bangzhu', {
 	}
 }, {
 	// paranoid: true,
-	comment: '帮助表'
+	comment: '帮助表',
+	underscored: true
 });
+
+Bangzhu.belongsTo(User);
 
 // 获取当前未完成帮助的个数
 Bangzhu.getEduHelpCount = async (user_id) => {
@@ -74,24 +82,24 @@ Bangzhu.getGiftHelpMonthCount = async (user_id) => {
 };
 
 // 开始帮助
-Bangzhu.bangzhu = async (data) => {
+// Bangzhu.bangzhu = async (data) => {
 
-	data.ident = 'p' + moment().format('YYYYMMDDHHmmss') + Math.floor(Math.random() * 1000).toString();
+// 	data.ident = 'p' + moment().format('YYYYMMDDHHmmss') + Math.floor(Math.random() * 1000).toString();
 
-	return db.transaction(function (t) {
+// 	return db.transaction(function (t) {
 
-		// 帮助表新增
-		return Bangzhu.create(data, {
-			transaction: t
-		}).then((bangzhu) => {
-			data.bangzhu_id = bangzhu.id;
+// 		// 帮助表新增
+// 		return Bangzhu.create(data, {
+// 			transaction: t
+// 		}).then((bangzhu) => {
+// 			data.bangzhu_id = bangzhu.id;
 
-			return BangzhuInfo.create(data, {
-				transaction: t
-			});
-		});
-	});
-};
+// 			return BangzhuInfo.create(data, {
+// 				transaction: t
+// 			});
+// 		});
+// 	});
+// };
 
 module.exports = Bangzhu;
 

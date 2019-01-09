@@ -38,7 +38,8 @@ const Admin = db.define('admin', {
 	}
 }, {
 	// paranoid: true,
-	comment: '管理员表'
+	comment: '管理员表',
+	underscored: true
 });
 
 module.exports = Admin;

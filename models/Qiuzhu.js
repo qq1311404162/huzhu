@@ -1,6 +1,8 @@
 const Sequelize = require('sequelize');
 const db = require('../db');
 
+const User = require('./User');
+
 const Qiuzhu = db.define('qiuzhu', {
 	id: {
 		type: Sequelize.INTEGER,
@@ -14,7 +16,11 @@ const Qiuzhu = db.define('qiuzhu', {
 	user_id: {
 		type: Sequelize.INTEGER,
 		allowNull: false,
-		comment: '用户id'
+		comment: '用户id',
+		references: {
+			model: User,
+			key: 'id'
+		}
 	},
 	amount: {
 		type: Sequelize.DECIMAL(12, 2),
@@ -34,7 +40,10 @@ const Qiuzhu = db.define('qiuzhu', {
 	}
 }, {
 	// paranoid: true,
-	comment: '求助表'
+	comment: '求助表',
+	underscored: true
 });
+
+Qiuzhu.belongsTo(User);
 
 module.exports = Qiuzhu;

@@ -3,6 +3,8 @@ const db = require('../db');
 const md5 = require('md5');
 const ActiveLog = require('./ActiveLog');
 
+const Team = require('./Team');
+
 const User = db.define('user', {
 	id: {
 		type: Sequelize.INTEGER,
@@ -122,9 +124,12 @@ const User = db.define('user', {
 	},
 	team_id: {
 		type: Sequelize.INTEGER,
-		allowNull: false,
 		defaultValue: 1,
-		comment: '团队级别id'
+		comment: '团队级别id',
+		references: {
+			model: Team,
+			key: 'id'
+		}
 	},
 	state: {
 		type: Sequelize.TINYINT,
@@ -136,8 +141,11 @@ const User = db.define('user', {
 }, {
 	// paranoid: true,
 	comment: '用户表',
+	underscored: true
 
 });
+// 关联
+User.belongsTo(Team);
 
 // 设置加密密码
 function setPassword(value) {

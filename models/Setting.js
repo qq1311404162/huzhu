@@ -17,7 +17,8 @@ const Setting = db.define('setting', {
 	},
 }, {
 	// paranoid: true,
-	comment: '设置表'
+	comment: '设置表',
+	underscored: true
 });
 
 module.exports = Setting;
