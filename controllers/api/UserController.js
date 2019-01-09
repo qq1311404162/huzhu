@@ -1,4 +1,5 @@
 const User = require('../../models/User');
+const Team = require('../../models/Team');
 const errCode = require('../../config/error-code');
 const config = require('../../config/config');
 
@@ -138,6 +139,7 @@ class UserController {
 
 		// 获取用户信息
 		let user = await User.findOne({
+			include: [Team],
 			attributes: ['id', 'username', 'mobile', 'realname', 'avatar', 'team_id', 'state'],
 			where: {
 				id: requestUser.id
