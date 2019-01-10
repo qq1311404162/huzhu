@@ -69,6 +69,10 @@ module.exports = {
 		code: 10017,
 		msg: '赠送排单次数超过本月上限'
 	},
+	illegal_bangzhu_day_count: {
+		code: 10018,
+		msg: '每天只能帮助一次'
+	},
 
 
 

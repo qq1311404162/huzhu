@@ -63,6 +63,19 @@ Bangzhu.getEduHelpCount = async (user_id) => {
 	});
 };
 
+Bangzhu.getBangzhuDayCount = async (user_id) => {
+
+	return await Bangzhu.count({
+		where: {
+			user_id: user_id,
+			createdAt: {
+				[Sequelize.Op.gte]: moment().startOf('day'),
+				[Sequelize.Op.lte]: moment().endOf('day')
+			}
+		}
+	});
+};
+
 // 获取当月赠送帮助的个数
 Bangzhu.getGiftHelpMonthCount = async (user_id) => {
 

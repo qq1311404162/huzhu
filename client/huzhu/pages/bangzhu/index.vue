@@ -47,6 +47,7 @@
 	import uniSegmentedControl from "@/components/uni-segmented-control/uni-segmented-control.vue";
 	import mpvuePicker from '@/components/mpvue-picker/mpvuePicker.vue';
 	import uniCell from '@/components/uni-cell/uni-cell.vue';
+	import ajax from '@/utils/ajax';
 
 	export default {
 		components: {
@@ -54,14 +55,16 @@
 			mpvuePicker,
 			uniCell
 		},
-		onShow() {
-
+		onLoad() {
+			// 获取帮助金额
+			this.userAvailable();
 		},
 		data() {
 			return {
 				items: ['额度帮助', '赠送帮助'],
 				current: 0,
 				amount: 0,
+				available: 0,
 				payword: '',
 				pickerValueDefault: [0],
 				pickerValueArray:[{
@@ -89,6 +92,22 @@
 			},
 		},
 		methods: {
+			userAvailable(){
+				ajax({
+					url: '/api/user-available',
+					data: {},
+					success: res => {
+						this.realname = res.data.realname;
+						this.avatar =
+							res.data.avatar == '' ? '../../static/dynamic.png' : res.data.avatar;
+						this.state = res.data.state;
+						this.team = res.data.team.name;
+					},
+					fail: function(err) {
+						console.log('fail', err);
+					}
+				});
+			},
 			openPick(){
 				this.$refs.mpvuePicker.show();
 			},

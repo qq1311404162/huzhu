@@ -167,7 +167,7 @@ class UserController {
 		}
 
 		// 获取用户帮助额度和用户状态
-		let [user, setting] = Promise.all([User.findOne({
+		let [user, setting] = await Promise.all([User.findOne({
 			attributes: ['id', 'available', 'state', 'bangzhu_nums'],
 			where: {
 				id: requestUser.id
