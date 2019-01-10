@@ -67,7 +67,8 @@
 				available: 0,
 				payword: '',
 				pickerValueDefault: [0],
-				pickerValueArray:[]
+				pickerValueArray:[],
+				status: 1,
 			}
 		},
 		computed: {
@@ -111,6 +112,31 @@
 			onCancel(e) {
 				console.log(e)
 			},
+			submit(){
+				
+				if (this.status) {
+					this.status = 0;
+					
+					ajax({
+						url: '/api/bangzhu/add',
+						method: 'POST',
+						data: {
+							available: this.available,
+							payword: this.payword,
+							type: this.current + 1
+						},
+						success: res => {
+							
+							this.status = 1;
+							console.log(res);
+						},
+						fail: function(err) {
+							this.status = 1;
+							console.log('fail', err);
+						}
+					});
+				}
+			}
 		}
 	}
 </script>
