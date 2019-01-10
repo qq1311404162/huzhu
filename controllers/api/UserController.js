@@ -1,5 +1,6 @@
 const User = require('../../models/User');
 const Team = require('../../models/Team');
+const Setting = require('../../models/Setting');
 const errCode = require('../../config/error-code');
 const config = require('../../config/config');
 
@@ -166,19 +167,30 @@ class UserController {
 		}
 
 		// 获取用户帮助额度和用户状态
-		let user = await User.findOne({
-			attributes: ['id', 'available', 'state'],
+		let [user, setting] = Promise.all([User.findOne({
+			attributes: ['id', 'available', 'state', 'bangzhu_nums'],
 			where: {
 				id: requestUser.id
 			}
-		});
+		}), Setting.findOne({
+			attributes: ['name', 'value'],
+			where: {
+				name: 'unit'
+			}
+		})]);
 
 		if (!user) {
 			return ctx.json(errCode.illegal_user);
 		}
 
 		return ctx.json({
-			data: user
+			data: {
+				id: user.id,
+				available: user.available,
+				bangzhu_nums: user.bangzhu_nums,
+				state: user.available,
+				unit: setting.value
+			}
 		});
 	}
 
