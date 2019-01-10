@@ -156,6 +156,32 @@ class UserController {
 		});
 	}
 
+	static async userAvailable(ctx) {
+
+		let requestUser = ctx.state.user;
+
+		if (!requestUser.id) {
+
+			return ctx.json(errCode.less_params);
+		}
+
+		// 获取用户帮助额度和用户状态
+		let user = await User.findOne({
+			attributes: ['id', 'available', 'state'],
+			where: {
+				id: requestUser.id
+			}
+		});
+
+		if (!user) {
+			return ctx.json(errCode.illegal_user);
+		}
+
+		return ctx.json({
+			data: user
+		});
+	}
+
 	/**
 	 * 用户激活
 	 * @param {*} ctx 
@@ -199,6 +225,8 @@ class UserController {
 				id: requestUser.id
 			}
 		}).then(() => {
+
+			// 这里要添加激活日志
 
 			return ctx.json({
 				code: 0,

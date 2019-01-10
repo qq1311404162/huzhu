@@ -51,6 +51,8 @@ Router.post('/logout', UserController.logout);
 // 激活码 -- 显示激活码个数和赠送
 
 /*----- 排单页面 -----*/
+// 获取用户排单额度
+Router.get('/user-available', UserController.userAvailable);
 Router.post('/bangzhu/add', BangzhuController.add);
 // 倍数 类型
 /*----- 提现页面 -----*/

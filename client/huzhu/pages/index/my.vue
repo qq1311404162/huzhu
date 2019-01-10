@@ -4,10 +4,11 @@
 			<image :src="avatar" mode=""></image>
 			<text class="name">{{realname}}</text>
 			<text v-if="state == 0">未激活</text>
-			<text v-if="state == 1">{{team}}</text>
+			<text v-else>{{team}}</text>
 		</view>
 		<uni-list>
-			<uni-list-item title="激活账户" @click="activation()" v-if="state == 0"></uni-list-item>
+			<uni-list-item title="激活账户" v-if="state == 0"  @click="activation()"></uni-list-item>
+			
 			<uni-list-item title="个人资料" @click="goto('edit-info')"></uni-list-item>
 			<uni-list-item title="我的推广"></uni-list-item>
 			<uni-list-item title="修改密码" @click="goto('edit-pwd')"></uni-list-item>
@@ -51,7 +52,7 @@ export default {
                     this.avatar =
                         res.data.avatar == '' ? '../../static/dynamic.png' : res.data.avatar;
                     this.state = res.data.state;
-                    this.team = res.data.team_id;
+                    this.team = res.data.team.name;
                 },
                 fail: function(err) {
                     console.log('fail', err);
@@ -70,15 +71,16 @@ export default {
                 url: '/api/activation',
                 data: {},
                 success: res => {
-                    
-					uni.showToast({
-						icon: 'none',
-						title: res.msg,
-						success: () => {
-							// 重新获取个人信息
-							this.getInfo();
-						}
-					});
+                    uni.showToast({
+                        icon: 'none',
+                        title: res.msg,
+                        success: () => {
+                            if (res.code === 0) {
+                                // 重新获取个人信息
+                                this.getInfo();
+                            }
+                        }
+                    });
                 },
                 fail: function(err) {
                     console.log('fail', err);

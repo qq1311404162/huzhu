@@ -1,20 +1,29 @@
 <template>
 	<view class="content">
 		<uni-cell title="旧支付密码">
-			<view class="" slot="content">
-				<input type="text" v-model="realname" placeholder="请输入旧支付密码"/>
+			<view slot="content">
+				<view class="flex-row input-row">
+					<input type="text" v-model="old_payword" placeholder="请输入旧支付密码"/>
+				</view>
+				
 			</view>
 		</uni-cell>
 		
 		<uni-cell title="新支付密码">
-			<view class="" slot="content">
-				<input type="text" v-model="realname" placeholder="请输入新支付密码"/>
+			<view slot="content">
+				<view class="flex-row input-row">
+					<input type="text" v-model="new_payword" placeholder="请输入新支付密码"/>
+				</view>
+				
 			</view>
 		</uni-cell>
 		
 		<uni-cell title="登录密码">
-			<view class="" slot="content">
-				<input type="text" v-model="realname" placeholder="请输入登录密码"/>
+			<view slot="content">
+				<view class="flex-row input-row">
+					<input type="text" v-model="password" placeholder="请输入登录密码"/>
+				</view>
+				
 			</view>
 		</uni-cell>
 		
@@ -44,6 +53,15 @@
 </script>
 <style>
 	@import '../../common/css/common.css';
+	
+	.input-row {
+		
+		justify-content: flex-end;
+	}
+	
+	.input-row input {
+		text-align: right;
+	}
 	
 	
 </style>

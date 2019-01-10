@@ -13,19 +13,25 @@
 			</view>
 			
 			<uni-cell title="帮助金额">
-				<view class="" slot="content">
-					<input type="text" v-model="realname" placeholder="请输入旧密码"/>
+				<view slot="content">
+					<view class="flex-row input-row" @click="openPick()">
+						{{bangzhuAmount}}
+					</view>
+					
 				</view>
 			</uni-cell>
 			
 			<uni-cell title="交易密码">
-				<view class="" slot="content">
-					<input type="text" v-model="realname" placeholder="请输入交易密码"/>
+				<view slot="content">
+					<view class="flex-row input-row">
+						<input type="text" v-model="payword" placeholder="请输入交易密码"/>
+					</view>
+					
 				</view>
 			</uni-cell>
 			
 			<view class="btn-row">
-				<button type="primary" class="primary" @tap="edit">修改</button>
+				<button type="primary" class="primary" @tap="submit">确定帮助</button>
 			</view>
 			
 			<view class="record">
@@ -49,12 +55,14 @@
 			uniCell
 		},
 		onShow() {
-			// this.$refs.mpvuePicker.show();
+
 		},
 		data() {
 			return {
 				items: ['额度帮助', '赠送帮助'],
 				current: 0,
+				amount: 0,
+				payword: '',
 				pickerValueDefault: [0],
 				pickerValueArray:[{
 						label: '中国',
@@ -74,7 +82,16 @@
 					}]
 			}
 		},
+		computed: {
+			bangzhuAmount(){
+				
+				return this.amount == 0 ? '请选择帮助金额' : this.amount;
+			},
+		},
 		methods: {
+			openPick(){
+				this.$refs.mpvuePicker.show();
+			},
 			onClickItem(index) {
 				if (this.current !== index) {
 					this.current = index;
@@ -112,5 +129,14 @@
 		padding-right: 10upx;
 		text-align: right;
 		font-size: 28upx;
+	}
+	
+	.input-row {
+		
+		justify-content: flex-end;
+	}
+	
+	.input-row input {
+		text-align: right;
 	}
 </style>
