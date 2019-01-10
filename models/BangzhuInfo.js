@@ -54,7 +54,9 @@ const BangzhuInfo = db.define('bangzhu_info', {
 	underscored: true
 });
 
-BangzhuInfo.belongsTo(Bangzhu);
+// BangzhuInfo.belongsTo(Bangzhu);
 BangzhuInfo.belongsTo(User);
+
+
 
 module.exports = BangzhuInfo;

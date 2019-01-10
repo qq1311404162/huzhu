@@ -2,8 +2,8 @@ const Sequelize = require('sequelize');
 const db = require('../db');
 const moment = require('moment');
 
-// const BangzhuInfo = require('./BangzhuInfo');
 const User = require('./User');
+const BangzhuInfo = require('./BangzhuInfo');
 
 const Bangzhu = db.define('bangzhu', {
 	id: {
@@ -48,6 +48,7 @@ const Bangzhu = db.define('bangzhu', {
 });
 
 Bangzhu.belongsTo(User);
+Bangzhu.hasMany(BangzhuInfo);
 
 // 获取当前未完成帮助的个数
 Bangzhu.getEduHelpCount = async (user_id) => {
@@ -68,7 +69,7 @@ Bangzhu.getBangzhuDayCount = async (user_id) => {
 	return await Bangzhu.count({
 		where: {
 			user_id: user_id,
-			createdAt: {
+			created_at: {
 				[Sequelize.Op.gte]: moment().startOf('day').format('YYYY-MM-DD HH:mm:ss'),
 				[Sequelize.Op.lte]: moment().endOf('day').format('YYYY-MM-DD HH:mm:ss')
 			}
@@ -86,7 +87,7 @@ Bangzhu.getGiftHelpMonthCount = async (user_id) => {
 			state: {
 				[Sequelize.Op.in]: [0, 1]
 			},
-			createdAt: {
+			created_at: {
 				[Sequelize.Op.gte]: moment().startOf('month'),
 				[Sequelize.Op.lte]: moment().endOf('month')
 			}
@@ -98,10 +99,17 @@ Bangzhu.getGiftHelpMonthCount = async (user_id) => {
 Bangzhu.bangzhu = async (data) => {
 	// 生成订单号
 	data.ident = 'p' + moment().format('YYYYMMDDHHmmss') + Math.floor(Math.random() * 1000).toString();
+	data.bangzhu_info = data;
 
-	return Bangzhu.create(data).then(bangzhu => {
-
-		return bangzhu.createBangzhu(data);
+	await Bangzhu.create(data, {
+		include: [BangzhuInfo]
+	}).then(bangzhu => {
+		console.log(bangzhu);
+		bangzhu.createBangzhuInfo(data).then((r) => {
+			console.log('s', r);
+		}).catch((e) => {
+			console.log('f', e);
+		});
 	});
 
 

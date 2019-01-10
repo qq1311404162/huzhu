@@ -16,7 +16,7 @@ async function sync(model) {
 	return await model.sync({
 		force: true
 	});
-	// model.sync();
+	// return model.sync();
 }
 
 async function createData(model, data) {
