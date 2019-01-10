@@ -45,11 +45,12 @@ const ajax = (options = {}) => {
 
 			} else if (res.statusCode !== 200) {
 
-				uni.showToast({
-					icon: 'none',
-					title: res.data,
-
-				});
+// 				uni.showToast({
+// 					icon: 'none',
+// 					title: res.data,
+// 
+// 				});
+				options.fail(res.data)
 			} else {
 
 				options.success(res.data);

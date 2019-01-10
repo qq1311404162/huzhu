@@ -68,10 +68,10 @@ Bangzhu.getBangzhuDayCount = async (user_id) => {
 	return await Bangzhu.count({
 		where: {
 			user_id: user_id,
-			createdAt: {
-				[Sequelize.Op.gte]: moment().startOf('day'),
-				[Sequelize.Op.lte]: moment().endOf('day')
-			}
+			// createdAt: {
+			// 	[Sequelize.Op.gte]: moment().startOf('day'),
+			// 	[Sequelize.Op.lte]: moment().endOf('day')
+			// }
 		}
 	});
 };
@@ -97,7 +97,7 @@ Bangzhu.getGiftHelpMonthCount = async (user_id) => {
 // 开始帮助
 Bangzhu.bangzhu = async (data) => {
 	// 生成订单号
-	data.ident = 'p'; // + moment().format('YYYYMMDDHHmmss') + Math.floor(Math.random() * 1000).toString();
+	data.ident = 'p' + moment().format('YYYYMMDDHHmmss') + Math.floor(Math.random() * 1000).toString();
 
 	return db.transaction(function (t) {
 
