@@ -99,18 +99,24 @@ Bangzhu.bangzhu = async (data) => {
 	// 生成订单号
 	data.ident = 'p' + moment().format('YYYYMMDDHHmmss') + Math.floor(Math.random() * 1000).toString();
 
-	return db.transaction(function (t) {
+	return Bangzhu.create(data).then(bangzhu => {
 
-		// 帮助表新增
-		return Bangzhu.create(data, {
-			transaction: t
-		}).then((bangzhu) => {
-			// 帮助详情表新增
-			return bangzhu.createBangzhu(data, {
-				transaction: t
-			});
-		});
+		return bangzhu.createBangzhu(data);
 	});
+
+
+	// return db.transaction(function (t) {
+
+	// 	// 帮助表新增
+	// 	return Bangzhu.create(data, {
+	// 		transaction: t
+	// 	}).then((bangzhu) => {
+	// 		// 帮助详情表新增
+	// 		return bangzhu.createBangzhu(data, {
+	// 			transaction: t
+	// 		});
+	// 	});
+	// });
 };
 
 module.exports = Bangzhu;
