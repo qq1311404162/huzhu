@@ -95,24 +95,23 @@ Bangzhu.getGiftHelpMonthCount = async (user_id) => {
 };
 
 // 开始帮助
-// Bangzhu.bangzhu = async (data) => {
+Bangzhu.bangzhu = async (data) => {
+	// 生成订单号
+	data.ident = 'p' + moment().format('YYYYMMDDHHmmss') + Math.floor(Math.random() * 1000).toString();
 
-// 	data.ident = 'p' + moment().format('YYYYMMDDHHmmss') + Math.floor(Math.random() * 1000).toString();
+	return db.transaction(function (t) {
 
-// 	return db.transaction(function (t) {
-
-// 		// 帮助表新增
-// 		return Bangzhu.create(data, {
-// 			transaction: t
-// 		}).then((bangzhu) => {
-// 			data.bangzhu_id = bangzhu.id;
-
-// 			return BangzhuInfo.create(data, {
-// 				transaction: t
-// 			});
-// 		});
-// 	});
-// };
+		// 帮助表新增
+		return Bangzhu.create(data, {
+			transaction: t
+		}).then((bangzhu) => {
+			// 帮助详情表新增
+			return bangzhu.createBangzhu(data, {
+				transaction: t
+			});
+		});
+	});
+};
 
 module.exports = Bangzhu;
 

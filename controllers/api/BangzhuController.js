@@ -15,9 +15,10 @@ class BangzhuController {
 	 */
 	static async add(ctx) {
 
-		let request = ctx.request.body;
+		let request = ctx.request.body,
+			requestUser = ctx.state.user;
 
-		if (!request.user_id || !request.type || !request.payword || !request.available) {
+		if (!requestUser.id || !request.type || !request.payword || !request.available) {
 
 			return ctx.json(errCode.less_params);
 		}
@@ -34,7 +35,7 @@ class BangzhuController {
 		let user = await User.findOne({
 			attributes: ['id', 'available', 'state', 'payword', 'bangzhu_nums'],
 			where: {
-				id: request.user_id
+				id: requestUser.id
 			}
 		});
 
@@ -53,10 +54,16 @@ class BangzhuController {
 		if (user.payword !== request.payword)
 			return ctx.json(errCode.illegal_payword);
 
+		// 一天只能帮助一次
+		let dayCount = await Bangzhu.getBangzhuDayCount(requestUser.id);
+
+		if (dayCount > 0)
+			return ctx.json(errCode.illegal_bangzhu_day_count);
+
 		// 额度排单当前只能排一个
 		if (request.type == 1) {
 
-			let bangzhuCount = await Bangzhu.getEduHelpCount(request.user_id);
+			let bangzhuCount = await Bangzhu.getEduHelpCount(requestUser.id);
 
 			if (bangzhuCount > 0) {
 
@@ -71,7 +78,7 @@ class BangzhuController {
 				return ctx.json(errCode.illegal_less_bangzhu_count);
 
 			// 获取当月
-			let bangzhuCount = await Bangzhu.getGiftHelpMonthCount(request.user_id);
+			let bangzhuCount = await Bangzhu.getGiftHelpMonthCount(requestUser.id);
 			// 当前排单次数达到上限
 			if (user.bangzhu_nums <= bangzhuCount) {
 
@@ -82,7 +89,7 @@ class BangzhuController {
 		// 开始排单
 
 		await Bangzhu.bangzhu({
-			user_id: request.user_id,
+			user_id: requestUser.id,
 			amount: Math.multiply(setting.value || 900, request.available),
 			type: request.type,
 

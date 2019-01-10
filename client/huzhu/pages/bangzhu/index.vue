@@ -67,22 +67,7 @@
 				available: 0,
 				payword: '',
 				pickerValueDefault: [0],
-				pickerValueArray:[{
-						label: '中国',
-						value: 1
-					},
-					{
-						label: '俄罗斯',
-						value: 2
-					},
-					{
-						label: '美国',
-						value: 3
-					},
-					{
-						label: '日本',
-						value: 4
-					}]
+				pickerValueArray:[]
 			}
 		},
 		computed: {
@@ -95,13 +80,15 @@
 			userAvailable(){
 				ajax({
 					url: '/api/user-available',
-					data: {},
 					success: res => {
-						this.realname = res.data.realname;
-						this.avatar =
-							res.data.avatar == '' ? '../../static/dynamic.png' : res.data.avatar;
-						this.state = res.data.state;
-						this.team = res.data.team.name;
+						
+						for (let i = 1; i <= (res.data.available || 1); i++) {
+							
+							this.pickerValueArray.push({
+								label: parseInt(res.data.unit) * i,
+								value: i
+							});
+						}
 					},
 					fail: function(err) {
 						console.log('fail', err);
@@ -117,7 +104,9 @@
 				}
 			},
 			onConfirm(e) {
-				console.log(e);
+				
+				this.amount = e.label;
+				this.available = e.value[0];
 			},
 			onCancel(e) {
 				console.log(e)
