@@ -1,8 +1,9 @@
 const User = require('../../models/User');
-const Team = require('../../models/Team');
 const Setting = require('../../models/Setting');
 const errCode = require('../../config/error-code');
 const config = require('../../config/config');
+
+const UserModel = require('../../models/UserModel');
 
 const jwt = require('jsonwebtoken');
 
@@ -25,11 +26,11 @@ class UserController {
 
 		// 密码验证
 		if (request.password !== request.repassword) {
-			return ctx.json(errCode.illegal_pwd);
+			return ctx.json(errCode.illegal_repwd);
 		}
 
 		// 通用验证
-		let [mobileStatus, usernameStatus] = await Promise.all([User.validateMobile(request.mobile), User.validateUsername(request.username)]);
+		let [mobileStatus, usernameStatus] = await Promise.all([UserModel.uniqueMobile(request.mobile), UserModel.uniqueUsername(request.username)]);
 
 		if (!mobileStatus)
 			return ctx.json(errCode.illegal_mobile);
@@ -40,7 +41,7 @@ class UserController {
 		// 有上级
 		if (request.prename !== undefined && request.prename != '') {
 			// 获取上级用户
-			let preUser = await User.findOne({
+			let preUser = await UserModel.findOne({
 				attributes: ['id', 'previous_two', 'previous_id', 'previous_all'],
 				where: {
 					username: request.prename
@@ -53,7 +54,7 @@ class UserController {
 			let preArr = preUser.previous_two === '' ? [] : preUser.previous_two.split(',');
 			preArr.push(preUser.id);
 
-			let realnameStatus = await User.validateRealname(request.realname, preArr);
+			let realnameStatus = await UserModel.uniqueRealname(request.realname, preArr);
 
 			if (!realnameStatus)
 				return ctx.json(errCode.illegal_realname);
@@ -66,14 +67,14 @@ class UserController {
 		}
 
 		// 密码设置
-		data.password = await User.setPasswordValue(request.password);
+		data.password = await UserModel.setPassword(request.password);
 		// 数据设置
 		data.username = request.username;
 		data.realname = request.realname;
 		data.mobile = request.mobile;
 
 		// 注册用户
-		await User.create(data).then(() => {
+		await UserModel.create(data).then(() => {
 
 			return ctx.json({
 				code: 0,
@@ -139,8 +140,7 @@ class UserController {
 		let requestUser = ctx.state.user;
 
 		// 获取用户信息
-		let user = await User.findOne({
-			include: [Team],
+		let user = await UserModel.findOne({
 			attributes: ['id', 'username', 'mobile', 'realname', 'avatar', 'team_id', 'state'],
 			where: {
 				id: requestUser.id

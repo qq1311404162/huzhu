@@ -10,7 +10,8 @@ const sequelize = new Sequelize(config.database, config.username, config.passwor
 		min: config.minPool,
 		idle: config.idlePool
 	},
-	timezone: '+08:00'
+	timezone: '+08:00',
+	underscored: true
 });
 
 module.exports = sequelize;
