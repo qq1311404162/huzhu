@@ -1,46 +1,25 @@
 const md5 = require('md5');
 const Sequelize = require('sequelize');
+const jwt = require('jsonwebtoken');
 
+const Model = require('./Model');
 const db = require('../models/index');
+const config = require('../config/config');
+
 const User = db.User;
 
-class UserModel {
+class UserModel extends Model {
 
-	/**
-     * 查询单条记录
-     * @param {*} opts 
-     */
-	static async findOne(opts) {
-
-		return await User.findOne(opts);
+	constructor(){
+		
+		super(db.User);
 	}
-
-
-	/**
-     * 查询多条记录
-     * @param {*} opts 
-     */
-	static async findAll(opts) {
-
-		return await User.findAll(opts);
-	}
-
-
-	/**
-     * 创建用户
-     * @param {*} data 
-     */
-	static async create(data) {
-
-		return await User.create(data);
-	}
-
 
 	/**
      * 设置密码
      * @param {*} value 
      */
-	static async setPassword(value) {
+	async setPassword(value) {
 
 		return md5('huzhu' + value);
 	}
@@ -49,7 +28,7 @@ class UserModel {
      * 手机唯一性检测
      * @param {*} mobile 
      */
-	static async uniqueMobile(mobile) {
+	async uniqueMobile(mobile) {
 
 		if (!mobile)
 			return false;
@@ -69,7 +48,7 @@ class UserModel {
      * 用户名唯一性检测
      * @param {*} username 
      */
-	static async uniqueUsername(username) {
+	async uniqueUsername(username) {
 
 		if (!username)
 			return false;
@@ -89,7 +68,7 @@ class UserModel {
      * 真实姓名检测
      * @param {*} realname 
      */
-	static async uniqueRealname(realname, preArr) {
+	async uniqueRealname(realname, preArr) {
 
 		if (!realname)
 			return false;
@@ -112,6 +91,17 @@ class UserModel {
 
 		return preRealname.indexOf(realname) === -1 ? true : false;
 	}
+
+	/**
+	 * 设置 jwt token
+	 * @param {*} data 
+	 */
+	async setToken (data) {
+
+		return config.jwt.pre + jwt.sign(data, config.jwt.token, {
+			expiresIn: config.jwt.express
+		});
+	}
 }
 
-module.exports = UserModel;
+module.exports = new UserModel();

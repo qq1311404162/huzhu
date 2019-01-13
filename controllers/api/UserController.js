@@ -1,11 +1,8 @@
-const User = require('../../models/User');
 const Setting = require('../../models/Setting');
 const errCode = require('../../config/error-code');
-const config = require('../../config/config');
 
-const UserModel = require('../../models/UserModel');
+const userModel = require('../../models/UserModel');
 
-const jwt = require('jsonwebtoken');
 
 class UserController {
 
@@ -30,7 +27,7 @@ class UserController {
 		}
 
 		// 通用验证
-		let [mobileStatus, usernameStatus] = await Promise.all([UserModel.uniqueMobile(request.mobile), UserModel.uniqueUsername(request.username)]);
+		let [mobileStatus, usernameStatus] = await Promise.all([userModel.uniqueMobile(request.mobile), userModel.uniqueUsername(request.username)]);
 
 		if (!mobileStatus)
 			return ctx.json(errCode.illegal_mobile);
@@ -41,7 +38,7 @@ class UserController {
 		// 有上级
 		if (request.prename !== undefined && request.prename != '') {
 			// 获取上级用户
-			let preUser = await UserModel.findOne({
+			let preUser = await userModel.findOne({
 				attributes: ['id', 'previous_two', 'previous_id', 'previous_all'],
 				where: {
 					username: request.prename
@@ -54,7 +51,7 @@ class UserController {
 			let preArr = preUser.previous_two === '' ? [] : preUser.previous_two.split(',');
 			preArr.push(preUser.id);
 
-			let realnameStatus = await UserModel.uniqueRealname(request.realname, preArr);
+			let realnameStatus = await userModel.uniqueRealname(request.realname, preArr);
 
 			if (!realnameStatus)
 				return ctx.json(errCode.illegal_realname);
@@ -67,22 +64,22 @@ class UserController {
 		}
 
 		// 密码设置
-		data.password = await UserModel.setPassword(request.password);
+		data.password = await userModel.setPassword(request.password);
 		// 数据设置
 		data.username = request.username;
 		data.realname = request.realname;
 		data.mobile = request.mobile;
 
 		// 注册用户
-		await UserModel.create(data).then(() => {
+		await userModel.create(data).then(() => {
 
 			return ctx.json({
 				code: 0,
 				msg: '注册成功'
 			});
 
-		}).catch(() => {
-
+		}).catch((err) => {
+			
 			return ctx.json(errCode.err_register);
 		});
 
@@ -103,10 +100,10 @@ class UserController {
 		}
 
 		// 获取加密的密码
-		request.password = await User.setPasswordValue(request.password);
+		request.password = await userModel.setPassword(request.password);
 
 		// 验证用户
-		let result = await User.findOne({
+		let result = await userModel.findOne({
 			attributes: ['id', 'username', 'mobile', 'realname'],
 			where: request
 		});
@@ -116,16 +113,14 @@ class UserController {
 			return ctx.json(errCode.err_user);
 		}
 
-		let token = jwt.sign(result.dataValues, config.jwt.token, {
-			expiresIn: config.jwt.express
-		});
+		let token = await userModel.setToken(result.dataValues);
 
 		return ctx.json({
 			code: 0,
 			msg: '登录成功',
 			data: {
 				user: result,
-				token: config.jwt.pre + token
+				token: token
 			}
 		});
 	}
@@ -140,7 +135,7 @@ class UserController {
 		let requestUser = ctx.state.user;
 
 		// 获取用户信息
-		let user = await UserModel.findOne({
+		let user = await userModel.findOne({
 			attributes: ['id', 'username', 'mobile', 'realname', 'avatar', 'team_id', 'state'],
 			where: {
 				id: requestUser.id
@@ -167,7 +162,7 @@ class UserController {
 		}
 
 		// 获取用户帮助额度和用户状态
-		let [user, setting] = await Promise.all([User.findOne({
+		let [user, setting] = await Promise.all([userModel.findOne({
 			attributes: ['id', 'available', 'state', 'bangzhu_nums'],
 			where: {
 				id: requestUser.id
@@ -207,7 +202,7 @@ class UserController {
 			return ctx.json(errCode.less_params);
 		}
 		// 获取用户激活码数量
-		let user = await User.findOne({
+		let user = await userModel.findOne({
 			attributes: ['id', 'active_golds', 'state'],
 			where: {
 				id: requestUser.id
@@ -269,7 +264,7 @@ class UserController {
 			return ctx.json(errCode.less_params);
 		}
 
-		let user = await User.findOne({
+		let user = await userModel.findOne({
 			attributes: ['id'],
 			where: {
 				id: requestUser.id
@@ -291,7 +286,7 @@ class UserController {
 		}
 
 		// 保存信息
-		await User.update(data, {
+		await userModel.update(data, {
 			where: {
 				id: requestUser.id
 			}
@@ -321,7 +316,7 @@ class UserController {
 			return ctx.json(errCode.less_params);
 		}
 
-		let user = await User.findOne({
+		let user = await userModel.findOne({
 			attributes: ['id'],
 			where: {
 				id: requestUser.id
@@ -334,9 +329,9 @@ class UserController {
 		}
 
 		// 获取加密的密码
-		request.password = await User.setPasswordValue(request.password);
+		request.password = await userModel.setPasswordValue(request.password);
 
-		await User.update({
+		await userModel.update({
 			password: request.password
 		}, {
 			where: {
@@ -373,7 +368,7 @@ class UserController {
 			return ctx.json(errCode.less_params);
 		}
 
-		let user = await User.findOne({
+		let user = await userModel.findOne({
 			attributes: ['id'],
 			where: {
 				id: requestUser.id
@@ -386,7 +381,7 @@ class UserController {
 		}
 
 		// 修改支付密码
-		await User.update({
+		await userModel.update({
 			payword: request.payword
 		}, {
 			where: {

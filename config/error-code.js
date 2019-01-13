@@ -113,5 +113,9 @@ module.exports = {
 	err_user_info: {
 		code: 11009,
 		msg: '获取用户信息失败'
+	},
+	err_not_done_bangzhu_lists: {
+		code: 11010,
+		msg: '获取列表信息失败'
 	}
 };

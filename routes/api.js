@@ -53,7 +53,14 @@ Router.post('/logout', UserController.logout);
 /*----- 排单页面 -----*/
 // 获取用户排单额度
 Router.get('/user-available', UserController.userAvailable);
+// 开始排单
 Router.post('/bangzhu/add', BangzhuController.add);
+// 获取未完成的排单记录
+Router.get('/bangzhu/not-done-lists', BangzhuController.notDoneLists);
+// 获取全部排单记录
+Router.get('/bangzhu/lists', BangzhuController.lists);
+// 排单表拆分
+Router.post('/bangzhu/chai', BangzhuController.bangzhuChai);
 // 倍数 类型
 /*----- 提现页面 -----*/
 // 提现类型 提现金额
