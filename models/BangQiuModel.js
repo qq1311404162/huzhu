@@ -127,7 +127,6 @@ class BangQiuModel extends Model {
 			for (let i = 0; i <= 100000000000000; i++) {
 
 				if (i == 1000000000) {
-					console.log(i);
 					return i;
 				}
 			}

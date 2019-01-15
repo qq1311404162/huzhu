@@ -6,28 +6,26 @@ const Model = require('./Model');
 const db = require('../models/index');
 const config = require('../config/config');
 
-const User = db.User;
-
 class UserModel extends Model {
 
-	constructor(){
-		
+	constructor() {
+
 		super(db.User);
 	}
 
 	/**
-     * 设置密码
-     * @param {*} value 
-     */
+	 * 设置密码
+	 * @param {*} value 
+	 */
 	async setPassword(value) {
 
 		return md5('huzhu' + value);
 	}
 
 	/**
-     * 手机唯一性检测
-     * @param {*} mobile 
-     */
+	 * 手机唯一性检测
+	 * @param {*} mobile 
+	 */
 	async uniqueMobile(mobile) {
 
 		if (!mobile)
@@ -45,9 +43,9 @@ class UserModel extends Model {
 
 
 	/**
-     * 用户名唯一性检测
-     * @param {*} username 
-     */
+	 * 用户名唯一性检测
+	 * @param {*} username 
+	 */
 	async uniqueUsername(username) {
 
 		if (!username)
@@ -65,9 +63,9 @@ class UserModel extends Model {
 
 
 	/**
-     * 真实姓名检测
-     * @param {*} realname 
-     */
+	 * 真实姓名检测
+	 * @param {*} realname 
+	 */
 	async uniqueRealname(realname, preArr) {
 
 		if (!realname)
@@ -96,10 +94,21 @@ class UserModel extends Model {
 	 * 设置 jwt token
 	 * @param {*} data 
 	 */
-	async setToken (data) {
+	async setToken(data) {
 
 		return config.jwt.pre + jwt.sign(data, config.jwt.token, {
 			expiresIn: config.jwt.express
+		});
+	}
+
+	async getUserInfo(id) {
+
+		return this.findOne({
+			attributes: ['id', 'username', 'mobile', 'realname', 'avatar', 'team_id', 'state'],
+			where: {
+				id: id
+			},
+			include: [db.Team]
 		});
 	}
 }

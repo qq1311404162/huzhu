@@ -69,6 +69,7 @@ class UserController {
 		data.username = request.username;
 		data.realname = request.realname;
 		data.mobile = request.mobile;
+		data.team_id = 1;
 
 		// 注册用户
 		await userModel.create(data).then(() => {
@@ -78,7 +79,7 @@ class UserController {
 				msg: '注册成功'
 			});
 
-		}).catch((err) => {
+		}).catch(() => {
 
 			return ctx.json(errCode.err_register);
 		});
@@ -135,12 +136,7 @@ class UserController {
 		let requestUser = ctx.state.user;
 
 		// 获取用户信息
-		let user = await userModel.findOne({
-			attributes: ['id', 'username', 'mobile', 'realname', 'avatar', 'team_id', 'state'],
-			where: {
-				id: requestUser.id
-			}
-		});
+		let user = await userModel.getUserInfo(requestUser.id);
 
 		if (user === null) {
 

@@ -16,7 +16,7 @@
 		</uni-list>
 		
 		<view class="btn-row">
-			<button type="primary" class="primary">退出登录</button>
+			<button type="primary" class="primary" @click="logout()">退出登录</button>
 		</view>
 	</view>
 </template>
@@ -86,7 +86,12 @@ export default {
                     console.log('fail', err);
                 }
             });
-        }
+        },
+		logout(){
+			uni.reLaunch({
+				url: '../login/index'
+			});
+		}
     }
 };
 </script>
