@@ -3,6 +3,8 @@ const Router = require('koa-router')();
 const LoginController = require('../controllers/api/LoginController');
 const UserController = require('../controllers/api/UserController');
 const BangzhuController = require('../controllers/api/BangzhuController');
+const QiuzhuController = require('../controllers/api/QiuzhuController');
+const UploadController = require('../controllers/api/UploadController');
 
 
 // // 登录
@@ -51,8 +53,8 @@ Router.post('/logout', UserController.logout);
 // 激活码 -- 显示激活码个数和赠送
 
 /*----- 排单页面 -----*/
-// 获取用户排单额度
-Router.get('/user-available', UserController.userAvailable);
+// 获取用户排单信息
+Router.get('/bangzhu/index', BangzhuController.index);
 // 开始排单
 Router.post('/bangzhu/add', BangzhuController.add);
 // 获取未完成的排单记录
@@ -61,9 +63,22 @@ Router.get('/bangzhu/not-done-lists', BangzhuController.notDoneLists);
 Router.get('/bangzhu/lists', BangzhuController.lists);
 // 排单表拆分
 Router.post('/bangzhu/chai', BangzhuController.bangzhuChai);
+// 打款提交信息
+Router.post('/bangzhu/dakuan', BangzhuController.dakuan);
 // 倍数 类型
 /*----- 提现页面 -----*/
+// 获取用户提现信息
+Router.get('/qiuzhu/index', QiuzhuController.index);
+// 开始提现
+Router.post('/qiuzhu/add', QiuzhuController.add);
+// 匹配
+Router.post('/qiuzhu/pipei', QiuzhuController.pipei);
+// 确认匹配订单
+Router.post('/qiuzhu/confirm', QiuzhuController.confirm);
 // 提现类型 提现金额
 
+
+/* --------------上传------------ */
+Router.post('/upload', UploadController.upload);
 
 module.exports = Router;

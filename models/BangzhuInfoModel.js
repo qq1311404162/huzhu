@@ -6,49 +6,55 @@ const db = require('../models/index');
 
 class BangzhuInfoModel extends Model {
 
-	constructor(){
-		
-        super(db.BangzhuInfo);
-        
-        this.staticValue = {
-            state: {
-                0: '等待匹配',
-                1: '等待确认',
-                2: '已完成'
-            },
-            type: {
-                1: '静态钱包',
-                2: '动态钱包'
-            }
-        };
-    }
+	constructor() {
+
+		super(db.BangzhuInfo);
+
+		this.staticValue = {
+			state: {
+				0: '等待匹配',
+				1: '等待确认',
+				2: '已完成'
+			},
+			type: {
+				1: '静态钱包',
+				2: '动态钱包'
+			}
+		};
+	}
 
 
-    /**
-     * 拆分指定金额
-     * @param {*} amount 
-     */
-    async chai (bangzhuInfo, amount) {
+	/**
+	 * 拆分指定金额
+	 * @param {*} amount 
+	 */
+	async chai(bangzhuInfo, amount) {
 
-        // 复制一份并修改内容
-        let newData = Object.assign({}, bangzhuInfo.get({plain: true}));
+		// 复制一份并修改内容
+		let newData = Object.assign({}, bangzhuInfo.get({
+			plain: true
+		}));
 
-        newData.amount = amount;
+		newData.amount = amount;
 
-        delete(newData.id);
-        delete(newData.created_at);
-        delete(newData.updated_at);
+		delete(newData.id);
 
-        // 保存
-        return await db.sequelize.transaction(t => {
+		// 保存
+		return await db.sequelize.transaction(t => {
 
-            return this.create(newData, {transaction: t}).then( info => {
-                // 递减
-                return bangzhuInfo.decrement('amount', {by: amount});
-            });
-        });
-    }
-    
+			return this.create(newData, {
+				transaction: t
+			}).then(() => {
+				// 递减
+				return bangzhuInfo.decrement('amount', {
+					by: amount
+				}, {
+					transaction: t
+				});
+			});
+		});
+	}
+
 }
 
 module.exports = new BangzhuInfoModel();

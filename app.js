@@ -13,7 +13,7 @@ middleware(app);
 router(app);
 
 // 监听
-app.listen(8080, () => {
+app.listen(3000, () => {
 	// console.log(ctx);
 	// ctx.log.info('server is running');
 });

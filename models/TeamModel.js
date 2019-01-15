@@ -52,22 +52,22 @@ let teamData = [{
 
 class TeamModel extends Model {
 
-	constructor(){
-		
+	constructor() {
+
 		super(db.Team);
 	}
 
 	/**
 	 * 设置表初始化
 	 */
-	async init () {
+	async init() {
 
-        let count = this.count();
-        
-        if (count == 0) {
-            // 批量写入数据
-		    return await this.bulkCreate(teamData);
-        }
+		let count = await this.count();
+
+		if (count == 0) {
+			// 批量写入数据
+			return await this.bulkCreate(teamData);
+		}
 
 	}
 }

@@ -2,7 +2,7 @@ const Xtpl = require('xtpl/lib/koa2');
 const Static = require('koa-static');
 const Path = require('path');
 const Json = require('koa-json');
-const Bodyparser = require('koa-bodyparser');
+const Body = require('koa-body');
 const Jwt = require('koa-jwt');
 
 const myLog = require('./my-log');
@@ -31,7 +31,17 @@ module.exports = (app) => {
 	// json 美化
 	app.use(Json());
 	// post 数据美化
-	app.use(Bodyparser());
+	// app.use(Body());
+	app.use(Body({
+		multipart: true, // 支持文件上传
+		// encoding: 'gzip',
+		formidable: {
+			uploadDir: '../static/upload/',
+			keepExtensions: true,
+			maxFieldsSize: 5 * 1024 * 1024
+		}
+	}));
+
 	// 静态资源，需要在认证前面，否则会没有权限
 	app.use(Static(Path.join(__dirname, STATICPATH)));
 

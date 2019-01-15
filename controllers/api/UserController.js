@@ -79,7 +79,7 @@ class UserController {
 			});
 
 		}).catch((err) => {
-			
+
 			return ctx.json(errCode.err_register);
 		});
 
@@ -152,43 +152,6 @@ class UserController {
 		});
 	}
 
-	static async userAvailable(ctx) {
-
-		let requestUser = ctx.state.user;
-
-		if (!requestUser.id) {
-
-			return ctx.json(errCode.less_params);
-		}
-
-		// 获取用户帮助额度和用户状态
-		let [user, setting] = await Promise.all([userModel.findOne({
-			attributes: ['id', 'available', 'state', 'bangzhu_nums'],
-			where: {
-				id: requestUser.id
-			}
-		}), Setting.findOne({
-			attributes: ['name', 'value'],
-			where: {
-				name: 'unit'
-			}
-		})]);
-
-		if (!user) {
-			return ctx.json(errCode.illegal_user);
-		}
-
-		return ctx.json({
-			data: {
-				id: user.id,
-				available: user.available,
-				bangzhu_nums: user.bangzhu_nums,
-				state: user.available,
-				unit: setting.value
-			}
-		});
-	}
-
 	/**
 	 * 用户激活
 	 * @param {*} ctx 
@@ -224,7 +187,7 @@ class UserController {
 		}
 
 		// 设置状态为1且激活码数量减1
-		await User.update({
+		await userModel.update({
 			state: 1,
 			active_golds: user.active_golds - 1
 		}, {

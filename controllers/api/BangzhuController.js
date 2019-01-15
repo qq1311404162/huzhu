@@ -2,14 +2,66 @@ const bangzhuModel = require('../../models/BangzhuModel');
 const userModel = require('../../models/UserModel');
 const settingModel = require('../../models/SettingModel');
 const bangzhuInfoModel = require('../../models/BangzhuInfoModel');
+const bangQiuModel = require('../../models/BangQiuModel');
 
 const Math = require('mathjs');
 
 const errCode = require('../../config/error-code');
-const Setting = require('../../models/Setting');
 
 class BangzhuController {
 
+
+
+	/**
+	 * 帮助页面首页
+	 * @param {*} ctx 
+	 */
+	static async index(ctx) {
+
+		let requestUser = ctx.state.user;
+
+		if (!requestUser.id) {
+
+			return ctx.json(errCode.less_params);
+		}
+
+		// 获取用户帮助额度和用户状态
+		let [user, setting, lists] = await Promise.all([userModel.findOne({
+			attributes: ['id', 'available', 'state', 'bangzhu_nums'],
+			where: {
+				id: requestUser.id
+			}
+		}), settingModel.findOne({
+			attributes: ['name', 'value'],
+			where: {
+				name: 'unit'
+			}
+		}), bangzhuModel.getNotDoneLists(requestUser.id)]);
+
+		if (!user) {
+			return ctx.json(errCode.illegal_user);
+		}
+
+		if (!setting) {
+
+			return ctx.json(errCode.err_setting);
+		}
+
+		return ctx.json({
+			data: {
+				user: user.get({
+					plain: true
+				}),
+				setting: setting.get({
+					plain: true
+				}),
+				lists: lists,
+				static: bangzhuModel.staticValue
+
+
+			}
+		});
+	}
 	/**
 	 * 开始排单
 	 * @param {*} ctx 
@@ -112,8 +164,8 @@ class BangzhuController {
 	 * 获取未完成的帮助记录
 	 * @param {*} ctx 
 	 */
-	static async notDoneLists (ctx) {
-		
+	static async notDoneLists(ctx) {
+
 		let requestUser = ctx.state.user;
 
 		if (!requestUser.id) {
@@ -128,11 +180,13 @@ class BangzhuController {
 
 			return ctx.json(errCode.err_not_done_bangzhu_lists);
 		}
-		
-		return ctx.json({data: {
-			lists: lists,
-			static: bangzhuModel.staticValue
-		}});
+
+		return ctx.json({
+			data: {
+				lists: lists,
+				static: bangzhuModel.staticValue
+			}
+		});
 	}
 
 
@@ -140,7 +194,7 @@ class BangzhuController {
 	 * 获取全部帮助记录
 	 * @param {*} ctx 
 	 */
-	static async lists (ctx) {
+	static async lists(ctx) {
 
 		let requestUser = ctx.state.user;
 
@@ -156,18 +210,20 @@ class BangzhuController {
 
 			return ctx.json(errCode.err_not_done_bangzhu_lists);
 		}
-		
-		return ctx.json({data: {
-			lists: lists,
-			static: bangzhuModel.staticValue
-		}});
+
+		return ctx.json({
+			data: {
+				lists: lists,
+				static: bangzhuModel.staticValue
+			}
+		});
 	}
 
 	/**
 	 * 帮助拆分
 	 * @param {*} ctx 
 	 */
-	static async bangzhuChai (ctx) {
+	static async bangzhuChai(ctx) {
 
 		let request = ctx.request.body;
 
@@ -206,16 +262,58 @@ class BangzhuController {
 			});
 		}
 
-		
+
 
 		let status = await bangzhuInfoModel.chai(bangzhuInfo, request.amount);
 
 		if (!status) {
 
-			return ctx.json({code: -4});
+			return ctx.json({
+				code: -4
+			});
 		}
 
-		return ctx.json({msg: 'yes'});
+		return ctx.json({
+			msg: 'yes'
+		});
+	}
+
+
+	/**
+	 * 打款提交
+	 * @param {*} ctx 
+	 */
+	static async dakuan(ctx) {
+
+		let request = ctx.request.body;
+
+		if (!request.pic || !request.id) {
+
+			return ctx.json(errCode.less_params);
+		}
+		// 验证此条信息是否可更改
+		let bangQiu = await bangQiuModel.findOne({
+			where: {
+				id: request.id
+			}
+		});
+
+		if (!bangQiu || bangQiu.getDataValue('state') !== 0) {
+
+			return ctx.json(errCode.illegal_bangzhu_dakuan);
+		}
+
+		// 更新
+		let result = await bangQiuModel.updateMake(request.id, request.pic);
+
+		if (!result) {
+
+			return ctx.json(errCode.err_upload);
+		}
+
+		return ctx.json({
+			msg: '上传成功'
+		});
 	}
 }
 

@@ -73,6 +73,27 @@ module.exports = {
 		code: 10018,
 		msg: '每天只能帮助一次'
 	},
+	illegal_qiuzhu_amount: {
+		code: 10019,
+		msg: '求助金额不符合规定'
+	},
+	illegal_static_wallet: {
+		code: 10020,
+		msg: '静态钱包余额不足'
+	},
+	illegal_dynamic_wallet: {
+		code: 10020,
+		msg: '动态钱包余额不足'
+	},
+	illegal_max_bangzhu_amount: {
+		code: 10021,
+		msg: '求助最大金额不得超过最近帮助金额的1.5倍'
+	},
+	illegal_bangzhu_dakuan: {
+		code: 10022,
+		msg: '当前不可操作'
+	},
+
 
 
 
@@ -117,5 +138,21 @@ module.exports = {
 	err_not_done_bangzhu_lists: {
 		code: 11010,
 		msg: '获取列表信息失败'
+	},
+	err_setting: {
+		code: 11011,
+		msg: '全局数据不存在'
+	},
+	err_qiuzhu: {
+		code: 11012,
+		msg: '求助失败'
+	},
+	err_upload: {
+		code: 11013,
+		msg: '上传失败'
+	},
+	err_confirm: {
+		code: 11014,
+		msg: '确认失败'
 	}
 };

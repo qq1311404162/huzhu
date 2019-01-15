@@ -57,9 +57,9 @@ db.Qiuzhu.belongsTo(db.User);
 db.User.hasMany(db.Qiuzhu);
 
 // qiuzhu_info表关联
-db.QiuzhuInfo.belongsTo(db.Bangzhu);
+db.QiuzhuInfo.belongsTo(db.Qiuzhu);
 db.QiuzhuInfo.belongsTo(db.User);
-db.Bangzhu.hasMany(db.QiuzhuInfo);
+db.Qiuzhu.hasMany(db.QiuzhuInfo);
 db.User.hasMany(db.QiuzhuInfo);
 
 // bang_qiu表关联
