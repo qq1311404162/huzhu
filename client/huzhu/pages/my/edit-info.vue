@@ -4,7 +4,7 @@
 		<uni-cell title="头像">
 			<view slot="content">
 				<view class="flex-row input-row">
-					<sunsin-upimg url="https://j.dns06.net.cn/index.php?m=Api&c=index&a=uploadDownwindx" :count="1" :autoup="false" />
+					<sunsin-upimg url="http://hz.menguang.vip/api/upload" :count="1" :autoup="false" />
 				</view>
 			</view>
 		</uni-cell>
@@ -48,7 +48,7 @@
 		<uni-cell title="微信收款码">
 			<view slot="content">
 				<view class="flex-row input-row">
-					<sunsin-upimg url="https://xxx" :count="1" :autoup="false" />
+					<sunsin-upimg url="http://hz.menguang.vip/api/upload" :count="1" :autoup="false" />
 				</view>
 				
 			</view>
@@ -57,7 +57,7 @@
 		<uni-cell title="支付宝收款码">
 			<view slot="content">
 				<view class="flex-row input-row">
-					<sunsin-upimg url="https://xxx" :count="1" :autoup="false" />
+					<sunsin-upimg url="http://hz.menguang.vip/api/upload" :count="1" :autoup="false" />
 				</view>
 				
 			</view>

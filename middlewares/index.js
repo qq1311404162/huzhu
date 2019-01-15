@@ -36,7 +36,7 @@ module.exports = (app) => {
 		multipart: true, // 支持文件上传
 		// encoding: 'gzip',
 		formidable: {
-			uploadDir: '../static/upload/',
+			// uploadDir: '../static/upload/',
 			keepExtensions: true,
 			maxFieldsSize: 5 * 1024 * 1024
 		}
@@ -51,7 +51,7 @@ module.exports = (app) => {
 	app.use(Jwt({
 		secret: config.jwt.token
 	}).unless({
-		path: [/^\/admin\/*/, /^\/api\/login/, /^\/api\/register/]
+		path: [/^\/admin\/*/, /^\/api\/login/, /^\/api\/register/, /^\/api\/upload/]
 	}));
 
 	// 错误捕获
