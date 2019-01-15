@@ -8,13 +8,13 @@ let data = {};
 db.sequelize.sync(data).then(() => {
 
 	// 数据初始化
-	// settingModel.init().then(() => {
-	// 	console.log('setting表初始化成功');
-	// });
-	// teamModel.init().then(() => {
-	// 	console.log('team表初始化成功');
-	// }).catch(err => {
-	// 	console.log(err);
-	// });
+	settingModel.init().then(() => {
+		console.log('setting表初始化成功');
+	});
+	teamModel.init().then(() => {
+		console.log('team表初始化成功');
+	}).catch(err => {
+		console.log(err);
+	});
 
 });
