@@ -18,7 +18,7 @@
 		<view class="picture_list">
 			<view v-for="(item,index) in upload_picture_list" :key="index" class="picture_item">
 				<image v-show="item.upload_percent < 100" :src="item.path" mode="aspectFill"></image>
-				<image v-show="item.upload_percent == 100" :src="item.path_server" mode="aspectFill"></image>
+				<image v-show="item.upload_percent == 100" :src="item.path" mode="aspectFill"></image>
 				<view class="upload_progress" v-show="item.upload_percent < 100" :data-index="index" @click="previewImg">{{item.upload_percent}}%</view>
 				<text class='del' @click='deleteImg' :data-index="index">×</text>
 			</view>
@@ -93,9 +93,11 @@
 			},
 			success(res) {
 				let data = JSON.parse(res.data);
-				let filename = data.info
-				upload_picture_list[j]['path_server'] = filename
+				console.log(res);
+				let filename = data.data.file
+				upload_picture_list[j]['path_server'] = config.server_url + filename
 				that.upload_picture_list = upload_picture_list
+				console.log(upload_picture_list);
 			}
 		})
 		upload_task.onProgressUpdate((res) => {

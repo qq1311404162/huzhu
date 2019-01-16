@@ -32,7 +32,7 @@ export default {
     },
     data() {
         return {
-            avatar: '../../static/dynamic.png',
+            avatar: 'http://hz.menguang.vip/upload/avatar/20190116174106262.jpg',
             realname: '',
             team: '',
             state: 0
@@ -50,7 +50,7 @@ export default {
                 success: res => {
                     this.realname = res.data.realname;
                     this.avatar =
-                        res.data.avatar == '' ? '../../static/dynamic.png' : res.data.avatar;
+                        res.data.avatar == '' ? 'http://hz.menguang.vip/upload/avatar/20190116174106262.jpg' : res.data.avatar;
                     this.state = res.data.state;
                     this.team = res.data.team.name;
                 },

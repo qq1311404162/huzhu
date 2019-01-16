@@ -51,7 +51,7 @@ module.exports = (app) => {
 	app.use(Jwt({
 		secret: config.jwt.token
 	}).unless({
-		path: [/^\/admin\/*/, /^\/api\/login/, /^\/api\/register/, /^\/api\/upload/]
+		path: [/^\/admin\/*/, /^\/api\/login/, /^\/api\/register/, /^favicon.ico/]
 	}));
 
 	// 错误捕获
