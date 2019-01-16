@@ -92,7 +92,7 @@
 				card_nums: '',
 				wechat_qrcode: '',
 				alipay_qrcode: '',
-				image: '',
+				image: 'http://localhost:3000/upload/avatar111/20190116191623901.jpeg',
 			};
 		},
 		methods:{
