@@ -34,7 +34,8 @@ Router.get('/user-info', UserController.userInfo);
 // 用户激活
 Router.get('/activation', UserController.activation);
 // 修改个人资料
-Router.post('/edit-info', UserController.editInfo);
+Router.get('/edit-info', UserController.getEditInfo);
+Router.post('/edit-info', UserController.postEeditInfo);
 // 显示我的推广二维码
 
 // 修改密码

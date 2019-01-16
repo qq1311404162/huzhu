@@ -111,6 +111,17 @@ class UserModel extends Model {
 			include: [db.Team]
 		});
 	}
+
+
+	async getEditInfo(id) {
+
+		return this.findOne({
+			attributes: ['id', 'mobile', 'realname', 'avatar', 'card_name', 'card_num', 'wechat_qrcode', 'alipay_qrcode'],
+			where: {
+				id: id
+			}
+		});
+	}
 }
 
 module.exports = new UserModel();

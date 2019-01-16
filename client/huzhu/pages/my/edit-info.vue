@@ -3,9 +3,8 @@
 		
 		<uni-cell title="头像">
 			<view slot="content">
-				<view class="flex-row input-row" @click="uploadImg()">
-					<image :src="image" mode=""></image>
-					<text>aaaaa</text>
+				<view class="flex-row input-row">
+					<sunsin-upimg source="http://hz.menguang.vip/upload/avatar/20190116194235562.jpg" :count="1" @sss="sss" />
 				</view>
 			</view>
 		</uni-cell>
@@ -96,41 +95,10 @@
 			};
 		},
 		methods:{
-			uploadImg(){
-				let _this = this;
-				let token = uni.getStorageSync('token') || '';
 				
-				uni.chooseImage({
-					count: 1,
-					sizeType: ['original'],
-					sourceType: ['album', 'camera'],
-					success(res) {
-						
-						console.log(res);
-						
-						uni.uploadFile({
-							
-							url: 'http://hz.menguang.vip/api/upload',
-							filePath: res.tempFiles[0].path,
-							name: 'file',
-							header: {
-								'Authorization': token
-							},
-							formData: {
-								'type': 'avatar'
-							},
-							success(res) {
-								
-								let data = JSON.parse(res.data);
-
-								_this.image = 'http://hz.menguang.vip' + data.data.file
-							}
-					});
-					}
-				});
-				
-				
-			}
+				sss(e) {
+					console.log(e);
+				}
 		}
 	}
 </script>

@@ -206,12 +206,34 @@ class UserController {
 
 	}
 
+
+	/**
+	 * 修改信息页面获取用户信息
+	 * @param {*} ctx 
+	 */
+	static async getEditInfo(ctx) {
+
+		let requestUser = ctx.state.user;
+
+		// 获取用户信息
+		let user = await userModel.getEditInfo(requestUser.id);
+
+		if (user === null) {
+
+			return ctx.json(errCode.err_user_info);
+		}
+
+		return ctx.json({
+			data: user
+		});
+	}
+
 	/**
 	 * 修改个人资料
 	 * @param {*} ctx 
 	 * 用户头像		银行卡号	开户行	支付宝二维码	微信二维码	
 	 */
-	static async editInfo(ctx) {
+	static async postEeditInfo(ctx) {
 
 		let request = ctx.request.body,
 			data = {},
