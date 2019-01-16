@@ -3,8 +3,9 @@
 		
 		<uni-cell title="头像">
 			<view slot="content">
-				<view class="flex-row input-row">
-					<sunsin-upimg type="avatar" />
+				<view class="flex-row input-row" @click="uploadImg()">
+					<image :src="image" mode=""></image>
+					<text>aaaaa</text>
 				</view>
 			</view>
 		</uni-cell>
@@ -90,8 +91,46 @@
 				card_name: '',
 				card_nums: '',
 				wechat_qrcode: '',
-				alipay_qrcode: ''
+				alipay_qrcode: '',
+				image: '',
 			};
+		},
+		methods:{
+			uploadImg(){
+				let _this = this;
+				let token = uni.getStorageSync('token') || '';
+				
+				uni.chooseImage({
+					count: 1,
+					sizeType: ['original'],
+					sourceType: ['album', 'camera'],
+					success(res) {
+						
+						console.log(res);
+						
+						uni.uploadFile({
+							
+							url: 'http://hz.menguang.vip/api/upload',
+							filePath: res.tempFiles[0].path,
+							name: 'file',
+							header: {
+								'Authorization': token
+							},
+							formData: {
+								'type': 'avatar'
+							},
+							success(res) {
+								
+								let data = JSON.parse(res.data);
+
+								_this.image = 'http://hz.menguang.vip' + data.data.file
+							}
+					});
+					}
+				});
+				
+				
+			}
 		}
 	}
 </script>

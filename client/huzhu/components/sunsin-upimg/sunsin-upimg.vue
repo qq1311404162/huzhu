@@ -18,7 +18,7 @@
 		<view class="picture_list">
 			<view v-for="(item,index) in upload_picture_list" :key="index" class="picture_item">
 				<image v-show="item.upload_percent < 100" :src="item.path" mode="aspectFill"></image>
-				<image v-show="item.upload_percent == 100" :src="item.path" mode="aspectFill"></image>
+				<image v-show="item.upload_percent == 100" :src="item.path_server" mode="aspectFill"></image>
 				<view class="upload_progress" v-show="item.upload_percent < 100" :data-index="index" @click="previewImg">{{item.upload_percent}}%</view>
 				<text class='del' @click='deleteImg' :data-index="index">×</text>
 			</view>
@@ -83,11 +83,16 @@
 	// 上传文件
 	const upload_file_server = (that, upload_picture_list, j) => {
 		
+		let token = uni.getStorageSync('token') || '';
+		
 		const upload_task = uni.uploadFile({
 			
 			url: config.server_url + '/api/upload',
 			filePath: upload_picture_list[j]['path'],
 			name: 'file',
+			header: {
+				'Authorization': token
+			},
 			formData: {
 				'type': that.type
 			},

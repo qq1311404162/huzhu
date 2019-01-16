@@ -12,12 +12,13 @@ class UploadController {
 		let file = ctx.request.files.file,
 			request = ctx.request.body;
 
-		await UploadController.save(file, request.type).then(url => {
+		await UploadController.save(file, request.type).then((url, url2) => {
 
 			// 返回上传地址
 			return ctx.json({
 				data: {
-					file: url
+					file: url,
+					f: fs.statSync(url2)
 				}
 			});
 
@@ -49,7 +50,7 @@ class UploadController {
 
 			upStream.on('finish', () => {
 
-				resolve(fileSavePath + fileName);
+				resolve(fileSavePath + fileName, dirpath + fileName);
 			});
 
 			upStream.on('error', () => {
