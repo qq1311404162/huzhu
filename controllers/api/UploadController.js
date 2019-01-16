@@ -17,7 +17,10 @@ class UploadController {
 
 
 		return ctx.json({
-			data: JSON.stringify(filePath)
+			data: {
+				file: JSON.stringify(filePath),
+				body: ctx.request.body
+			}
 		});
 	}
 

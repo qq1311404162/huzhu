@@ -4,7 +4,7 @@
 		<uni-cell title="头像">
 			<view slot="content">
 				<view class="flex-row input-row">
-					<sunsin-upimg url="http://hz.menguang.vip/api/upload" :count="1" :autoup="false" />
+					<sunsin-upimg url="http://hz.menguang.vip/api/upload" :count="1" />
 				</view>
 			</view>
 		</uni-cell>

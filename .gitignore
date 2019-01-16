@@ -4,3 +4,6 @@ node_modules/
 config/db.js
 logs/
 client/huzhu/unpackage/
+static/upload/wechat-qrcode/
+static/upload/alipay-qrcode/
+static/upload/trans/
