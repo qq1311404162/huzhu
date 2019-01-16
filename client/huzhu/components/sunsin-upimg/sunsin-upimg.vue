@@ -1,9 +1,9 @@
 <!-- 
  
 /**
- * <sunsin-upimg url="https://j.dns06.net.cn/index.php?m=Api&c=index&a=uploadDownwindx" :count="1" :autoup="false"></sunsin-upimg>
+ * <sunsin-upimg type="" :count="1" :autoup="false"></sunsin-upimg>
  * 
- * url：上传图片地址
+ * type：上传类型
  * count:上传总数量(默认上传1张图片)
  * autoup:是否自动上传(无需传参数,参考以上)
  * 
@@ -36,6 +36,9 @@
 </template>
 
 <script>
+	
+	import config from '../../config.js';
+	
 	export default {
 		data() {
 			return {
@@ -45,24 +48,27 @@
 		},
 		name: 'sunsin-upimg',
 		props: {
-			url: {
-				type: String
+			type: {
+				type: String,
+				default: 'avatar'
 			},
 			count: {
-				type: Number
+				type: Number,
+				default: 1
 			},
 			autoup: {
-				type: Boolean
+				type: Boolean,
+				default: true
 			}
 		},
 		methods: {
 			chooseImage() {
-				cImage(this, parseInt(this.count), this.url);
+				cImage(this, parseInt(this.count));
 				
-				console.log(this.autoup,this.count,this.url)
+				console.log(this.autoup,this.count)
 			},
 			uploadimage(e) {
-				uImage(this, e);
+				uImage(this);
 			},
 			deleteImg(e) {
 				dImage(e, this);
@@ -75,13 +81,15 @@
 	}
 
 	// 上传文件
-	const upload_file_server = (url, that, upload_picture_list, j) => {
+	const upload_file_server = (that, upload_picture_list, j) => {
+		
 		const upload_task = uni.uploadFile({
-			url,
+			
+			url: config.server_url + '/api/upload',
 			filePath: upload_picture_list[j]['path'],
 			name: 'file',
 			formData: {
-				'num': j
+				'type': that.type
 			},
 			success(res) {
 				let data = JSON.parse(res.data);
@@ -98,10 +106,10 @@
 
 
 	// 上传图片(this,api.imageup)
-	const uImage = (_that, url) => {
+	const uImage = (_that) => {
 		for (let j in _that.upload_picture_list) {
 			if (_that.upload_picture_list[j]['upload_percent'] == 0) {
-				upload_file_server(url, _that, _that.upload_picture_list, j)
+				upload_file_server(_that, _that.upload_picture_list, j)
 			}
 		}
 	}
@@ -116,7 +124,7 @@
 
 
 	// 选择图片
-	const cImage = (_that, count, url) => {
+	const cImage = (_that, count) => {
 		uni.chooseImage({
 			count,
 			sizeType: ['compressed'],
@@ -128,7 +136,7 @@
 					_that.upload_picture_list.push(res.tempFiles[i])
 				}
 				if (_that.autoup) {
-					count == _that.upload_picture_list.length ? uImage(_that, url) : console.log('图片不够!')
+					count == _that.upload_picture_list.length ? uImage(_that) : console.log('图片不够!')
 				}
 				_that.imgs = res.tempFilePaths;
 				_that.upload_picture_list = _that.upload_picture_list;
