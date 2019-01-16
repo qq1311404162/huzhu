@@ -116,7 +116,7 @@ class UserModel extends Model {
 	async getEditInfo(id) {
 
 		return this.findOne({
-			attributes: ['id', 'mobile', 'realname', 'avatar', 'card_name', 'card_num', 'wechat_qrcode', 'alipay_qrcode'],
+			attributes: ['id', 'mobile', 'realname', 'avatar', 'card_name', 'card_nums', 'wechat_qrcode', 'alipay_qrcode'],
 			where: {
 				id: id
 			}
