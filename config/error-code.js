@@ -154,5 +154,5 @@ module.exports = {
 	err_confirm: {
 		code: 11014,
 		msg: '确认失败'
-	}
+	},
 };
