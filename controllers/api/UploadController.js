@@ -16,8 +16,7 @@ class UploadController {
 			// 返回上传地址
 			return ctx.json({
 				data: {
-					file: url[0],
-					f: fs.statSync(url[1])
+					file: url
 				}
 			});
 
