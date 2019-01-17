@@ -18,19 +18,19 @@
 		<view class="picture_list">
 			<view v-for="(item,index) in upload_picture_list" :key="index" class="picture_item">
 				<!-- <image v-show="item.upload_percent < 100" :src="item.path" mode="aspectFill"></image> -->
-				<image v-show="item.upload_percent == 100" :src="item.path" mode="aspectFill"></image>
-				<view class="upload_progress" v-show="item.upload_percent < 100" :data-index="index" @click="previewImg">{{item.upload_percent}}%</view>
+				<image v-if="item.upload_percent == 100 && item.path_server != ''" :src="item.path_server" mode="aspectFill"></image>
+				<view class="upload_progress" v-if="item.upload_percent < 100" :data-index="index" @click="previewImg">{{item.upload_percent}}%</view>
 				<text class='del' @click='deleteImg' :data-index="index">×</text>
 			</view>
 
-			<view class='picture_item' v-show="upload_picture_list.length<count">
+			<view class='picture_item' v-if="upload_picture_list.length<count">
 				<view class="add-image" @click='chooseImage'>
 					<text>+</text>
 				</view>
 			</view>
 		</view>
-		<view class='y-up' v-show="autoup==false">
-			<button @click='uploadimage(url)' class='yes-upload' v-show="upload_picture_list.length==count">上传图片</button>
+		<view class='y-up' v-if="autoup==false">
+			<button @click='uploadimage(url)' class='yes-upload' v-if="upload_picture_list.length==count">上传图片</button>
 		</view>
 	</view>
 </template>

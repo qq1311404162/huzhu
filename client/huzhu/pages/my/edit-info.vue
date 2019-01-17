@@ -4,7 +4,7 @@
 		<uni-cell title="头像">
 			<view slot="content">
 				<view class="flex-row input-row">
-					<sunsin-upimg type="avatar" :source="avatar" @getPic="getAvatar" />
+					<sunsin-upimg v-if="infoState" type="avatar" :source="avatar" @getPic="getAvatar" />
 				</view>
 			</view>
 		</uni-cell>
@@ -12,7 +12,7 @@
 		<uni-cell title="手机号码">
 			<view slot="content">
 				<view class="flex-row input-row">
-					<text>{{mpbile}}</text>
+					<text>{{mobile}}</text>
 				</view>
 				
 			</view>
@@ -48,7 +48,7 @@
 		<uni-cell title="微信收款码">
 			<view slot="content">
 				<view class="flex-row input-row">
-					<sunsin-upimg type="wechat" :source="wechat_qrcode" @getPic="getWechat" />
+					<sunsin-upimg v-if="infoState" type="wechat" :source="wechat_qrcode" @getPic="getWechat" />
 				</view>
 				
 			</view>
@@ -57,7 +57,7 @@
 		<uni-cell title="支付宝收款码">
 			<view slot="content">
 				<view class="flex-row input-row">
-					<sunsin-upimg type="alipay" :source="alipay_qrcode" @getPic="getAlipay" />
+					<sunsin-upimg v-if="infoState" type="alipay" :source="alipay_qrcode" @getPic="getAlipay" />
 				</view>
 				
 			</view>
@@ -82,6 +82,7 @@ export default {
 
     data() {
         return {
+			infoState: false,
             avatar: '',
             mobile: '',
             realname: '',
@@ -103,13 +104,15 @@ export default {
 				data: {},
 				success: res => {
 					
+					this.infoState = true;
+					
 					this.avatar = res.data.avatar;
 					this.mobile = res.data.mobile;
 					this.realname = res.data.realname;
-					this.card_name = res.data.team.card_name;
-					this.card_num = res.data.team.card_num;
-					this.wechat_qrcode = res.data.team.wechat_qrcode;
-					this.alipay_qrcode = res.data.team.alipay_qrcode;
+					this.card_name = res.data.card_name;
+					this.card_nums = res.data.card_nums;
+					this.wechat_qrcode = res.data.wechat_qrcode;
+					this.alipay_qrcode = res.data.alipay_qrcode;
 				},
 				fail: function(err) {
 					console.log('fail', err);
@@ -117,23 +120,71 @@ export default {
 			});
 		},
         getAvatar(pic) {
-            this.avatar = pic.path_server;
+			console.log(pic);
+            this.avatar = pic[0].path_server;
         },
         getWechat(pic) {
-            this.wechat_qrcode = pic.path_server;
+            this.wechat_qrcode = pic[0].path_server;
         },
         getAlipay(pic) {
-            this.alipay_qrcode = pic.path_server;
+            this.alipay_qrcode = pic[0].path_server;
         },
         edit() {
 			
-			if (this.username.length < 6) {
+			if (this.card_name == '') {
 				uni.showToast({
 					icon: 'none',
-					title: '用户名不得低于6个字符'
+					title: '银行名称不能为空'
 				});
 				return;
 			}
+			if (this.card_nums == '') {
+				uni.showToast({
+					icon: 'none',
+					title: '银行卡号不能为空'
+				});
+				return;
+			}
+			
+			ajax({
+				url: '/api/edit-info',
+				method: 'POST',
+				data: {
+					avatar: this.avatar,
+					card_name: this.card_name,
+					card_nums: this.card_nums,
+					wechat_qrcode: this.wechat_qrcode,
+					alipay_qrcode: this.alipay_qrcode
+				},
+				success: res => {
+					
+					uni.showToast({
+						icon: 'none',
+						title: res.msg
+					});
+					
+					setTimeout(() => {
+						
+						if (res.code == 0) {
+							
+							uni.switchTab({
+								url: '../index/my'
+							});
+							
+						}
+						
+					}, 1000);
+					
+					
+				},
+				fail: function(err) {
+					
+					uni.showToast({
+						icon: 'none',
+						title: '修改用户信息失败'
+					});
+				}
+			});
 		}
     }
 };

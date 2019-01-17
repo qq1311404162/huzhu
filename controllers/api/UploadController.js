@@ -12,18 +12,30 @@ class UploadController {
 		let file = ctx.request.files.file,
 			request = ctx.request.body;
 
-		await UploadController.save(file, request.type).then((url) => {
-			// 返回上传地址
-			return ctx.json({
-				data: {
-					file: url
-				}
-			});
 
-		}).catch(() => {
+		let picPath = await UploadController.save(file, request.type);
 
+		if (!picPath) {
 			return ctx.json(errCode.err_upload);
+		}
+
+		return ctx.json({
+			data: {
+				file: picPath
+			}
 		});
+		// await UploadController.save(file, request.type).then((url) => {
+		// 	// 返回上传地址
+		// 	return ctx.json({
+		// 		data: {
+		// 			file: url
+		// 		}
+		// 	});
+
+		// }).catch(() => {
+
+		// 	return ctx.json(errCode.err_upload);
+		// });
 
 	}
 
@@ -43,18 +55,21 @@ class UploadController {
 		let upStream = fs.createWriteStream(dirpath + fileName);
 
 		reader.pipe(upStream);
+		// console.log(reader.pipe(upStream));
 
-		return new Promise(function (resolve, reject) {
+		return fileSavePath + fileName;
 
-			upStream.on('finish', () => {
+		// return new Promise(function (resolve, reject) {
 
-				resolve(fileSavePath + fileName);
-			});
+		// 	reader.on('finish', () => {
 
-			upStream.on('error', () => {
-				reject(new Error('save fail'));
-			});
-		});
+		// 		resolve(fileSavePath + fileName);
+		// 	});
+
+		// 	reader.on('error', () => {
+		// 		reject(new Error('save fail'));
+		// 	});
+		// });
 	}
 
 }
