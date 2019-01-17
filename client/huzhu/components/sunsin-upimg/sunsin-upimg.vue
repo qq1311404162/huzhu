@@ -162,7 +162,7 @@
 				if (_that.autoup) {
 					count == _that.upload_picture_list.length ? uImage(_that) : console.log('图片不够!')
 				}
-				_that.imgs = res.tempFilePaths;
+				_that.imgs = _that.imgs.concat(res.tempFilePaths) ;
 				_that.upload_picture_list = _that.upload_picture_list;
 				_that.count = count;
 			}
