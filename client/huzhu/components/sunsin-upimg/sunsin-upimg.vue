@@ -107,6 +107,7 @@
 			filePath: upload_picture_list[j]['path'],
 			name: 'file',
 			header: {
+				'Accept': 'application/json',
 				'Authorization': token
 			},
 			formData: {

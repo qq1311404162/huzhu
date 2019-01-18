@@ -11,7 +11,7 @@
 		
 		<uni-cell title="手机号码">
 			<view slot="content">
-				<view class="flex-row input-row">
+				<view class="flex-row input-row disable">
 					<text>{{mobile}}</text>
 				</view>
 				
@@ -20,7 +20,7 @@
 		
 		<uni-cell title="真实姓名">
 			<view slot="content">
-				<view class="flex-row input-row">
+				<view class="flex-row input-row disable">
 					{{realname}}
 				</view>
 				
@@ -198,5 +198,9 @@ export default {
 
 .input-row input {
     text-align: right;
+}
+
+.btn-row {
+	padding-bottom: 30upx;
 }
 </style>

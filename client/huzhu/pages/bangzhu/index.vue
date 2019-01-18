@@ -1,176 +1,159 @@
 <template>
 	<view class="content">
-		<view class="segment">
-			<uni-segmented-control :current="current" :values="items" @clickItem="onClickItem" style-type="button"></uni-segmented-control>
-		</view>
-		<view class="form">
-			<view v-show="current === 0">
-				<text>您今日已帮助过别人</text>
-			</view>
+		
+		<scroll-view class="scroll-content" scroll-y scroll-top="0" @scrolltolower="aaa" :style="[{height: scrollHeight}]" lower-threshold="70">
 			
-			<view v-show="current === 1">
-				<text>您本月剩余可用次数为：11</text>
-			</view>
 			
-			<uni-cell title="帮助金额">
-				<view slot="content">
-					<view class="flex-row input-row" @click="openPick()">
-						{{bangzhuAmount}}
-					</view>
+			<uni-collapse accordion="true">
+				
+				<view class="" v-for="(item, index1) in lists" :key="index1">
 					
+					<uni-collapse-item-own :info-data="item" :open="index1 === 0 ? true : false">
+						
+					</uni-collapse-item-own>
 				</view>
-			</uni-cell>
-			
-			<uni-cell title="交易密码">
-				<view slot="content">
-					<view class="flex-row input-row">
-						<input type="text" v-model="payword" placeholder="请输入交易密码"/>
-					</view>
-					
-				</view>
-			</uni-cell>
-			
-			<view class="btn-row">
-				<button type="primary" class="primary" @tap="submit">确定帮助</button>
-			</view>
-			
-			<view class="record">
-				<text>帮助记录</text>
-			</view>
-			
-		</view>
-		<mpvue-picker ref="mpvuePicker" mode="selector" deepLength="1" :pickerValueDefault="pickerValueDefault"
-		@onConfirm="onConfirm" @onCancel="onCancel" :pickerValueArray="pickerValueArray"></mpvue-picker>
+				
+			</uni-collapse>
+
+			<uni-load-more :status="loadMoreStatus"></uni-load-more>
+		</scroll-view>
+		<view class="add" @click="addBangzhu">+</view>
+
 	</view>
 </template>
 <script>
-	import uniSegmentedControl from "@/components/uni-segmented-control/uni-segmented-control.vue";
-	import mpvuePicker from '@/components/mpvue-picker/mpvuePicker.vue';
-	import uniCell from '@/components/uni-cell/uni-cell.vue';
-	import ajax from '@/utils/ajax';
+import uniLoadMore from '@/components/uni-load-more/uni-load-more.vue';
+import uniCollapse from '@/components/uni-collapse/uni-collapse.vue';
 
-	export default {
-		components: {
-			uniSegmentedControl,
-			mpvuePicker,
-			uniCell
-		},
-		onLoad() {
-			// 获取帮助金额
-			this.userAvailable();
-		},
-		data() {
-			return {
-				items: ['额度帮助', '赠送帮助'],
-				current: 0,
-				amount: 0,
-				available: 0,
-				payword: '',
-				pickerValueDefault: [0],
-				pickerValueArray:[],
-				status: 1,
-			}
-		},
-		computed: {
-			bangzhuAmount(){
-				
-				return this.amount == 0 ? '请选择帮助金额' : this.amount;
-			},
-		},
-		methods: {
-			userAvailable(){
-				ajax({
-					url: '/api/user-available',
-					success: res => {
-						
-						for (let i = 1; i <= (res.data.available || 1); i++) {
-							
-							this.pickerValueArray.push({
-								label: parseInt(res.data.unit) * i,
-								value: i
-							});
-						}
+import uniCollapseItemOwn from '@/components/uni-collapse-item-own/uni-collapse-item-own.vue';
+
+import ajax from '@/utils/ajax';
+
+export default {
+    components: {
+        uniLoadMore,
+        uniCollapse,
+		uniCollapseItemOwn
+    },
+    onLoad() {
+        // 获取帮助金额
+        // this.userAvailable();
+
+		// 设置scroll-view高度
+        let system = uni.getSystemInfoSync();
+        this.setScrollHeight(system);
+
+        this.lists = [
+            {
+                type: '额度排单',
+                state: '等待匹配',
+                created_at: '2018-11-12 12:12:12',
+                ident: 'p2018121231231',
+                amount: '900',
+				info: [
+					{
+						type: '额度排单',
+						state: '等待匹配',
+						created_at: '2018-11-12 12:12:12',
+						ident: 'p2018121231231',
+						amount: '900',
 					},
-					fail: function(err) {
-						console.log('fail', err);
+					{
+						type: '额度排单',
+						state: '等待匹配',
+						created_at: '2018-11-12 12:12:12',
+						ident: 'p2018121231231',
+						amount: '900',
 					}
-				});
-			},
-			openPick(){
-				this.$refs.mpvuePicker.show();
-			},
-			onClickItem(index) {
-				if (this.current !== index) {
-					this.current = index;
-				}
-			},
-			onConfirm(e) {
-				
-				this.amount = e.label;
-				this.available = e.value[0];
-			},
-			onCancel(e) {
-				console.log(e)
-			},
-			submit(){
-				
-				if (this.status) {
-					this.status = 0;
-					
-					ajax({
-						url: '/api/bangzhu/add',
-						method: 'POST',
-						data: {
-							available: this.available,
-							payword: this.payword,
-							type: this.current + 1
-						},
-						success: res => {
-							
-							this.status = 1;
-							console.log(res);
-						},
-						fail: function(err) {
-							this.status = 1;
-							console.log('fail', err);
-						}
-					});
-				}
-			}
-		}
-	}
+				]
+            },
+            {
+                type: '额度排单',
+                state: '等待匹配',
+                created_at: '2018-11-12 12:12:12',
+                ident: 'p2018121231231',
+                amount: '900',
+				info: [{
+					type: '额度排单',
+					state: '等待匹配',
+					created_at: '2018-11-12 12:12:12',
+					ident: 'p2018121231231',
+					amount: '900',
+				}]
+            },
+            {
+                type: '额度排单',
+                state: '等待匹配',
+                created_at: '2018-11-12 12:12:12',
+                ident: 'p2018121231231',
+                amount: '900',
+				info: [
+					{
+						type: '额度排单',
+						state: '等待匹配',
+						created_at: '2018-11-12 12:12:12',
+						ident: 'p2018121231231',
+						amount: '900',
+					}
+				]
+            }
+        ];
+    },
+    data() {
+        return {
+            lists: [],
+            loadMoreStatus: 'loading',
+            scrollHeight: '500px'
+        };
+    },
+    methods: {
+        aaa() {
+            this.loadMore = true;
+            console.log(111);
+        },
+        // 设置滚动区域高度
+        setScrollHeight(system) {
+            this.scrollHeight = system.windowHeight + 'px';
+        },
+        addBangzhu() {
+            uni.navigateTo({
+                url: 'add'
+            });
+        }
+    }
+};
 </script>
 <style>
-	
-	@import '../../common/css/common.css';
-	
-	.content {
-		
-		padding: 0 30upx;
-	}
-	
-	.segment {
-		padding: 50upx 0;
-	}
-	
-	.form {
-		
-		padding-top: 50upx;
-	}
-	
-	.record {
-		padding-top: 80upx;
-		padding-right: 10upx;
-		text-align: right;
-		font-size: 28upx;
-	}
-	
-	.input-row {
-		
-		justify-content: flex-end;
-	}
-	
-	.input-row input {
-		text-align: right;
-	}
+@import '../../common/css/common.css';
+
+.add {
+    /*悬浮的加号*/
+    /*基础*/
+    position: fixed; /*相对于手机屏幕布局*/
+    z-index: 99; /*叠层设置*/
+    /*设置内部加号居中*/
+    text-align: center;
+    vertical-align: text-top;
+    /*宽高*/
+    width: 100upx;
+    height: 100upx;
+    /*位于屏幕的位置（可根据需求改）*/
+    bottom: 90upx;
+    right: 60upx;
+    /*圆形（若需要正方形的加号可以去掉此样式）*/
+    border-radius: 50%;
+    /*四边阴影（让加号看起来有立体感）*/
+    -webkit-box-shadow: #808080 0px 0px 5upx;
+    -moz-box-shadow: #808080 0px 0px 5upx;
+    box-shadow: #808080 0px 0px 5upx;
+    /*加号大小*/
+    font-size: 64upx;
+    color: #1296db;
+    background: #ffffff;
+}
+
+.add:active {
+    background: #1296db;
+    color: #ffffff;
+}
 </style>

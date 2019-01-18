@@ -24,18 +24,6 @@ class UploadController {
 				file: picPath
 			}
 		});
-		// await UploadController.save(file, request.type).then((url) => {
-		// 	// 返回上传地址
-		// 	return ctx.json({
-		// 		data: {
-		// 			file: url
-		// 		}
-		// 	});
-
-		// }).catch(() => {
-
-		// 	return ctx.json(errCode.err_upload);
-		// });
 
 	}
 
@@ -55,21 +43,9 @@ class UploadController {
 		let upStream = fs.createWriteStream(dirpath + fileName);
 
 		reader.pipe(upStream);
-		// console.log(reader.pipe(upStream));
 
 		return fileSavePath + fileName;
 
-		// return new Promise(function (resolve, reject) {
-
-		// 	reader.on('finish', () => {
-
-		// 		resolve(fileSavePath + fileName);
-		// 	});
-
-		// 	reader.on('error', () => {
-		// 		reject(new Error('save fail'));
-		// 	});
-		// });
 	}
 
 }

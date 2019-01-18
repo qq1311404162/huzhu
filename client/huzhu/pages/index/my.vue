@@ -1,7 +1,7 @@
 <template>
 	<view class="content">
 		<view class="flex-column user-info">
-			<image :src="avatar" mode=""></image>
+			<image :src="avatar" mode="aspectFill"></image>
 			<text class="name">{{realname}}</text>
 			<text v-if="state == 0">未激活</text>
 			<text v-else>{{team}}</text>
@@ -102,15 +102,16 @@ export default {
     align-items: center;
     justify-content: center;
     padding-top: 30upx;
-    padding-bottom: 20upx;
+    padding-bottom: 30upx;
     /* border-bottom: 4upx solid #f5f5f5; */
 }
 
 .user-info image {
     display: inline-block;
-    width: 130upx;
-    height: 130upx;
-    padding-bottom: 20upx;
+    width: 100upx;
+    height: 100upx;
+    margin-bottom: 20upx;
+	border-radius: 50%;
 }
 
 .user-info text {
