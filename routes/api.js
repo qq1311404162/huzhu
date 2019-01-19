@@ -56,8 +56,10 @@ Router.post('/logout', UserController.logout);
 /*----- 排单页面 -----*/
 // 获取用户排单信息
 Router.get('/bangzhu/index', BangzhuController.index);
+// 开始帮助页面
+Router.get('/bangzhu/add', BangzhuController.getAdd);
 // 开始排单
-Router.post('/bangzhu/add', BangzhuController.add);
+Router.post('/bangzhu/add', BangzhuController.postAdd);
 // 获取未完成的排单记录
 Router.get('/bangzhu/not-done-lists', BangzhuController.notDoneLists);
 // 获取全部排单记录
@@ -67,6 +69,8 @@ Router.post('/bangzhu/chai', BangzhuController.bangzhuChai);
 // 打款提交信息
 Router.post('/bangzhu/dakuan', BangzhuController.dakuan);
 // 倍数 类型
+
+
 /*----- 提现页面 -----*/
 // 获取用户提现信息
 Router.get('/qiuzhu/index', QiuzhuController.index);

@@ -93,6 +93,10 @@ module.exports = {
 		code: 10022,
 		msg: '当前不可操作'
 	},
+	less_bangzhu_golds: {
+		code: 10023,
+		msg: '排单币不足'
+	},
 
 
 

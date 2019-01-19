@@ -1,7 +1,7 @@
 {
 	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
 		{
-			"path": "pages/bangzhu/index",
+			"path": "pages/bangzhu/add",
 			"style": {
 				"navigationBarTitleText": "帮助"
 			}
@@ -48,18 +48,18 @@
 				"navigationBarTitleText": "修改交易密码"
 			}
 		},
-// 		{
-// 			"path": "pages/bangzhu/index",
-// 			"style": {
-// 				"navigationBarTitleText": "帮助"
-// 			}
-// 		},
 		{
-			"path": "pages/bangzhu/add",
+			"path": "pages/bangzhu/index",
 			"style": {
 				"navigationBarTitleText": "帮助"
 			}
 		},
+// 		{
+// 			"path": "pages/bangzhu/add",
+// 			"style": {
+// 				"navigationBarTitleText": "开始帮助"
+// 			}
+// 		},
 		{
 			"path": "pages/qiuzhu/index",
 			"style": {

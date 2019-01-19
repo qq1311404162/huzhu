@@ -26,7 +26,31 @@ class BangzhuController {
 		}
 
 		// 获取用户帮助额度和用户状态
-		let [user, setting, lists] = await Promise.all([userModel.findOne({
+		let lists = await bangzhuModel.getLists(requestUser.id);
+
+		return ctx.json({
+			data: {
+				lists: lists,
+				type: bangzhuModel.staticValue.type,
+				bangzhuState: bangzhuModel.staticValue.state,
+				bangQiuState: bangQiuModel.staticValue.state
+
+
+			}
+		});
+	}
+
+	static async getAdd(ctx) {
+
+		let requestUser = ctx.state.user;
+
+		if (!requestUser.id) {
+
+			return ctx.json(errCode.less_params);
+		}
+
+		// 获取用户帮助额度和用户状态
+		let [user, setting] = await Promise.all([userModel.findOne({
 			attributes: ['id', 'available', 'state', 'bangzhu_nums'],
 			where: {
 				id: requestUser.id
@@ -36,7 +60,7 @@ class BangzhuController {
 			where: {
 				name: 'unit'
 			}
-		}), bangzhuModel.getNotDoneLists(requestUser.id)]);
+		})]);
 
 		if (!user) {
 			return ctx.json(errCode.illegal_user);
@@ -54,9 +78,7 @@ class BangzhuController {
 				}),
 				setting: setting.get({
 					plain: true
-				}),
-				lists: lists,
-				static: bangzhuModel.staticValue
+				})
 
 
 			}
@@ -67,7 +89,7 @@ class BangzhuController {
 	 * @param {*} ctx 
 	 * 用户id   排单类型    排单倍数    交易密码
 	 */
-	static async add(ctx) {
+	static async postAdd(ctx) {
 
 		let request = ctx.request.body,
 			requestUser = ctx.state.user;
@@ -87,7 +109,7 @@ class BangzhuController {
 
 		// 用户验证
 		let user = await userModel.findOne({
-			attributes: ['id', 'available', 'state', 'payword', 'bangzhu_nums'],
+			attributes: ['id', 'available', 'state', 'payword', 'bangzhu_nums', 'bangzhu_golds'],
 			where: {
 				id: requestUser.id
 			}
@@ -107,6 +129,11 @@ class BangzhuController {
 		// 支付密码不正确
 		if (user.payword !== request.payword)
 			return ctx.json(errCode.illegal_payword);
+
+		// 需要排单币
+		if (user.bangzhu_golds < request.available) {
+			return ctx.json(errCode.less_bangzhu_golds);
+		}
 
 		// 一天只能帮助一次
 		let dayCount = await bangzhuModel.getDayCount(requestUser.id);
@@ -147,7 +174,7 @@ class BangzhuController {
 			amount: Math.multiply(setting.value || 900, request.available),
 			type: request.type,
 
-		}).then(() => {
+		}, user, request.available).then(() => {
 
 			return ctx.json({
 				code: 0,

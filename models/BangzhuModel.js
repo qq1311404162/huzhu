@@ -80,14 +80,26 @@ class BangzhuModel extends Model {
      * 写入数据表中
      * @param {*} data 
      */
-	async bangzhu(data) {
+	async bangzhu(data, user, available) {
 		// 订单编号
 		data.ident = 'b' + moment().format('YYYYMMDDHHmmss') + Math.floor(Math.random() * 1000).toString();
 		// 关联数据写入
 		data.bangzhu_infos = Object.assign({}, data);
 
-		return await this.create(data, {
-			include: [db.BangzhuInfo]
+		return await db.sequelize.transaction(t => {
+
+			return this.create(data, {
+				include: [db.BangzhuInfo]
+			},{
+				transaction: t
+			}).then(() => {
+				// 递减
+				return user.decrement('bangzhu_golds', {
+					by: available
+				}, {
+					transaction: t
+				});
+			});
 		});
 	}
 
@@ -117,7 +129,12 @@ class BangzhuModel extends Model {
 		return await this.findAll({
 			where: {
 				user_id: user_id,
-			}
+			},
+			include: [{
+				model: db.BangzhuInfo,
+				attributes: ['id', 'amount', 'state'],
+				include: [db.BangQiu]
+			}]
 		});
 	}
 
