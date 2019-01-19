@@ -1,9 +1,14 @@
 <template>
-	<view class="my-add">+</view>
+	<view class="my-add" @click="myClick">+</view>
 </template>
 <script>
 export default {
-    name: 'my-add'
+    name: 'my-add',
+	methods:{
+		myClick(){
+			this.$emit('click');
+		}
+	}
 };
 </script>
 

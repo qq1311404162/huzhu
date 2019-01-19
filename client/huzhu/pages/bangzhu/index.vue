@@ -8,7 +8,7 @@
 				
 				<view class="" v-for="(item, index1) in lists" :key="index1">
 					
-					<uni-collapse-item-own :info-data="item" :open="index1 === 0 ? true : false">
+					<uni-collapse-item-own :info-data="item" :open="index1 === 0 ? true : false" type="bangzhu">
 						
 					</uni-collapse-item-own>
 				</view>
@@ -79,8 +79,9 @@ export default {
             this.scrollHeight = system.windowHeight + 'px';
         },
         gotoAdd() {
+			console.log(1);
             uni.navigateTo({
-                url: 'add'
+                url: '/pages/bangzhu/add'
             });
         }
     }

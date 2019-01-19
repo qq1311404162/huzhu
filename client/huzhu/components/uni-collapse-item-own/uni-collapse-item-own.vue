@@ -22,11 +22,11 @@
 			</view>
 			
 		</view>
-		<view class="uni-collapse-cell__content" :class="animation==='outer' ? 'uni-collapse-cell--animation' : ''" :style="{height:isOpen==='true' || isOpen=== true ? height + 'px' : '0px'}">
+		<view class="uni-collapse-cell__content" :class="animation==='outer' ? 'uni-collapse-cell--animation' : ''" :style="{height:isOpen==='true' || isOpen=== true ? '' : '0px'}">
 			<view :class="setContClass" :id="elId">
-				<view class="uni-collapse-cell__content-list" v-for="(item2, index2) in infoData.info" :key="index2">
+				<view class="uni-collapse-cell__content-list" v-for="(item2, index2) in (type == 'bangzhu' ? infoData.bangzhu_infos : infoData.qiuzhu_infos)" :key="index2">
 					
-					<uni-card :title="item2.type" :extra="item2.state" :note="item2.created_at" :ident="item2.ident" :amount="item2.amount">
+					<uni-card :title="item2.type" :extra="item2.state" :note="item2.created_at" :ident="item2.ident" :amount="item2.amount" @click="onItemClick(item2)">
 					</uni-card>
 				</view>
 			</view>
@@ -130,10 +130,11 @@ export default {
 				
 				return {};
 			}
-		}
+		},
+		type: String
     },
     created() {
-		console.log(1);
+
         let parent = this.$parent || this.$root;
         let name = parent.$options.name;
 
@@ -187,7 +188,23 @@ export default {
             }
             this.isOpen = !this.isOpen;
             this.parent.onChange && this.parent.onChange(this);
-        }
+        },
+		onItemClick(item) {
+			
+			let url = '';
+			if (this.type == 'bangzhu') {
+				
+				url = '/pages/bangzhu/info';
+			}else {
+				
+				url = '/pages/qiuzhu/info';
+			}
+			
+			// 跳转到详情页
+			uni.navigateTo({
+				url: url + '?id=' + item.id
+			})
+		}
     }
 };
 </script>

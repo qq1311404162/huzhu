@@ -83,7 +83,7 @@
 		methods:{
 			userAvailable(){
 				ajax({
-					url: '/api/bangzhu/index',
+					url: '/api/bangzhu/add',
 					success: res => {
 						
 						for (let i = 1; i <= (res.data.user.available || 1); i++) {
