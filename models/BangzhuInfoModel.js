@@ -1,5 +1,5 @@
-const Sequelize = require('sequelize');
-const moment = require('moment');
+// const Sequelize = require('sequelize');
+// const moment = require('moment');
 
 const Model = require('./Model');
 const db = require('../models/index');
@@ -12,15 +12,35 @@ class BangzhuInfoModel extends Model {
 
 		this.staticValue = {
 			state: {
-				0: '等待匹配',
-				1: '等待确认',
-				2: '已完成'
+				0: '处理中',
+				1: '已完成',
+				9: '作废'
 			},
 			type: {
 				1: '静态钱包',
 				2: '动态钱包'
 			}
 		};
+	}
+
+
+	/**
+	 * 获取帮助拆分表，关联用户表和关联匹配表的信息
+	 * @param {*} id 
+	 */
+	async getInfo(id) {
+
+		return this.findOne({
+			// attribute: [],
+			where: {
+				id: id
+			},
+			include: [{
+				model: db.User
+			}, {
+				model: db.BangQiu
+			}]
+		});
 	}
 
 
@@ -52,6 +72,39 @@ class BangzhuInfoModel extends Model {
 					transaction: t
 				});
 			});
+		});
+	}
+
+	/**
+	 * 获取未完成订单的数量
+	 * @param {*} ident 
+	 */
+	async notDoneCountByIdent(bangzhuInfo) {
+
+		return this.count({
+			where: {
+				ident: bangzhuInfo.ident,
+				user_id: bangzhuInfo.user_id,
+				bangzhu_id: bangzhuInfo.bangzhu_id,
+				state: 0
+			}
+		});
+	}
+
+
+	/**
+	 * 获取指定已完成的全部拆分订单
+	 * @param {*} bangzhuInfo 
+	 */
+	async findAllInfos(bangzhuInfo) {
+
+		return await this.findAll({
+			where: {
+				ident: bangzhuInfo.ident,
+				user_id: bangzhuInfo.user_id,
+				bangzhu_id: bangzhuInfo.bangzhu_id,
+			},
+			include: [db.BangQiu]
 		});
 	}
 

@@ -97,6 +97,14 @@ module.exports = {
 		code: 10023,
 		msg: '排单币不足'
 	},
+	less_activation: {
+		code: 10024,
+		msg: '激活码数量输入有误'
+	},
+	illegal_to_user: {
+		code: 10025,
+		msg: '赠送用户不存在'
+	},
 
 
 
@@ -159,4 +167,8 @@ module.exports = {
 		code: 11014,
 		msg: '确认失败'
 	},
+	err_get_bangzhu_info: {
+		code: 11015,
+		msg: '获取帮助详情失败'
+	}
 };

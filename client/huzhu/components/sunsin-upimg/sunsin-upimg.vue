@@ -80,8 +80,7 @@
 		methods: {
 			chooseImage() {
 				cImage(this, parseInt(this.count));
-				
-				console.log(this.autoup,this.count)
+
 			},
 			uploadimage(e) {
 				uImage(this);
@@ -115,7 +114,7 @@
 			},
 			success(res) {
 				let data = JSON.parse(res.data);
-				console.log(res);
+
 				let filename = data.data.file
 				upload_picture_list[j]['path_server'] = config.server_url + filename
 				that.upload_picture_list = upload_picture_list
@@ -181,8 +180,8 @@
 
 <style>
 	.picture_list image {
-		width: 40rpx;
-		height: 40rpx;
+		width: 40upx;
+		height: 40upx;
 		margin: 0 4%;
 	}
 
@@ -190,19 +189,19 @@
 	.up-pic image {
 		margin-top: 2%;
 		margin-left: 2%;
-		width: 150rpx;
-		height: 150rpx;
+		width: 150upx;
+		height: 150upx;
 		color: #ddd;
-		font-size: 144rpx;
+		font-size: 144upx;
 		line-height: 95%;
 		text-align: center;
 		background-color: #eee;
 		cursor: pointer;
-		border-radius: 10rpx;
+		border-radius: 10upx;
 	}
 
 	.picture_list {
-		padding: 20rpx;
+		padding: 20upx;
 		width: 100%;
 		display: flex;
 		flex-direction: row;
@@ -216,20 +215,20 @@
 		margin: 10px;
 		margin-left: 0;
 		position: relative;
-		width: 160rpx;
-		height: 160rpx;
+		width: 160upx;
+		height: 160upx;
 	}
 
 	.picture_item .del {
 		position: absolute;
-		top: -11rpx;
-		right: -11rpx;
+		top: -11upx;
+		right: -11upx;
 		color: #fff;
 		border-radius: 50%;
-		width: 40rpx;
-		height: 40rpx;
+		width: 40upx;
+		height: 40upx;
 		z-index: 2;
-		line-height: 35rpx;
+		line-height: 35upx;
 		text-align: center;
 		background-color: #f00;
 	}
@@ -239,19 +238,19 @@
 		top: 0;
 		left: 0;
 		opacity: 0.7;
-		border-radius: 8rpx;
+		border-radius: 8upx;
 		background-color: #000;
 		color: #fff;
-		width: 167rpx;
-		height: 160rpx;
+		width: 167upx;
+		height: 160upx;
 		text-align: center;
-		line-height: 160rpx;
+		line-height: 160upx;
 		font-size: 12px;
 	}
 
 	.picture_item image {
-		width: 160rpx;
-		height: 160rpx;
+		width: 160upx;
+		height: 160upx;
 	}
 
 	.yes-upload {

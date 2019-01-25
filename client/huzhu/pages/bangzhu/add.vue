@@ -160,9 +160,7 @@
 							
 							if (res.code === 0) {
 								
-								uni.redirectTo({
-									url: '/pages/bangzhu/index'
-								});
+								uni.navigateBack();
 							}
 						},
 						fail: function(err) {

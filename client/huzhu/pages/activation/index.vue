@@ -2,38 +2,48 @@
 	<view class="content">
 
 		<view class="coin">
-			当前剩余激活码个数：999
+			当前剩余激活码个数：{{activation}}
 		</view>
 		
 		<uni-cell title="接收人">
-			<view class="" slot="content">
-				<input type="text" v-model="realname" placeholder="请输入接受者用户名"/>
+			<view slot="content">
+				<view class="flex-row input-row" slot="content">
+					<input type="text" v-model="to_username" placeholder="请输入接受者用户名"/>
+				</view>
 			</view>
+			
 		</uni-cell>
 		
 		<uni-cell title="激活码个数">
-			<view class="" slot="content">
-				<input type="text" v-model="realname" placeholder="请输入激活码个数"/>
+			<view slot="content">
+				<view class="flex-row input-row" slot="content">
+					<input type="text" v-model="to_nums" placeholder="请输入激活码个数"/>
+				</view>
+				
 			</view>
+			
 		</uni-cell>
 		<uni-cell title="支付密码">
-			<view class="" slot="content">
-				<input type="text" v-model="realname" placeholder="请输入支付密码"/>
+			<view slot="content">
+				<view class="flex-row input-row" slot="content">
+					<input type="text" v-model="payword" placeholder="请输入支付密码"/>
+				</view>
+				
 			</view>
+			
 		</uni-cell>
 		
 		<view class="btn-row">
-			<button type="primary" class="primary" @tap="edit">赠送</button>
+			<button type="primary" class="primary" @tap="give">赠送</button>
 		</view>
-		
-		<view class="record">
-			<text>使用记录</text>
-		</view>
+
 		
 	</view>
 </template>
 <script>
 	import uniCell from '@/components/uni-cell/uni-cell.vue';
+	
+	import ajax from '@/utils/ajax';
 
 	export default {
 		components: {
@@ -41,10 +51,87 @@
 		},
 		data() {
 			return {
-				
+				activation: 0,
+				to_nums: '',
+				payword: '',
+				to_username: ''
 			}
 		},
+		onLoad() {
+			
+			this.getActivation();
+		},
 		methods: {
+			getActivation(){
+				ajax({
+						url: '/api/give-activation',
+						success: res => {
+							
+							this.activation = res.data.active_golds || 0;
+						},
+						fail: function(err) {
+							console.log('fail', err);
+						}
+					});
+			},
+			give(){
+				if (!this.to_username) {
+					uni.showToast({
+						icon: 'none',
+						title: '请输入赠送用户名'
+					});
+					return;
+				}
+				if (this.to_nums == '' || this.to_nums == 0) {
+					uni.showToast({
+						icon: 'none',
+						title: '请输入激活码'
+					});
+					return;
+				}
+				if (!/^\+?[1-9][0-9]*$/.test(this.to_nums)) {
+					uni.showToast({
+						icon: 'none',
+						title: '激活码格式不正确'
+					});
+					return;
+				}
+				
+				
+				if (!this.payword) {
+					uni.showToast({
+						icon: 'none',
+						title: '请输入支付密码'
+					});
+					return;
+				}
+				
+				ajax({
+					url: '/api/give-activation',
+					method: 'POST',
+					data: {
+						to_nums: this.to_nums,
+						to_username: this.to_username,
+						payword: this.payword
+					},
+					success: res => {
+						
+						uni.showToast({
+							icon: 'none',
+							title: res.msg
+						});
+						
+						
+					},
+					fail: function(err) {
+						
+						uni.showToast({
+							icon: 'none',
+							title: '激活码赠送失败'
+						});
+					}
+				});
+			}
 			
 		}
 	}
@@ -63,13 +150,18 @@
 		
 		padding: 80upx 0;
 		text-align: center;
-		font-size: $uni-font-size-base;
+		font-size: $uni-font-size-lg;
 	}
 	
-	.record {
-		padding-top: 80upx;
-		padding-right: 10upx;
-		text-align: right;
-		font-size: 28upx;
+	.input-row {
+	    justify-content: flex-end;
+	}
+	
+	.input-row input {
+	    text-align: right;
+	}
+	
+	.btn-row {
+		padding-bottom: 30upx;
 	}
 </style>

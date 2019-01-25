@@ -12,9 +12,9 @@ class QiuzhuInfoModel extends Model {
 
 		this.staticValue = {
 			state: {
-				0: '等待匹配',
-				1: '等待确认',
-				2: '已完成'
+				0: '处理中',
+				1: '已完成',
+				9: '作废'
 			},
 			type: {
 				1: '静态钱包',
@@ -51,6 +51,22 @@ class QiuzhuInfoModel extends Model {
 					transaction: t
 				});
 			});
+		});
+	}
+
+	/**
+	 * 获取未完成订单的数量
+	 * @param {*} qiuzhuInfo 
+	 */
+	async notDoneCountByIdent(qiuzhuInfo) {
+
+		return this.count({
+			where: {
+				ident: qiuzhuInfo.ident,
+				user_id: qiuzhuInfo.user_id,
+				qiuzhu_id: qiuzhuInfo.qiuzhu_id,
+				state: 0
+			}
 		});
 	}
 

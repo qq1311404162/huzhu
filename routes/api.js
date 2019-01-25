@@ -16,14 +16,16 @@ const UploadController = require('../controllers/api/UploadController');
 // 用户激活
 // Router.post('/activation', LoginController.activation);
 // 赠送激活码
-Router.post('/give-activation', LoginController.giveActivation);
+// Router.post('/give-activation', LoginController.giveActivation);
 // 修改个人资料
 // Router.post('/edit-info', LoginController.editInfo);
 // 修改支付密码
 // Router.post('/edit-payword', LoginController.editPayword);
 
 
-
+/*----- 激活码页面 -----*/
+Router.get('/give-activation', UserController.getGiveActivation);
+Router.post('/give-activation', UserController.postGiveActivation);
 /*----- 我的页面 -----*/
 // 用户注册
 Router.post('/register', UserController.register);
@@ -60,14 +62,12 @@ Router.get('/bangzhu/index', BangzhuController.index);
 Router.get('/bangzhu/add', BangzhuController.getAdd);
 // 开始排单
 Router.post('/bangzhu/add', BangzhuController.postAdd);
-// 获取未完成的排单记录
-Router.get('/bangzhu/not-done-lists', BangzhuController.notDoneLists);
-// 获取全部排单记录
-Router.get('/bangzhu/lists', BangzhuController.lists);
+// 获取帮助详情页信息
+Router.get('/bangzhu/info', BangzhuController.getInfo);
+// 上传截图
+Router.post('/bangzhu/info', BangzhuController.postInfo);
 // 排单表拆分
 Router.post('/bangzhu/chai', BangzhuController.bangzhuChai);
-// 打款提交信息
-Router.post('/bangzhu/dakuan', BangzhuController.dakuan);
 // 倍数 类型
 
 

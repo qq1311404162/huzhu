@@ -33,7 +33,8 @@ class BangzhuController {
 				lists: lists,
 				type: bangzhuModel.staticValue.type,
 				bangzhuState: bangzhuModel.staticValue.state,
-				bangQiuState: bangQiuModel.staticValue.state
+				bangQiuState: bangQiuModel.staticValue.state,
+				infoState: bangzhuModel.staticValue.state
 
 
 			}
@@ -186,66 +187,6 @@ class BangzhuController {
 		});
 	}
 
-
-	/**
-	 * 获取未完成的帮助记录
-	 * @param {*} ctx 
-	 */
-	static async notDoneLists(ctx) {
-
-		let requestUser = ctx.state.user;
-
-		if (!requestUser.id) {
-
-			return ctx.json(errCode.less_params);
-		}
-
-		// 获取记录
-		let lists = await bangzhuModel.getNotDoneLists(requestUser.id);
-
-		if (!lists) {
-
-			return ctx.json(errCode.err_not_done_bangzhu_lists);
-		}
-
-		return ctx.json({
-			data: {
-				lists: lists,
-				static: bangzhuModel.staticValue
-			}
-		});
-	}
-
-
-	/**
-	 * 获取全部帮助记录
-	 * @param {*} ctx 
-	 */
-	static async lists(ctx) {
-
-		let requestUser = ctx.state.user;
-
-		if (!requestUser.id) {
-
-			return ctx.json(errCode.less_params);
-		}
-
-		// 获取记录
-		let lists = await bangzhuModel.getLists(requestUser.id);
-
-		if (!lists) {
-
-			return ctx.json(errCode.err_not_done_bangzhu_lists);
-		}
-
-		return ctx.json({
-			data: {
-				lists: lists,
-				static: bangzhuModel.staticValue
-			}
-		});
-	}
-
 	/**
 	 * 帮助拆分
 	 * @param {*} ctx 
@@ -307,21 +248,47 @@ class BangzhuController {
 
 
 	/**
+	 * 获取帮助详情页
+	 * @param {*} ctx 
+	 */
+	static async getInfo(ctx) {
+
+		let request = ctx.request.query;
+
+		if (!request.id) {
+
+			return ctx.json(errCode.less_params);
+		}
+
+		let bangzhuInfo = await bangzhuInfoModel.getInfo(request.id);
+
+		if (!bangzhuInfo) {
+
+			return ctx.json(errCode.err_get_bangzhu_info);
+		}
+
+		return ctx.json({
+			data: bangzhuInfo
+		});
+	}
+
+
+	/**
 	 * 打款提交
 	 * @param {*} ctx 
 	 */
-	static async dakuan(ctx) {
+	static async postInfo(ctx) {
 
 		let request = ctx.request.body;
 
-		if (!request.pic || !request.id) {
+		if (!request.pic || !request.bang_qiu_id) {
 
 			return ctx.json(errCode.less_params);
 		}
 		// 验证此条信息是否可更改
 		let bangQiu = await bangQiuModel.findOne({
 			where: {
-				id: request.id
+				id: request.bang_qiu_id
 			}
 		});
 
@@ -331,7 +298,7 @@ class BangzhuController {
 		}
 
 		// 更新
-		let result = await bangQiuModel.updateMake(request.id, request.pic);
+		let result = await bangQiuModel.updateMake(request.bang_qiu_id, request.pic);
 
 		if (!result) {
 

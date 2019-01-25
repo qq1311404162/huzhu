@@ -1,7 +1,7 @@
-const Setting = require('../../models/Setting');
 const errCode = require('../../config/error-code');
 
 const userModel = require('../../models/UserModel');
+const userLogModel = require('../../models/UserLogModel');
 
 
 class UserController {
@@ -39,7 +39,7 @@ class UserController {
 		if (request.prename !== undefined && request.prename != '') {
 			// 获取上级用户
 			let preUser = await userModel.findOne({
-				attributes: ['id', 'previous_two', 'previous_id', 'previous_all'],
+				attributes: ['id', 'previous_thr', 'previous_id', 'previous_all'],
 				where: {
 					username: request.prename
 				}
@@ -48,8 +48,20 @@ class UserController {
 			if (!preUser)
 				return ctx.json(errCode.illegal_prevoius);
 
-			let preArr = preUser.previous_two === '' ? [] : preUser.previous_two.split(',');
-			preArr.push(preUser.id);
+			let preArr = preUser.getDataValue('previous_thr').split(','),
+				preAllArr = preUser.getDataValue('previous_all').split(',');
+
+			// 上家第三级上级去掉
+			if (preArr.length === 4) {
+				preArr.splice(0, 1);
+			}
+
+			preArr.splice(preArr.length - 1, 1);
+			preAllArr.splice(preAllArr.length - 1, 1);
+
+			// 上级赋值
+			preArr.push(preUser.getDataValue('id'));
+			preAllArr.push(preUser.getDataValue('id'));
 
 			let realnameStatus = await userModel.uniqueRealname(request.realname, preArr);
 
@@ -57,22 +69,23 @@ class UserController {
 				return ctx.json(errCode.illegal_realname);
 			// 添加用户
 
-			data.previous_id = preUser.id || '';
-			data.previous_two = !preUser.previous_id ? preUser.id : (preUser.previous_id + ',' + preUser.id);
-			data.previous_all = !preUser.previous_all ? preUser.id : (preUser.previous_all + ',' + preUser.id);
+			data.previous_id = preUser.getDataValue('id');
+			data.previous_thr = preArr.join(',') + ',';
+			data.previous_all = preAllArr.join(',') + ',';
 
 		}
 
-		// 密码设置
-		data.password = await userModel.setPassword(request.password);
 		// 数据设置
+		data.password = request.password;
 		data.username = request.username;
 		data.realname = request.realname;
 		data.mobile = request.mobile;
-		data.team_id = 1;
 
 		// 注册用户
-		await userModel.create(data).then(() => {
+		await userModel.register(data).then(user => {
+
+			// 添加用户注册日志
+			userLogModel.createRegisterLog(user.getDataValue('id'));
 
 			return ctx.json({
 				code: 0,
@@ -83,6 +96,9 @@ class UserController {
 
 			return ctx.json(errCode.err_register);
 		});
+
+
+
 
 	}
 
@@ -114,13 +130,20 @@ class UserController {
 			return ctx.json(errCode.err_user);
 		}
 
-		let token = await userModel.setToken(result.dataValues);
+		let token = await userModel.setToken(result.get({
+			plain: true
+		}));
+
+		// 添加用户登录日志
+		userLogModel.createLoginLog(result.getDataValue('id'));
 
 		return ctx.json({
 			code: 0,
 			msg: '登录成功',
 			data: {
-				user: result,
+				user: result.get({
+					plain: true
+				}),
 				token: token
 			}
 		});
@@ -144,7 +167,9 @@ class UserController {
 		}
 
 		return ctx.json({
-			data: user
+			data: user.get({
+				plain: true
+			})
 		});
 	}
 
@@ -172,27 +197,23 @@ class UserController {
 			return ctx.json(errCode.illegal_user);
 		}
 		// 用户不存在
-		if (user.state != 0) {
+		if (user.getDataValue('state') != 0) {
 
 			return ctx.json(errCode.illegal_state);
 		}
 		// 激活码不足
-		if (user.active_golds < 1) {
+		if (user.getDataValue('active_golds') < 1) {
 
 			return ctx.json(errCode.illegal_less_active);
 		}
 
 		// 设置状态为1且激活码数量减1
-		await userModel.update({
-			state: 1,
-			active_golds: user.active_golds - 1
-		}, {
-			where: {
-				id: requestUser.id
-			}
-		}).then(() => {
+		await userModel.activation(user.get({
+			plain: true
+		})).then(() => {
 
-			// 这里要添加激活日志
+			// 激活日志
+			userLogModel.createActivationLog(user.getDataValue('id'));
 
 			return ctx.json({
 				code: 0,
@@ -224,7 +245,9 @@ class UserController {
 		}
 
 		return ctx.json({
-			data: user
+			data: user.get({
+				plain: true
+			})
 		});
 	}
 
@@ -327,10 +350,7 @@ class UserController {
 
 		}).catch(() => {
 
-			return ctx.json({
-				code: 10030,
-				msg: '修改密码失败'
-			});
+			return ctx.json(errCode.err_pwd);
 		});
 
 	}
@@ -379,6 +399,116 @@ class UserController {
 
 			return ctx.json(errCode.err_payword);
 		});
+	}
+
+
+	/**
+	 * 赠送激活码页面
+	 * @param {*} ctx 
+	 */
+	static async getGiveActivation(ctx) {
+
+		let requestUser = ctx.state.user;
+
+		let user = await userModel.findOne({
+			attributes: ['id', 'active_golds'],
+			where: {
+				id: requestUser.id
+			}
+		});
+
+		if (!user) {
+
+			return ctx.json(errCode.illegal_user);
+		}
+
+		return ctx.json({
+			data: user.get({
+				plain: true
+			})
+		});
+	}
+
+	/**
+	 * 赠送激活码
+	 * @param {*} ctx 
+	 *      user_id         用户id
+	 *      to_username     赠送用户名
+	 *      to_nums         赠送数量
+	 *      password        用户密码
+	 */
+	static async postGiveActivation(ctx) {
+
+		let request = ctx.request.body,
+			requestUser = ctx.state.user;
+
+		if (!requestUser.id || !request.to_username || !request.payword) {
+
+			return ctx.json(errCode.less_params);
+		}
+
+		if (!/^\+?[1-9][0-9]*$/.test(request.to_nums)) {
+
+			return ctx.json(errCode.less_activation);
+		}
+
+
+		let [user, toUser] = await Promise.all([userModel.findOne({
+			attributes: ['id', 'username', 'payword', 'active_golds'],
+			where: {
+				id: requestUser.id
+			}
+		}), userModel.findOne({
+			attributes: ['id', 'username', 'password', 'active_golds', 'previous_all'],
+			where: {
+				username: request.to_username
+			}
+		})]);
+
+		if (!user) {
+
+			return ctx.json(errCode.illegal_user);
+		}
+
+		if (!toUser) {
+
+			return ctx.json(errCode.illegal_to_user);
+		}
+
+		// 校验支付密码
+		if (user.getDataValue('payword') !== request.payword) {
+
+			return ctx.json(errCode.illegal_payword);
+		}
+
+		// 校验激活码数量
+		if (user.getDataValue('active_golds') < request.to_nums) {
+
+			return ctx.json(errCode.illegal_less_active);
+		}
+
+		// 检测必须是直系才能赠送
+		if (toUser.getDataValue('previous_all').split(',').indexOf(user.getDataValue('id').toString()) == -1) {
+
+			return ctx.json(errCode.illegal_zhixi);
+		}
+
+		// 赠送激活码
+		let result = await userModel.giveActivation(user, toUser, request.to_nums);
+
+		if (!result) {
+
+			return ctx.json(errCode.err_give_active);
+		}
+
+		// 赠送激活码日志添加
+		userLogModel.createGiveActivationLog(user.getDataValue('id'), '赠送用户' + toUser.getDataValue('username') + '激活码' + request.to_nums + '个');
+		userLogModel.createReceiveActivationLog(toUser.getDataValue('id'), '接收用户' + user.getDataValue('username') + '激活码' + request.to_nums + '个');
+
+		return ctx.json({
+			msg: '赠送成功'
+		});
+
 	}
 
 	/**

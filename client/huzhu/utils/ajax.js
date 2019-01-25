@@ -33,27 +33,33 @@ const ajax = (options = {}) => {
 					showCancel: false,
 					success: (res1) => {
 						if (res1.confirm) {
+							// 清除本地token
+							clearStorage();
 							/**
 							 * 如果需要强制登录，使用reLaunch方式
 							 */
-							uni.reLaunch({
-								url: '../login/index'
-							});
+							gotoLogin();
 						}
 					}
 				});
 
 			} else if (res.statusCode !== 200) {
+			
+				options.fail(res.data);
 
-// 				uni.showToast({
-// 					icon: 'none',
-// 					title: res.data,
-// 
-// 				});
-				options.fail(res.data)
+				
 			} else {
-
-				options.success(res.data);
+				
+				// 用户信息不存在，跳转到登录页面
+				if (res.data.code === 11009) {
+					// 清除本地token
+					clearStorage();
+					
+					gotoLogin();
+				}else {
+					options.success(res.data);
+				}
+				
 			}
 
 
@@ -64,6 +70,17 @@ const ajax = (options = {}) => {
 		}
 
 	});
+}
+
+function gotoLogin() {
+	uni.reLaunch({
+		url: '../login/index'
+	});
+}
+
+function clearStorage(){
+	
+	uni.setStorageSync('token', '');
 }
 
 export default ajax;

@@ -85,7 +85,7 @@
 		},
 		methods:{
 			gotoRegister(){
-				this.goto('../register/index');
+				this.goto('../register/index?prename=qqq111');
 			},
 			gotoBangzhu() {
 				

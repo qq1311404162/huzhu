@@ -3,7 +3,9 @@ const settingModel = require('./models/SettingModel');
 const teamModel = require('./models/TeamModel');
 
 let data = {};
-// let data = {force: true};
+// let data = {
+// 	force: true
+// };
 
 db.sequelize.sync(data).then(() => {
 

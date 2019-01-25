@@ -64,7 +64,7 @@ module.exports = function (sequelize, DataTypes) {
 			comment: '静态钱包金额'
 		},
 		freeze: {
-			type: DataTypes.DECIMAL,
+			type: DataTypes.DECIMAL(12, 2),
 			defaultValue: '0.00',
 			comment: '静态钱包冻结金额'
 		},
@@ -79,7 +79,7 @@ module.exports = function (sequelize, DataTypes) {
 			defaultValue: '',
 			comment: '推荐人id'
 		},
-		previous_two: {
+		previous_thr: {
 			type: DataTypes.STRING,
 			defaultValue: '',
 			allowNull: false,

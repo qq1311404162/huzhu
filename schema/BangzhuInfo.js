@@ -13,30 +13,27 @@ module.exports = function (sequelize, DataTypes) {
 		// 	comment: '帮助id',
 
 		// },
-		ident: {
-			type: DataTypes.STRING,
-			comment: '帮助订单号'
-		},
-		// user_id: {
-		// 	type: DataTypes.INTEGER,
-		// 	comment: '用户id',
+
+		// ident: {
+		// 	type: DataTypes.STRING,
+		// 	comment: '帮助订单号'
 		// },
 		amount: {
 			type: DataTypes.DECIMAL(12, 2),
 			defaultValue: '0.00',
 			comment: '帮助金额'
 		},
-		type: {
-			type: DataTypes.TINYINT,
-			allowNull: false,
-			defaultValue: 1,
-			comment: '帮助类型。1:用户额度; 2:用户机会'
-		},
+		// type: {
+		// 	type: DataTypes.TINYINT,
+		// 	allowNull: false,
+		// 	defaultValue: 1,
+		// 	comment: '帮助类型。1:用户额度; 2:用户机会'
+		// },
 		state: {
 			type: DataTypes.TINYINT,
 			allowNull: false,
 			defaultValue: 0,
-			comment: '状态。0：初始化成功，待匹配；1：匹配成功，待确认订单；2：订单完成'
+			comment: '状态'
 		},
 		created_at: {
 			type: DataTypes.DATE,

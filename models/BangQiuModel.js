@@ -1,4 +1,4 @@
-const Sequelize = require('sequelize');
+// const Sequelize = require('sequelize');
 const moment = require('moment');
 
 const Model = require('./Model');
@@ -23,38 +23,25 @@ class BangQiuModel extends Model {
 		};
 	}
 
+	/**
+	 * 匹配
+	 * @param {*} data 
+	 */
 	async pipei(data) {
 
-		return await db.sequelize.transaction(t => {
+		return await this.create(data);
+	}
 
-			let updateData = {
-				state: 1
-			};
 
-			return qiuzhuInfoModel.update(updateData, {
-				where: {
-					id: data.qiuzhu_info_id
-				}
-			}, {
-				transaction: t
-			}).then(() => {
+	/**
+	 * 获取单个数据
+	 * @param {*} opts 
+	 */
+	async getOne(opts) {
 
-				return bangzhuInfoModel.update(updateData, {
-					where: {
-						id: data.bangzhu_info_id
-					}
-				}, {
-					transaction: t
-				}).then(() => {
-
-					return this.create(data, {
-						transaction: t
-					}, {
-						transaction: t
-					});
-				});
-			});
-
+		return this.findOne({
+			where: opts,
+			include: [db.QiuzhuInfo, db.BangzhuInfo]
 		});
 	}
 
@@ -87,10 +74,13 @@ class BangQiuModel extends Model {
 		return await db.sequelize.transaction(t => {
 
 			let updateData = {
-				state: 2
-			};
+					state: 2
+				},
+				updateInfoData = {
+					state: 1
+				};
 
-			return qiuzhuInfoModel.update(updateData, {
+			return qiuzhuInfoModel.update(updateInfoData, {
 				where: {
 					id: data.qiuzhu_info_id
 				}
@@ -98,7 +88,7 @@ class BangQiuModel extends Model {
 				transaction: t
 			}).then(() => {
 
-				return bangzhuInfoModel.update(updateData, {
+				return bangzhuInfoModel.update(updateInfoData, {
 					where: {
 						id: data.bangzhu_info_id
 					}

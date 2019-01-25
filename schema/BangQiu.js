@@ -18,11 +18,11 @@ module.exports = function (sequelize, DataTypes) {
 		// 	allowNull: false,
 		// 	comment: '求助拆分id',
 		// },
-		amount: {
-			type: DataTypes.DECIMAL(12, 2),
-			defaultValue: '0.00',
-			comment: '匹配金额'
-		},
+		// amount: {
+		// 	type: DataTypes.DECIMAL(12, 2),
+		// 	defaultValue: '0.00',
+		// 	comment: '匹配金额'
+		// },
 		pic: {
 			type: DataTypes.STRING,
 			comment: '打款截图'
@@ -35,12 +35,12 @@ module.exports = function (sequelize, DataTypes) {
 			type: DataTypes.DATE,
 			comment: '确认时间'
 		},
-		state: {
-			type: DataTypes.TINYINT,
-			allowNull: false,
-			defaultValue: 0,
-			comment: '状态。0：待打款；1：待确认；2：成功；9：作废'
-		},
+		// state: {
+		// 	type: DataTypes.TINYINT,
+		// 	allowNull: false,
+		// 	defaultValue: 0,
+		// 	comment: '状态。0：待打款；1：待确认；2：成功；9：作废'
+		// },
 		created_at: {
 			type: DataTypes.DATE,
 			get() {

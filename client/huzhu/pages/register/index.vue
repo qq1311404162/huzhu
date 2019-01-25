@@ -2,46 +2,73 @@
 	<view class="content">
 		
 		<uni-cell title="用户名">
-			<view class="" slot="content">
-				<input type="text" v-model="username" placeholder="请输入用户名"/>
+			<view slot="content">
+				<view class="flex-row input-row">
+					<input type="text" v-model="username" placeholder="请输入用户名"/>
+				</view>
+				
 			</view>
+
 		</uni-cell>
 		
 		<uni-cell title="上级推荐人">
-			<view class="" slot="content">
-				<input type="text" v-model="prename" placeholder="请输入上级推荐人"/>
+			<view slot="content">
+				<view v-if="!preState" class="flex-row input-row">
+					<input type="text" v-model="prename" placeholder="请输入上级推荐人"/>
+				</view>
+				<view class="flex-row input-row" v-if="preState">
+					<text>{{prename}}</text>
+				</view>
+				
 			</view>
+
 		</uni-cell>
 		
 		<uni-cell title="登录密码">
-			<view class="" slot="content">
-				<input type="text" password v-model="password" placeholder="请输入登录密码"/>
+			<view slot="content">
+				<view class="flex-row input-row">
+					<input type="text" password v-model="password" placeholder="请输入登录密码"/>
+				</view>
+				
 			</view>
+
 		</uni-cell>
 		
 		<uni-cell title="确认密码">
-			<view class="" slot="content">
-				<input type="text" password v-model="repassword" placeholder="请输入确认密码"/>
+			<view slot="content">
+				<view class="flex-row input-row">
+					<input type="text" password v-model="repassword" placeholder="请输入确认密码"/>
+				</view>
+				
 			</view>
+
 		</uni-cell>
 		
 		<uni-cell title="真实姓名">
-			<view class="" slot="content">
-				<input type="text" v-model="realname" placeholder="请输入真实姓名"/>
+			<view slot="content">
+				<view class="flex-row input-row">
+					<input type="text" v-model="realname" placeholder="请输入真实姓名"/>
+				</view>
+				
 			</view>
+
 		</uni-cell>
 		
 		<uni-cell title="手机号">
-			<view class="" slot="content">
-				<input type="text" v-model="mobile" placeholder="请输入手机号"/>
+			<view slot="content">
+				<view class="flex-row input-row">
+					<input type="text" v-model="mobile" placeholder="请输入手机号"/>
+				</view>
+				
 			</view>
+
 		</uni-cell>
 		
 		<uni-cell is-right="true">
-			<view class="" slot="content">
+			<view slot="content">
 				<input type="text" v-model="vcode" placeholder="请输入验证码"/>
 			</view>
-			<view class="" slot="other">
+			<view slot="other">
 				<text class="vcode">获取验证码</text>
 			</view>
 		</uni-cell>
@@ -68,9 +95,16 @@ export default {
             repassword: '',
             realname: '',
             prename: '',
-            vcode: ''
+            vcode: '',
+			preState: false
         };
     },
+	onLoad(options) {
+		
+		this.prename = options.prename || '';
+		
+		this.preState = (options.prename || '') ? true : false;
+	},
     methods: {
         register() {
             if (!/^1[3456789]\d{9}$/.test(this.mobile)) {
@@ -125,7 +159,8 @@ export default {
 					password: this.password,
 					repassword: this.repassword,
 					mobile: this.mobile,
-					realname: this.realname
+					realname: this.realname,
+					prename: this.prename
 				},
                 success: res => {
 					
@@ -136,16 +171,17 @@ export default {
 					
 					if (res.code === 0) {
 						
-						uni.redirectTo({
-							url: '../login/index'
-						});
+						setTimeout(() => {
+							uni.navigateBack();
+						}, 1000);
+						
 					}
                 },
                 fail: function(err) {
 					
                     uni.showToast({
                     	icon: 'none',
-                    	title: '用户登录失败'
+                    	title: '用户注册失败'
                     });
                 }
             });
@@ -169,5 +205,17 @@ export default {
 
 .vcode:active {
     background: #adadad;
+}
+
+.input-row {
+    justify-content: flex-end;
+}
+
+.input-row input {
+    text-align: right;
+}
+
+.btn-row {
+	padding-bottom: 30upx;
 }
 </style>

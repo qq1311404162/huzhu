@@ -9,13 +9,14 @@ const bangQiuModel = require('../../models/BangQiuModel');
 const Mathjs = require('mathjs');
 
 const errCode = require('../../config/error-code');
+const Utils = require('../utils/Util');
 
 class QiuzhuController {
 
 	/**
-     * 求助页面首页
-     * @param {*} ctx 
-     */
+	 * 求助页面首页
+	 * @param {*} ctx 
+	 */
 	static async index(ctx) {
 
 		let requestUser = ctx.state.user;
@@ -65,12 +66,12 @@ class QiuzhuController {
 
 
 	/**
-     * 求助
-     * @param {*} ctx 
-     * 1.求助上限为当前最近帮助额度的1.5倍
-     * 2.求助时至少有一个帮助中的列表
-     * 3.求助金额必须满足全局数据的设置条件
-     */
+	 * 求助
+	 * @param {*} ctx 
+	 * 1.求助上限为当前最近帮助额度的1.5倍
+	 * 2.求助时至少有一个帮助中的列表
+	 * 3.求助金额必须满足全局数据的设置条件
+	 */
 	static async add(ctx) {
 
 		let request = ctx.request.body,
@@ -139,9 +140,9 @@ class QiuzhuController {
 
 
 	/**
-     * 匹配
-     * @param {*} ctx 
-     */
+	 * 匹配
+	 * @param {*} ctx 
+	 */
 	static async pipei(ctx) {
 
 		let request = ctx.request.body;
@@ -193,11 +194,9 @@ class QiuzhuController {
 			});
 		}
 
-		let bangQiu = await bangQiuModel.findOne({
-			where: {
-				bangzhu_info_id: request.bangzhu_info_id,
-				qiuzhu_info_id: request.qiuzhu_info_id
-			}
+		let bangQiu = await bangQiuModel.getOne({
+			bangzhu_info_id: request.bangzhu_info_id,
+			qiuzhu_info_id: request.qiuzhu_info_id
 		});
 
 		if (bangQiu) {
@@ -230,9 +229,9 @@ class QiuzhuController {
 
 
 	/**
-     * 确认匹配订单
-     * @param {*} ctx 
-     */
+	 * 确认匹配订单
+	 * @param {*} ctx 
+	 */
 	static async confirm(ctx) {
 
 		let request = ctx.request.body;
@@ -242,24 +241,32 @@ class QiuzhuController {
 			return ctx.json(errCode.less_params);
 		}
 
-		let bangQiu = await bangQiuModel.findOne({
-			where: {
-				id: request.id
-			}
+		let bangQiu = await bangQiuModel.getOne({
+			id: request.id
 		});
+
+
 
 		if (!bangQiu || bangQiu.getDataValue('state') !== 1) {
 
 			return ctx.json(errCode.illegal_bangzhu_dakuan);
 		}
 		// 确认
-		let result = await bangQiuModel.confirmData(bangQiu);
+		let result = await bangQiuModel.confirmData(bangQiu.get({
+			plain: true
+		}));
 
 		if (!result) {
 
 			return ctx.json(errCode.err_confirm);
 		}
-		// 确认成功，查询帮助拆分表和求助拆分表中订单的信息，如果全部完成，两张表
+
+		// 求助表和帮助表最终确认,使用异步
+		setTimeout(() => {
+			Utils.confirm(bangQiu.get({
+				plain: true
+			}));
+		}, 0);
 
 
 		return ctx.json({

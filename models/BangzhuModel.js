@@ -12,9 +12,9 @@ class BangzhuModel extends Model {
 
 		this.staticValue = {
 			state: {
-				0: '等待匹配',
-				1: '等待确认',
-				2: '已完成'
+				0: '处理中',
+				1: '已完成',
+				9: '作废'
 			},
 			type: {
 				1: '自身额度',
@@ -25,9 +25,9 @@ class BangzhuModel extends Model {
 
 
 	/**
-     * 获取当天帮助的条数
-     * @param {*} user_id 
-     */
+	 * 获取当天帮助的条数
+	 * @param {*} user_id 
+	 */
 	async getDayCount(user_id) {
 
 		return await this.count({
@@ -42,9 +42,9 @@ class BangzhuModel extends Model {
 	}
 
 	/**
-     * 获取用户当前自身帮助中未完成的条数
-     * @param {*} user_id 
-     */
+	 * 获取用户当前自身帮助中未完成的条数
+	 * @param {*} user_id 
+	 */
 	async getMainDoingCount(user_id) {
 
 		return await this.count({
@@ -59,9 +59,9 @@ class BangzhuModel extends Model {
 	}
 
 	/**
-     * 获取用户赠送机会本月帮助的条数
-     * @param {*} user_id 
-     */
+	 * 获取用户赠送机会本月帮助的条数
+	 * @param {*} user_id 
+	 */
 	async getGiftDoingCount(user_id) {
 
 		return await this.count({
@@ -77,9 +77,9 @@ class BangzhuModel extends Model {
 	}
 
 	/**
-     * 写入数据表中
-     * @param {*} data 
-     */
+	 * 写入数据表中
+	 * @param {*} data 
+	 */
 	async bangzhu(data, user, available) {
 		// 订单编号
 		data.ident = 'b' + moment().format('YYYYMMDDHHmmss') + Math.floor(Math.random() * 1000).toString();
@@ -90,7 +90,7 @@ class BangzhuModel extends Model {
 
 			return this.create(data, {
 				include: [db.BangzhuInfo]
-			},{
+			}, {
 				transaction: t
 			}).then(() => {
 				// 递减
@@ -105,9 +105,9 @@ class BangzhuModel extends Model {
 
 
 	/**
-     * 获取未完成的帮助记录
-     * @param {*} user_id 
-     */
+	 * 获取未完成的帮助记录
+	 * @param {*} user_id 
+	 */
 	async getNotDoneLists(user_id) {
 
 		return await this.findAll({
@@ -122,9 +122,9 @@ class BangzhuModel extends Model {
 
 
 	/**
-     * 获取全部帮助记录
-     * @param {*} user_id 
-     */
+	 * 获取全部帮助记录
+	 * @param {*} user_id 
+	 */
 	async getLists(user_id) {
 		return await this.findAll({
 			where: {
@@ -139,9 +139,9 @@ class BangzhuModel extends Model {
 	}
 
 	/**
-     * 获取最近一次未完成帮助记录的金额
-     * @param {*} user_id 
-     */
+	 * 获取最近一次未完成帮助记录的金额
+	 * @param {*} user_id 
+	 */
 	async getLatestDoingAmount(user_id) {
 
 		let bangzhu = await this.findOne({
@@ -155,6 +155,22 @@ class BangzhuModel extends Model {
 		});
 
 		return bangzhu !== null ? bangzhu.getDataValue('amount') : 0;
+	}
+
+
+	/**
+	 * 完成帮助
+	 * @param {*} id 
+	 */
+	async done(id) {
+
+		return await this.update({
+			state: 1
+		}, {
+			where: {
+				id: id
+			}
+		});
 	}
 
 }

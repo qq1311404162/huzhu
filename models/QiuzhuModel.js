@@ -14,9 +14,9 @@ class QiuzhuModel extends Model {
 
 		this.staticValue = {
 			state: {
-				0: '等待匹配',
-				1: '等待确认',
-				2: '已完成'
+				0: '处理中',
+				1: '已完成',
+				9: '作废'
 			},
 			type: {
 				1: '静态钱包',
@@ -26,9 +26,9 @@ class QiuzhuModel extends Model {
 	}
 
 	/**
-     * 写入数据表中
-     * @param {*} data 
-     */
+	 * 写入数据表中
+	 * @param {*} data 
+	 */
 	async qiuzhu(data, user) {
 		// 订单编号
 		data.ident = 'q' + moment().format('YYYYMMDDHHmmss') + Math.floor(Math.random() * 1000).toString();
@@ -58,9 +58,9 @@ class QiuzhuModel extends Model {
 
 
 	/**
-     * 获取未完成的求助记录
-     * @param {*} user_id 
-     */
+	 * 获取未完成的求助记录
+	 * @param {*} user_id 
+	 */
 	async getNotDoneLists(user_id) {
 
 		return await this.findAll({
@@ -75,13 +75,28 @@ class QiuzhuModel extends Model {
 
 
 	/**
-     * 获取全部帮助记录
-     * @param {*} user_id 
-     */
+	 * 获取全部帮助记录
+	 * @param {*} user_id 
+	 */
 	async getLists(user_id) {
 		return await this.findAll({
 			where: {
 				user_id: user_id,
+			}
+		});
+	}
+
+	/**
+	 * 完成求助
+	 * @param {*} id 
+	 */
+	async done(id) {
+
+		return await this.update({
+			state: 1
+		}, {
+			where: {
+				id: id
 			}
 		});
 	}

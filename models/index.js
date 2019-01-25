@@ -31,41 +31,45 @@ for (let f of files) {
 	}
 }
 
+let opts = {
+	onUpdate: 'NO ACTION'
+};
+
 // admin_log表关联
-db.AdminLog.belongsTo(db.Admin);
-db.Admin.hasMany(db.AdminLog);
+db.AdminLog.belongsTo(db.Admin, opts);
+db.Admin.hasMany(db.AdminLog, opts);
 
 // user表团队关联
-db.User.belongsTo(db.Team);
+db.User.belongsTo(db.Team, opts);
 
 // user_log表关联
-db.UserLog.belongsTo(db.User);
-db.User.hasMany(db.UserLog);
+db.UserLog.belongsTo(db.User, opts);
+db.User.hasMany(db.UserLog, opts);
 
 // bangzhu表关联
-db.Bangzhu.belongsTo(db.User);
-db.User.hasMany(db.Bangzhu);
+db.Bangzhu.belongsTo(db.User, opts);
+db.User.hasMany(db.Bangzhu, opts);
 
 // bangzhu_info表关联
-db.BangzhuInfo.belongsTo(db.Bangzhu);
-db.BangzhuInfo.belongsTo(db.User);
-db.Bangzhu.hasMany(db.BangzhuInfo);
-db.User.hasMany(db.BangzhuInfo);
+db.BangzhuInfo.belongsTo(db.Bangzhu, opts);
+// db.BangzhuInfo.belongsTo(db.User, opts);
+db.Bangzhu.hasMany(db.BangzhuInfo, opts);
+// db.User.hasMany(db.BangzhuInfo, opts);
 
 // qiuzhu表关联
-db.Qiuzhu.belongsTo(db.User);
-db.User.hasMany(db.Qiuzhu);
+db.Qiuzhu.belongsTo(db.User, opts);
+db.User.hasMany(db.Qiuzhu, opts);
 
 // qiuzhu_info表关联
-db.QiuzhuInfo.belongsTo(db.Qiuzhu);
-db.QiuzhuInfo.belongsTo(db.User);
-db.Qiuzhu.hasMany(db.QiuzhuInfo);
-db.User.hasMany(db.QiuzhuInfo);
+db.QiuzhuInfo.belongsTo(db.Qiuzhu, opts);
+// db.QiuzhuInfo.belongsTo(db.User, opts);
+db.Qiuzhu.hasMany(db.QiuzhuInfo, opts);
+// db.User.hasMany(db.QiuzhuInfo, opts);
 
 // bang_qiu表关联
-db.BangQiu.belongsTo(db.BangzhuInfo);
-db.BangzhuInfo.hasMany(db.BangQiu);
-db.BangQiu.belongsTo(db.QiuzhuInfo);
-db.QiuzhuInfo.hasMany(db.BangQiu);
+db.BangQiu.belongsTo(db.BangzhuInfo, opts);
+db.BangzhuInfo.hasOne(db.BangQiu, opts);
+db.BangQiu.belongsTo(db.QiuzhuInfo, opts);
+db.QiuzhuInfo.hasOne(db.BangQiu, opts);
 
 module.exports = db;

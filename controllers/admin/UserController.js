@@ -1,4 +1,4 @@
-const User = require('../../models/User');
+// const User = require('../../models/User');
 
 class UserController {
 
@@ -11,18 +11,18 @@ class UserController {
 	// 用户数据
 	static async list(ctx) {
 
-		let query = ctx.request.query;
+		// let query = ctx.request.query;
 
-		let [count, result] = await Promise.all([User.count(), User.findAll({
-			offset: (parseInt(query.page) - 1) * parseInt(query.limit),
-			limit: parseInt(query.limit)
-		})]);
+		// let [count, result] = await Promise.all([User.count(), User.findAll({
+		// 	offset: (parseInt(query.page) - 1) * parseInt(query.limit),
+		// 	limit: parseInt(query.limit)
+		// })]);
 
 
-		return ctx.jsonPage({
-			data: result,
-			count: count
-		});
+		// return ctx.jsonPage({
+		// 	data: result,
+		// 	count: count
+		// });
 
 	}
 

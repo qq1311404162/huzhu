@@ -32,7 +32,7 @@ export default {
     },
     data() {
         return {
-            avatar: 'http://hz.menguang.vip/upload/avatar/20190116174106262.jpg',
+            avatar: '',
             realname: '',
             team: '',
             state: 0
@@ -50,7 +50,7 @@ export default {
                 success: res => {
                     this.realname = res.data.realname;
                     this.avatar =
-                        res.data.avatar == '' ? 'http://hz.menguang.vip/upload/avatar/20190116174106262.jpg' : res.data.avatar;
+                        res.data.avatar == '' ? '../../static/my-0.png' : res.data.avatar;
                     this.state = res.data.state;
                     this.team = res.data.team.name;
                 },
@@ -88,6 +88,9 @@ export default {
             });
         },
 		logout(){
+			
+			uni.setStorageSync('token', '');
+			
 			uni.reLaunch({
 				url: '../login/index'
 			});

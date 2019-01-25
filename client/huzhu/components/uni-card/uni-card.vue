@@ -8,11 +8,12 @@
 			<view class="uni-card__header-extra-text" v-if="extra">{{extra}}</view>
 		</view>
 		<view class="uni-card__content" :class="isFull === false || isFull === 'false' ? 'uni-card__content--pd' : ''">
-			<view class="uni-card__content-ident">
-				订单编号：{{ident}}
-			</view>
+			
 			<view class="uni-card__content-amount">
-				金额：￥{{amount}}
+				金额：￥{{amountDesc}}
+			</view>
+			<view class="uni-card__content-state">
+				状态：{{stateDesc}}
 			</view>
 		</view>
 		<view class="uni-card__footer" v-if="note">{{note}}</view>
@@ -31,8 +32,52 @@
 				type: [Boolean, String],
 				default: false
 			},
-			ident: String,	//订单编号
-			amount: String  // 金额
+			info: {
+				type: Object,
+				default: function () {
+					
+					return {}
+				}
+			},
+			// 拆分表状态
+			infoState: {
+				type: Object,
+				default: function () {
+					
+					return {}
+				}
+			},
+			// 帮求表状态
+			bangQiuState: {
+				type: Object,
+				default: function () {
+					
+					return {}
+				}
+			}
+		},
+		computed:{
+			
+			amountDesc(){
+				
+				return this.info.amount || '0.00';
+			},
+			
+			stateDesc(){
+				
+				let str = '等待匹配';
+				
+				if (this.info.bang_qiu) {
+
+					str = this.bangQiuState[this.info.bang_qiu.state];
+					
+				}else if (this.info) {
+					
+					str = this.infoState[this.info.state];
+				}
+				
+				return str;
+			}
 		},
 		methods: {
 			onClick() {
@@ -148,6 +193,11 @@
 			}
 			
 			&-amount {
+				font-size: 30upx;
+				padding-top: 10upx;
+			}
+			
+			&-state {
 				font-size: 30upx;
 				padding-top: 10upx;
 			}

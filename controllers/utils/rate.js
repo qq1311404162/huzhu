@@ -1,27 +1,27 @@
-class rate {
+const bangzhuInfoModel = require('../../models/BangzhuInfoModel');
+
+class Rate {
+
+	constructor() {
+
+	}
 
 	/**
-     * 静态收益
-     */
-	static static_rate(opts) {
+	 * 计算个人利息
+	 * @param {*} bangzhuInfo 
+	 */
+	static async rateBangzhu(bangzhuInfo) {
 
-		// 1.固定百分比利息
-		// 1）判断打款时间是否在奖励时间内，设置最终比例
-		// 2）返回具体的利息金额
+		// 获取全部的拆分订单
+		let infos = await bangzhuInfoModel.findAllInfos(bangzhuInfo),
+			rate = 0;
 
-		// 2.动态百分比利息
-		// 1）。。。
-		// 2）返回具体的利息金额
+		// 循环订单，计算每一个利息
+		for (const info of infos) {
 
+			rate += await doRate(info);
+		}
 	}
 }
 
-module.exports = rate;
-
-/*----- 利息类 -----*/
-
-// 1.静态收益利息
-// 1.1 固定百分比利息
-// 1.2 排队期一个利息，打款后一个利息
-// 2.动态收益利息
-// 2.1 不同级别不同利息
+module.exports = new Rate();

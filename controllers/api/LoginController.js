@@ -1,4 +1,4 @@
-const User = require('../../models/User');
+// const User = require('../../models/User');
 const errCode = require('../../config/error-code');
 
 class LoginController {

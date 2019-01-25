@@ -20,13 +20,21 @@
 					{{stateDesc}}
 				</view>
 			</view>
+			<view class="uni-collapse-cell__title-three">
+				<view class="uni-collapse-cell__title-two-type">
+					类型：{{typeObj[infoData.type]}}
+				</view>
+				<view class="uni-collapse-cell__title-two-time">
+					时间：{{infoData.created_at}}
+				</view>
+			</view>
 			
 		</view>
 		<view class="uni-collapse-cell__content" :class="animation==='outer' ? 'uni-collapse-cell--animation' : ''" :style="{height:isOpen==='true' || isOpen=== true ? '' : '0px'}">
 			<view :class="setContClass" :id="elId">
 				<view class="uni-collapse-cell__content-list" v-for="(item2, index2) in (type == 'bangzhu' ? infoData.bangzhu_infos : infoData.qiuzhu_infos)" :key="index2">
 					
-					<uni-card :title="item2.type" :extra="item2.state" :note="item2.created_at" :ident="item2.ident" :amount="item2.amount" @click="onItemClick(item2)">
+					<uni-card :note="item2.created_at" :info="item2" :infoState="infoState" :bangQiuState="bangQiuState" @click="onItemClick(item2)">
 					</uni-card>
 				</view>
 			</view>
@@ -100,7 +108,7 @@ export default {
 		},
 		stateDesc(){
 			
-			return this.infoData.state || '已完成';
+			return (this.state[this.infoData.state]) || '等待匹配';
 		}
     },
     props: {
@@ -131,7 +139,40 @@ export default {
 				return {};
 			}
 		},
-		type: String
+		type: String,
+		// 类型
+		typeObj: {
+			type: Object,
+			default: function () {
+				
+				return {}
+			}
+		},
+		// 状态
+		state: {
+			type: Object,
+			default: function () {
+				
+				return {}
+			}
+			
+		},
+		// 拆分表状态
+		infoState: {
+			type: Object,
+			default: function () {
+				
+				return {}
+			}
+		},
+		// 帮求表状态
+		bangQiuState: {
+			type: Object,
+			default: function () {
+				
+				return {}
+			}
+		}
     },
     created() {
 
@@ -146,32 +187,6 @@ export default {
         }
         this.parent = parent;
     },
-    // #ifdef H5
-    mounted() {
-        let view = uni.createSelectorQuery().select(`#${this.elId}`);
-        view.fields(
-            {
-                size: true
-            },
-            data => {
-                this.height = data.height;
-            }
-        ).exec();
-    },
-    // #endif
-    // #ifndef H5
-    onReady() {
-        let view = uni.createSelectorQuery().select(`#${this.elId}`);
-        view.fields(
-            {
-                size: true
-            },
-            data => {
-                this.height = data.height;
-            }
-        ).exec();
-    },
-    // #endif
     methods: {
         onClick() {
             if (this.disabled) {
@@ -200,10 +215,18 @@ export default {
 				url = '/pages/qiuzhu/info';
 			}
 			
-			// 跳转到详情页
-			uni.navigateTo({
-				url: url + '?id=' + item.id
-			})
+			if (item.bang_qiu !== null) {
+				// 跳转到详情页
+				uni.navigateTo({
+					url: url + '?id=' + item.id
+				})
+			}else {
+				uni.showToast({
+				    icon: 'none',
+				    title: '等待匹配',
+				});
+			}
+			
 		}
     }
 };
@@ -328,6 +351,26 @@ $collapse-title-pd: $uni-spacing-col-lg $uni-spacing-row-lg;
 			}
 			
 			&-state {
+				
+				color: red;
+			}
+		}
+		
+		&-three {
+			
+			display: flex;
+			flex-direction: row;
+			justify-content: space-between;
+			align-items: center;
+			
+			font-size: $uni-font-size-base;
+			padding-top: 10upx;
+			
+			&-type {
+				
+			}
+			
+			&-time {
 				
 				color: red;
 			}

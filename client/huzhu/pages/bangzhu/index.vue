@@ -8,14 +8,14 @@
 				
 				<view class="" v-for="(item, index1) in lists" :key="index1">
 					
-					<uni-collapse-item-own :info-data="item" :open="index1 === 0 ? true : false" type="bangzhu">
+					<uni-collapse-item-own :info-data="item" :open="index1 === 0 ? true : false" type="bangzhu" :typeObj="typeObj" :state="state" :infoState="infoState" :bangQiuState="bangQiuState">
 						
 					</uni-collapse-item-own>
 				</view>
 				
 			</uni-collapse>
 
-			<uni-load-more :status="loadMoreStatus"></uni-load-more>
+			<uni-load-more :status="loadMoreStatus" v-if="loadMore"></uni-load-more>
 		</scroll-view>
 		<my-add @click="gotoAdd"></my-add>
 
@@ -38,21 +38,27 @@ export default {
 		myAdd
     },
     onLoad() {
-        // 获取帮助列表
-        this.getLists();
 
-		// 设置scroll-view高度
-        let system = uni.getSystemInfoSync();
-        this.setScrollHeight(system);
+		
     },
+	onShow(){
+		// 获取帮助列表
+		this.getLists();
+		// 设置scroll-view高度
+		let system = uni.getSystemInfoSync();
+		this.setScrollHeight(system);
+	},
     data() {
         return {
             lists: [],
-			typeList: {},
-			bangzhuState: {},
-			bangQiustate: {},
+			typeObj: {},
+			state: {},
+			infoState: {},
+			bangQiuState: {},
             loadMoreStatus: 'loading',
-            scrollHeight: '500px'
+            scrollHeight: '500px',
+			loadMore: false
+			
         };
     },
     methods: {
@@ -62,8 +68,14 @@ export default {
 					success: res => {
 						
 						this.lists = res.data.lists;
-						this.typeList = res.data.type;
-						this.bangQiustate = res.data.bangQiustate;
+						this.typeObj = res.data.type;
+						this.infoState = res.data.infoState;
+						this.bangQiuState = res.data.bangQiuState;
+						this.state = res.data.bangzhuState;
+						
+						this.loadMore = (this.lists.length < 10 && this.lists.length > 0) ? false : true;
+						
+						this.loadMoreStatus = this.lists.length == 0 ? 'noMore' : 'loading';
 					},
 					fail: function(err) {
 						console.log('fail', err);
