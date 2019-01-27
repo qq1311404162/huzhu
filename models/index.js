@@ -41,6 +41,9 @@ db.Admin.hasMany(db.AdminLog, opts);
 
 // user表团队关联
 db.User.belongsTo(db.Team, opts);
+db.User.hasOne(db.User, {onUpdate: 'NO ACTION', foreignKey: 'previous_id', as: 'Previous'});	// 上级推荐人
+db.User.hasOne(db.User, {onUpdate: 'NO ACTION', foreignKey: 'previous_two_id', as: 'PreviousTwo'});	// 上上级推荐人
+db.User.hasOne(db.User, {onUpdate: 'NO ACTION', foreignKey: 'previous_thr_id', as: 'PreviousThr'});	//上上上级推荐人
 
 // user_log表关联
 db.UserLog.belongsTo(db.User, opts);

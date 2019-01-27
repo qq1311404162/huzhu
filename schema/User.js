@@ -73,12 +73,12 @@ module.exports = function (sequelize, DataTypes) {
 			defaultValue: '0.00',
 			comment: '动态钱包金额'
 		},
-		previous_id: {
-			type: DataTypes.STRING,
-			// allowNull: false,
-			defaultValue: '',
-			comment: '推荐人id'
-		},
+		// previous_id: {
+		// 	type: DataTypes.STRING,
+		// 	// allowNull: false,
+		// 	defaultValue: '',
+		// 	comment: '推荐人id'
+		// },
 		previous_thr: {
 			type: DataTypes.STRING,
 			defaultValue: '',
