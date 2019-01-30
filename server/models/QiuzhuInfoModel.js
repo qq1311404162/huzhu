@@ -23,6 +23,20 @@ class QiuzhuInfoModel extends Model {
 		};
 	}
 
+
+	/**
+	 * 获取带求助信息的求助详情
+	 * @param {*} id 
+	 */
+	async getInfoWithQiuzhu(id) {
+
+		return await this.findById(id, {
+			include: [{
+				model: db.Qiuzhu
+			}],
+		});
+	}
+
 	/**
 	 * 拆分指定金额
 	 * @param {*} amount 

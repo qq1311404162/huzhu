@@ -154,22 +154,23 @@ class UserModel extends Model {
 
 
 	/**
-	 * 赠送激活码
+	 * 赠送
 	 * @param {*} user 
 	 * @param {*} toUser 
 	 * @param {*} to_nums 
+	 * @param {*} type 
 	 */
-	async giveActivation(user, toUser, to_nums) {
+	async give(user, toUser, to_nums, type) {
 
 		return db.sequelize.transaction(function (t) {
 
 			// 赠送的用户减少激活码数量
-			return user.decrement('active_golds', {
+			return user.decrement(type, {
 				by: to_nums,
 				transaction: t
 			}).then(() => {
 				// 被赠送的用户增加激活码数量
-				return toUser.increment('active_golds', {
+				return toUser.increment(type, {
 					by: to_nums,
 					transaction: t
 				});
@@ -211,16 +212,45 @@ class UserModel extends Model {
 
 
 	/**
-	 * 返回用户团队且完成帮助的人数
-	 * @param {*} previous_id 
+	 * 返回用户团队人数
+	 * @param {*} id 
 	 */
-	async getUserTeamCount(previous_id) {
+	async getUserTeamCount(id) {
 
 		return await this.count({
 			where: {
-				previous_two: {
-					[Sequelize.Op.like]: '%' + previous_id + ',%'
+				[Sequelize.Op.or]: [{
+					previous_id: id
 				},
+				{
+					previous_two_id: id
+				},
+				{
+					previous_thr_id: id
+				},
+				],
+			}
+		});
+	}
+
+	/**
+	 * 返回用户团队且完成帮助的人数
+	 * @param {*} id 
+	 */
+	async getUserTeamDoneCount(id) {
+
+		return await this.count({
+			where: {
+				[Sequelize.Op.or]: [{
+					previous_id: id
+				},
+				{
+					previous_two_id: id
+				},
+				{
+					previous_thr_id: id
+				},
+				],
 				freeze: {
 					[Sequelize.Op.ne]: '0.00'
 				}

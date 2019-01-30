@@ -39,16 +39,8 @@
 					return {}
 				}
 			},
-			// 拆分表状态
-			infoState: {
-				type: Object,
-				default: function () {
-					
-					return {}
-				}
-			},
-			// 帮求表状态
-			bangQiuState: {
+			// 状态
+			state: {
 				type: Object,
 				default: function () {
 					
@@ -65,18 +57,8 @@
 			
 			stateDesc(){
 				
-				let str = '等待匹配';
+				return this.state[this.info.state] || '等待匹配';
 				
-				if (this.info.bang_qiu) {
-
-					str = this.bangQiuState[this.info.bang_qiu.state];
-					
-				}else if (this.info) {
-					
-					str = this.infoState[this.info.state];
-				}
-				
-				return str;
 			}
 		},
 		methods: {

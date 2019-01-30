@@ -7,6 +7,7 @@ const bangQiuModel = require('../../models/BangQiuModel');
 const Math = require('mathjs');
 
 const errCode = require('../../config/error-code');
+const config = require('../../config/config');
 
 class BangzhuController {
 
@@ -18,25 +19,25 @@ class BangzhuController {
 	 */
 	static async index(ctx) {
 
-		let requestUser = ctx.state.user;
+		let requestUser = ctx.state.user,
+			query = ctx.request.query;
 
 		if (!requestUser.id) {
 
 			return ctx.json(errCode.less_params);
 		}
 
+		let page = query.page || 1,
+			limit = query.length || 10;
+
 		// 获取用户帮助额度和用户状态
-		let lists = await bangzhuModel.getLists(requestUser.id);
+		let lists = await bangzhuModel.getLists(requestUser.id, page, limit);
 
 		return ctx.json({
 			data: {
 				lists: lists,
-				type: bangzhuModel.staticValue.type,
-				bangzhuState: bangzhuModel.staticValue.state,
-				bangQiuState: bangQiuModel.staticValue.state,
-				infoState: bangzhuModel.staticValue.state
-
-
+				type: bangzhuModel.type,
+				state: config.genState,
 			}
 		});
 	}
@@ -260,15 +261,17 @@ class BangzhuController {
 			return ctx.json(errCode.less_params);
 		}
 
-		let bangzhuInfo = await bangzhuInfoModel.getInfo(request.id);
+		let bangQiu = await bangQiuModel.getInfoWithQiuzhu(request.id);
 
-		if (!bangzhuInfo) {
+		if (!bangQiu) {
 
 			return ctx.json(errCode.err_get_bangzhu_info);
 		}
 
 		return ctx.json({
-			data: bangzhuInfo
+			data: bangQiu.get({
+				plain: true
+			})
 		});
 	}
 
@@ -286,19 +289,20 @@ class BangzhuController {
 			return ctx.json(errCode.less_params);
 		}
 		// 验证此条信息是否可更改
-		let bangQiu = await bangQiuModel.findOne({
-			where: {
-				id: request.bang_qiu_id
-			}
-		});
+		let bangQiu = await bangQiuModel.getOne(request.bang_qiu_id);
 
-		if (!bangQiu || bangQiu.getDataValue('state') !== 0) {
+		if (!bangQiu || !bangQiu.getDataValue('qiuzhu_info') || bangQiu.getDataValue('qiuzhu_info').getDataValue('state') !== 1 || !bangQiu.getDataValue('bangzhu_info') || bangQiu.getDataValue('bangzhu_info').getDataValue('state') !== 1) {
 
 			return ctx.json(errCode.illegal_bangzhu_dakuan);
 		}
 
 		// 更新
-		let result = await bangQiuModel.updateMake(request.bang_qiu_id, request.pic);
+		let result = await bangQiuModel.updateMake({
+			id: request.bang_qiu_id,
+			pic: request.pic,
+			bangzhu_info_id: bangQiu.getDataValue('bangzhu_info').getDataValue('id'),
+			qiuzhu_info_id: bangQiu.getDataValue('qiuzhu_info').getDataValue('id')
+		});
 
 		if (!result) {
 

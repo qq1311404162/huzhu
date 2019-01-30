@@ -105,6 +105,14 @@ module.exports = {
 		code: 10025,
 		msg: '赠送用户不存在'
 	},
+	illegal_same_user: {
+		code: 10026,
+		msg: '不能赠送给自己'
+	},
+	illegal_less_bangzhu: {
+		code: 10027,
+		msg: '排单币数量不足'
+	},
 
 
 

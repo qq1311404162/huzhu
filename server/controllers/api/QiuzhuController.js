@@ -9,6 +9,7 @@ const bangQiuModel = require('../../models/BangQiuModel');
 const Mathjs = require('mathjs');
 
 const errCode = require('../../config/error-code');
+const config = require('../../config/config');
 const Utils = require('../utils/Util');
 
 class QiuzhuController {
@@ -19,6 +20,32 @@ class QiuzhuController {
 	 */
 	static async index(ctx) {
 
+		let requestUser = ctx.state.user,
+			query = ctx.request.query;
+
+		if (!requestUser.id) {
+
+			return ctx.json(errCode.less_params);
+		}
+
+		let page = query.page || 1,
+			limit = query.length || 10;
+
+		// 获取用户帮助额度和用户状态
+		let lists = await qiuzhuModel.getLists(requestUser.id, page, limit);
+
+		return ctx.json({
+			data: {
+				lists: lists,
+				type: qiuzhuModel.type,
+				state: config.genState,
+			}
+		});
+	}
+
+
+	static async getAdd(ctx) {
+
 		let requestUser = ctx.state.user;
 
 		if (!requestUser.id) {
@@ -26,18 +53,10 @@ class QiuzhuController {
 			return ctx.json(errCode.less_params);
 		}
 
-		// 获取用户帮助额度和用户状态
-		let [user, setting, lists] = await Promise.all([userModel.findOne({
-			attributes: ['id', 'available', 'state', 'bangzhu_nums'],
-			where: {
-				id: requestUser.id
-			}
-		}), settingModel.findOne({
-			attributes: ['name', 'value'],
-			where: {
-				name: 'unit'
-			}
-		}), qiuzhuModel.getNotDoneLists(requestUser.id)]);
+		// 获取用户钱包金额
+		let [user, setting] = await Promise.all([userModel.findById(requestUser.id, {
+			attributes: ['id', 'static_wallet', 'dynamic_wallet'],
+		}), settingModel.findMul(['dynamic_wallet_base', 'dynamic_wallet_mul', 'static_wallet_base', 'static_wallet_mul'])]);
 
 		if (!user) {
 			return ctx.json(errCode.illegal_user);
@@ -53,12 +72,7 @@ class QiuzhuController {
 				user: user.get({
 					plain: true
 				}),
-				setting: setting.get({
-					plain: true
-				}),
-				lists: lists,
-				static: qiuzhuModel.staticValue
-
+				setting: setting
 
 			}
 		});
@@ -72,7 +86,7 @@ class QiuzhuController {
 	 * 2.求助时至少有一个帮助中的列表
 	 * 3.求助金额必须满足全局数据的设置条件
 	 */
-	static async add(ctx) {
+	static async postAdd(ctx) {
 
 		let request = ctx.request.body,
 			requestUser = ctx.state.user;
@@ -83,7 +97,7 @@ class QiuzhuController {
 		}
 
 		// 获取设置中的排单额度基数
-		let [setting, user, bangzhuAmount] = await Promise.all([settingModel.findMul(['dynamic_wallet_base', 'dynamic_wallet_mul']), userModel.findOne({
+		let [setting, user, bangzhuAmount] = await Promise.all([settingModel.findMul(['dynamic_wallet_base', 'dynamic_wallet_mul', 'static_wallet_base', 'static_wallet_mul']), userModel.findOne({
 			attributes: ['id', 'state', 'payword', 'dynamic_wallet', 'static_wallet'],
 			where: {
 				id: requestUser.id
@@ -99,8 +113,9 @@ class QiuzhuController {
 
 			return ctx.json(errCode.err_setting);
 		}
+
 		// 提现金额需要满足全局设置信息
-		if (request.amount < setting.dynamic_wallet_base || (request.amount % parseInt(setting.dynamic_wallet_mul) !== 0)) {
+		if ((request.type == 1 && (request.amount < setting.static_wallet_base || (request.amount % parseInt(setting.static_wallet_mul) !== 0))) || (request.type == 2 && (request.amount < setting.dynamic_wallet_base || (request.amount % parseInt(setting.dynamic_wallet_mul) !== 0)))) {
 
 			return ctx.json(errCode.illegal_qiuzhu_amount);
 		}
@@ -115,8 +130,8 @@ class QiuzhuController {
 			return ctx.json(errCode.illegal_dynamic_wallet);
 		}
 
-		// 求助金额必须不超过最近帮助金额的1.5倍
-		if (request.amount > Mathjs.multiply(bangzhuAmount, 1.5)) {
+		// 董涛求助金额必须不超过最近帮助金额的1.5倍
+		if (request.type == 2 && request.amount > Mathjs.multiply(bangzhuAmount, 1.5)) {
 
 			return ctx.json(errCode.illegal_max_bangzhu_amount);
 		}
@@ -152,15 +167,7 @@ class QiuzhuController {
 			return ctx.json(errCode.less_params);
 		}
 
-		let [bangzhuInfo, qiuzhuInfo] = await Promise.all([bangzhuInfoModel.findOne({
-			where: {
-				id: request.bangzhu_info_id
-			}
-		}), qiuzhuInfoModel.findOne({
-			where: {
-				id: request.qiuzhu_info_id
-			}
-		})]);
+		let [bangzhuInfo, qiuzhuInfo] = await Promise.all([bangzhuInfoModel.getInfoWithBangzhu(request.bangzhu_info_id), qiuzhuInfoModel.getInfoWithQiuzhu(request.qiuzhu_info_id)]);
 
 		if (!bangzhuInfo || !qiuzhuInfo) {
 
@@ -178,7 +185,7 @@ class QiuzhuController {
 			});
 		}
 
-		if (bangzhuInfo.getDataValue('user_id') === qiuzhuInfo.getDataValue('user_id')) {
+		if (bangzhuInfo.getDataValue('bangzhu').getDataValue('user_id') === qiuzhuInfo.getDataValue('qiuzhu').getDataValue('user_id')) {
 
 			return ctx.json({
 				code: -1,
@@ -210,7 +217,6 @@ class QiuzhuController {
 		await bangQiuModel.pipei({
 			bangzhu_info_id: request.bangzhu_info_id,
 			qiuzhu_info_id: request.qiuzhu_info_id,
-			amount: bangzhuInfo.getDataValue('amount')
 		}).then(() => {
 
 			return ctx.json({

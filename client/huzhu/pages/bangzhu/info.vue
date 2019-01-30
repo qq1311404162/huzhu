@@ -48,13 +48,13 @@
 			<uni-cell title="打款截图">
 				<view slot="content">
 					<view class="flex-row input-row">
-						<sunsin-upimg v-if="state == 0" type="pay" @getPic="getPay" />
-						<image v-if="state != 0" class="img" :src="pic" mode="aspectFill" @click="showPic(pic)"></image>
+						<sunsin-upimg v-if="state == 1" type="pay" @getPic="getPay" />
+						<image v-if="state > 1 && state != 9" class="img" :src="pic" mode="aspectFill" @click="showPic(pic)"></image>
 					</view>
 				</view>
 			</uni-cell>
 			
-			<view class="btn-row" v-if="state == 0">
+			<view class="btn-row" v-if="state == 1">
 				<button type="primary" class="primary" @tap="submit">上传</button>
 			</view>
 		</view>
@@ -87,7 +87,6 @@ export default {
 			alipay_qrcode: '',
 			wechat_qrcode: '',
 			state: 0,
-			bang_qiu_id: 0,
 		};
 	},
 	computed: {
@@ -111,15 +110,14 @@ export default {
 				success: res => {
 					
 					console.log(res);
-					this.amount = res.data.amount || '';
-					this.mobile = res.data.user.mobile || '';
-					this.card_name = res.data.user.card_name || '';
-					this.card_nums = res.data.user.card_nums || '';
-					this.alipay_qrcode = res.data.user.alipay_qrcode || '';
-					this.wechat_qrcode = res.data.user.wechat_qrcode || '';
-					this.state = res.data.bang_qiu.state;
-					this.bang_qiu_id = res.data.bang_qiu.id;
-					this.pic = res.data.bang_qiu.pic || '';
+					this.amount = res.data.qiuzhu_info.amount || '';
+					this.mobile = res.data.qiuzhu_info.qiuzhu.user.mobile || '';
+					this.card_name = res.data.qiuzhu_info.qiuzhu.user.card_name || '';
+					this.card_nums = res.data.qiuzhu_info.qiuzhu.user.card_nums || '';
+					this.alipay_qrcode = res.data.qiuzhu_info.qiuzhu.user.alipay_qrcode || '';
+					this.wechat_qrcode = res.data.qiuzhu_info.qiuzhu.user.wechat_qrcode || '';
+					this.state = res.data.qiuzhu_info.state;
+					this.pic = res.data.pic || '';
 					
 
 				},
@@ -148,7 +146,7 @@ export default {
 				});
 				return;
 			}
-			if (this.bang_qiu_id == 0) {
+			if (this.id == 0) {
 				uni.showToast({
 					icon: 'none',
 					title: '匹配信息获取失败'
@@ -160,7 +158,7 @@ export default {
 				url: '/api/bangzhu/info',
 				method: 'POST',
 				data: {
-					bang_qiu_id: this.bang_qiu_id,
+					bang_qiu_id: this.id,
 					pic: this.pic,
 				},
 				success: res => {

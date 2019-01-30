@@ -29,18 +29,59 @@ class BangQiuModel extends Model {
 	 */
 	async pipei(data) {
 
-		return await this.create(data);
+		let upadteData = {
+			state: 1
+		};
+		return await db.sequelize.transaction(t => {
+
+			return bangzhuInfoModel.update(upadteData, {
+				where: {
+					id: data.bangzhu_info_id
+				}
+			}, {
+				transaction: t
+			}).then(() => {
+
+				return qiuzhuInfoModel.update(upadteData, {
+					where: {
+						id: data.qiuzhu_info_id
+					}
+				}, {
+					transaction: t
+				}).then(() => {
+
+					return this.create(data);
+				});
+			});
+		});
+	}
+
+
+	/**
+	 * 获取带有求助用户信息
+	 * @param {*} id 
+	 */
+	async getInfoWithQiuzhu(id) {
+
+		return await this.findById(id, {
+			include: [{
+				model: db.QiuzhuInfo,
+				include: [{
+					model: db.Qiuzhu,
+					include: [db.User]
+				}]
+			}]
+		});
 	}
 
 
 	/**
 	 * 获取单个数据
-	 * @param {*} opts 
+	 * @param {*} id 
 	 */
-	async getOne(opts) {
+	async getOne(id) {
 
-		return this.findOne({
-			where: opts,
+		return this.findById(id, {
 			include: [db.QiuzhuInfo, db.BangzhuInfo]
 		});
 	}
@@ -48,19 +89,45 @@ class BangQiuModel extends Model {
 
 	/**
 	 * 更新打款信息
-	 * @param {*} id 
-	 * @param {*} pic_path 
+	 * @param {*} data 
 	 */
-	async updateMake(id, pic_path) {
+	async updateMake(data) {
 
-		return await this.update({
-			pic: pic_path,
-			make_time: moment().format('YYYY-MM-DD HH:mm:ss'),
-			state: 1
-		}, {
-			where: {
-				id: id
-			}
+		return await db.sequelize.transaction(t => {
+
+			let updateData = {
+				state: 2
+			};
+
+			return qiuzhuInfoModel.update(updateData, {
+				where: {
+					id: data.qiuzhu_info_id
+				}
+			}, {
+				transaction: t
+			}).then(() => {
+
+				return bangzhuInfoModel.update(updateData, {
+					where: {
+						id: data.bangzhu_info_id
+					}
+				}, {
+					transaction: t
+				}).then(() => {
+
+					return this.update({
+						pic: data.pic,
+						make_time: moment().format('YYYY-MM-DD HH:mm:ss'),
+					}, {
+						where: {
+							id: data.id
+						}
+					}, {
+						transaction: t
+					});
+				});
+			});
+
 		});
 	}
 

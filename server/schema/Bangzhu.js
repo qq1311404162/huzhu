@@ -2,7 +2,7 @@ const moment = require('moment');
 
 module.exports = function (sequelize, DataTypes) {
 
-	return sequelize.define('qiuzhu', {
+	return sequelize.define('bangzhu', {
 		id: {
 			type: DataTypes.INTEGER,
 			primaryKey: true,
@@ -10,7 +10,7 @@ module.exports = function (sequelize, DataTypes) {
 		},
 		ident: {
 			type: DataTypes.STRING,
-			comment: '求助编号'
+			comment: '帮助编号'
 		},
 		// user_id: {
 		// 	type: DataTypes.INTEGER,
@@ -20,18 +20,19 @@ module.exports = function (sequelize, DataTypes) {
 		amount: {
 			type: DataTypes.DECIMAL(12, 2),
 			defaultValue: '0.00',
-			comment: '求助金额'
+			comment: '帮助金额'
 		},
 		type: {
 			type: DataTypes.TINYINT,
 			allowNull: false,
-			comment: '求助类型。静态钱包求助 or 动态钱包求助'
+			defaultValue: 1,
+			comment: '帮助类型。1:用户额度; 2:用户机会'
 		},
 		state: {
 			type: DataTypes.TINYINT,
 			allowNull: false,
-			defaultValue: 0,
-			comment: '状态。0：初始化成功，待匹配；1：匹配成功，待确认订单；2：订单完成'
+			defaultValue: 3,
+			comment: '状态'
 		},
 		created_at: {
 			type: DataTypes.DATE,
@@ -46,6 +47,6 @@ module.exports = function (sequelize, DataTypes) {
 			}
 		},
 	}, {
-		comment: '求助表',
+		comment: '帮助表',
 	});
 };

@@ -1,140 +1,124 @@
 <template>
 	<view class="content">
-		<view class="segment">
-			<uni-segmented-control :current="current" :values="items" @clickItem="onClickItem" style-type="button"></uni-segmented-control>
-		</view>
-		<view class="form">
-			<view v-show="current === 0">
-				<text>静态钱包余额</text>
-			</view>
+		
+		<scroll-view class="scroll-content" scroll-y scroll-top="0" @scrolltolower="loadMore" :style="[{height: scrollHeight}]" lower-threshold="70">
 			
-			<view v-show="current === 1">
-				<text>动态钱包余额</text>
-			</view>
 			
-			<uni-cell title="求助金额">
-				<view slot="content">
-					<view class="flex-row input-row">
-						{{bangzhuAmount}}
-					</view>
+			<uni-collapse accordion="true">
+				
+				<view class="" v-for="(item, index1) in lists" :key="index1">
 					
+					<uni-collapse-item-own :info-data="item" :open="index1 === 0 ? true : false" :type="type" :typeValue="typeObj[item.type]" :state="state">
+						
+					</uni-collapse-item-own>
 				</view>
-			</uni-cell>
-			
-			<uni-cell title="交易密码">
-				<view slot="content">
-					<view class="flex-row input-row">
-						<input type="text" v-model="payword" placeholder="请输入交易密码"/>
-					</view>
-					
-				</view>
-			</uni-cell>
-			
-			<view class="btn-row">
-				<button type="primary" class="primary" @tap="submit">确定帮助</button>
-			</view>
-			
-			<view class="record">
-				<text>求助记录</text>
-			</view>
-			
-		</view>
-		<mpvue-picker ref="mpvuePicker" mode="selector" deepLength="1" :pickerValueDefault="pickerValueDefault"
-		@onConfirm="onConfirm" @onCancel="onCancel" :pickerValueArray="pickerValueArray"></mpvue-picker>
+				
+			</uni-collapse>
+
+			<uni-load-more :status="loadMoreStatus"></uni-load-more>
+		</scroll-view>
+		<my-add @click="gotoAdd"></my-add>
+
 	</view>
 </template>
 <script>
-	import uniSegmentedControl from "@/components/uni-segmented-control/uni-segmented-control.vue";
-	import mpvuePicker from '@/components/mpvue-picker/mpvuePicker.vue';
-	import uniCell from '@/components/uni-cell/uni-cell.vue';
+import uniLoadMore from '@/components/uni-load-more/uni-load-more.vue';
+import uniCollapse from '@/components/uni-collapse/uni-collapse.vue';
 
-	export default {
-		components: {
-			uniSegmentedControl,
-			mpvuePicker,
-			uniCell
-		},
-		onShow() {
-			// this.$refs.mpvuePicker.show();
-		},
-		data() {
-			return {
-				items: ['静态钱包', '动态钱包'],
-				current: 0,
-				amount: 0,
-				payword: '',
-				pickerValueDefault: [0],
-				pickerValueArray:[{
-						label: '中国',
-						value: 1
-					},
-					{
-						label: '俄罗斯',
-						value: 2
-					},
-					{
-						label: '美国',
-						value: 3
-					},
-					{
-						label: '日本',
-						value: 4
-					}]
-			}
-		},
-		computed: {
-			bangzhuAmount(){
-				
-				return this.amount == 0 ? '请选择帮助金额' : this.amount;
-			},
-		},
-		methods: {
-			onClickItem(index) {
-				if (this.current !== index) {
-					this.current = index;
-				}
-			},
-			onConfirm(e) {
-				console.log(e);
-			},
-			onCancel(e) {
-				console.log(e)
-			},
+import uniCollapseItemOwn from '@/components/uni-collapse-item-own/uni-collapse-item-own.vue';
+import myAdd from '@/components/my-add/my-add.vue';
+
+import ajax from '@/utils/ajax';
+
+export default {
+    components: {
+        uniLoadMore,
+        uniCollapse,
+		uniCollapseItemOwn,
+		myAdd
+    },
+    onLoad() {
+
+		
+    },
+	onShow(){
+		this.lists = [];
+		this.currentPage = 1;
+		// 获取第一页列表
+		this.getLists(this.currentPage);
+		// 设置scroll-view高度
+		let system = uni.getSystemInfoSync();
+		this.setScrollHeight(system);
+	},
+    data() {
+        return {
+            lists: [],
+			type: 'qiuzhu',
+			typeObj: {},
+			state: {},
+			infoState: {},
+			bangQiuState: {},
+            scrollHeight: '500px',
+			pageLength: 10,
+			currentPage: 1,
+			currentLength: 0,
+			
+        };
+    },
+	computed:{
+	
+		loadMoreStatus(){
+			
+			return this.currentLength < this.pageLength ? 'noMore' : 'loading';
 		}
-	}
+	},
+    methods: {
+		getLists(page){
+			ajax({
+					url: '/api/qiuzhu/index?page=' + page + '&length=' + this.pageLength, 
+					success: res => {
+						
+						for (let item of res.data.lists) {
+							
+							this.lists.push(item);
+						}
+						
+						this.typeObj = res.data.type;	// 类型
+						this.state = res.data.state;	// 状态
+						
+						this.currentLength = res.data.lists.length || 0;
+						
+						// this.loadMore = (this.lists.length < 10 && this.lists.length > 0) ? false : true;
+						
+					},
+					fail: function(err) {
+						console.log('fail', err);
+					}
+				});
+		},
+        loadMore() {
+            
+			if (this.currentLength == this.pageLength) {
+				// 上次请求大小和分页大小相等，可以再次请求
+				this.currentPage ++;
+				this.getLists(this.currentPage)
+			}
+        },
+        // 设置滚动区域高度
+        setScrollHeight(system) {
+            this.scrollHeight = system.windowHeight + 'px';
+        },
+        gotoAdd() {
+			console.log(1);
+            uni.navigateTo({
+                url: '/pages/qiuzhu/add'
+            });
+        }
+    }
+};
 </script>
 <style>
-	
-	@import '../../common/css/common.css';
-	
-	
-	.content {
-		
-		padding: 0 30upx;
-	}
-	
-	.segment {
-		padding: 50upx 0;
-	}
-	
-	.form {
-		
-		padding-top: 50upx;
-	}
-	
-	.record {
-		padding-top: 80upx;
-		padding-right: 10upx;
-		text-align: right;
-		font-size: 28upx;
-	}
-	
-	.input-row {
-		
-		justify-content: flex-end;
-	}
-	
-	.input-row input {
-		text-align: right;
-	}
+@import '../../common/css/common.css';
+
+
 </style>

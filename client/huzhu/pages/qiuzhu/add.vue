@@ -4,10 +4,25 @@
 			<view class="segment">
 				<uni-segmented-control :current="type" :values="items" @clickItem="selectType" style-type="button"></uni-segmented-control>
 			</view>
-			<uni-cell title="求助金额">
+			<view class="desc-group">
+				<view class="flex-row desc">
+					<text>钱包金额：</text>
+					<text>￥{{walletValue}}</text>
+				</view>
+				<view class="flex-row desc">
+					<text>最低提现金额：</text>
+					<text>￥{{minValue}}</text>
+				</view>
+				<view class="flex-row desc">
+					<text>提现金额基数：</text>
+					<text>￥{{mulValue}}</text>
+				</view>
+				
+			</view>
+			<uni-cell title="提现金额">
 				<view slot="content">
-					<view class="flex-row input-row" @click="openPicker">
-						{{bangzhuAmount}}
+					<view class="flex-row input-row">
+						<input type="text" v-model="amount" placeholder="请输入提现金额"/>
 					</view>
 					
 				</view>
@@ -23,7 +38,7 @@
 			</uni-cell>
 			
 			<view class="btn-row">
-				<button type="primary" class="primary" @tap="submit">确定帮助</button>
+				<button type="primary" class="primary" @tap="submit">开始求助</button>
 			</view>
 			
 		</view>
@@ -48,13 +63,13 @@
 		data(){
 			
 			return {
-				items: [{type: 1, name: '自身额度'}, {type: 2, name: '用户赠送'}],
-				pickerValueDefault: [0],
-				pickerValueArray:[],
-				amount: 0,
+				items: [{type: 1, name: '静态钱包'}, {type: 2, name: '动态钱包'}],
+				amount: '',
 				payword: '',
 				type: 1,
-				available: 0,
+				setting: {},
+				static_wallet: '0.00',
+				dynamic_wallet: '0.00',
 				status: 1,
 			};
 		},
@@ -63,24 +78,28 @@
 			this.userAvailable();
 		},
 		computed: {
-			bangzhuAmount(){
+			walletValue(){
 				
-				return this.amount == 0 ? '请选择帮助金额' : this.amount;
+				return this.type === 1 ? this.static_wallet : this.dynamic_wallet;
 			},
+			minValue(){
+				
+				return this.type === 1 ? (this.setting.static_wallet_base || 0) : (this.setting.dynamic_wallet_base || 0);
+			},
+			mulValue(){
+				
+				return this.type === 1 ? (this.setting.static_wallet_mul || 0) : (this.setting.dynamic_wallet_mul || 0);
+			}
 		},
 		methods:{
 			userAvailable(){
 				ajax({
-					url: '/api/bangzhu/add',
+					url: '/api/qiuzhu/add',
 					success: res => {
 						
-						for (let i = 1; i <= (res.data.user.available || 1); i++) {
-							
-							this.pickerValueArray.push({
-								label: parseInt(res.data.setting.value) * i,
-								value: i
-							});
-						}
+						this.setting = res.data.setting;
+						this.static_wallet = res.data.user.static_wallet;
+						this.dynamic_wallet = res.data.user.dynamic_wallet;
 					},
 					fail: function(err) {
 						console.log('fail', err);
@@ -92,17 +111,7 @@
 					this.type = item.type;
 				}
 			},
-			openPicker(){
-				this.$refs.mpvuePicker.show();
-			},
-			onConfirm(e) {
-				this.amount = e.label;
-				this.available = e.value[0];
-
-			},
-			onCancel(e) {
-				console.log(e)
-			},
+			
 			submit(){
 				
 				if (this.type == 0) {
@@ -113,7 +122,7 @@
 					return;
 				}
 				
-				if (this.available == 0) {
+				if (!/^\+?[1-9][0-9]*$/.test(this.amount)) {
 					uni.showToast({
 						icon: 'none',
 						title: '请选择帮助金额'
@@ -133,10 +142,10 @@
 					this.status = 0;
 					
 					ajax({
-						url: '/api/bangzhu/add',
+						url: '/api/qiuzhu/add',
 						method: 'POST',
 						data: {
-							available: this.available,
+							amount: this.amount,
 							payword: this.payword,
 							type: this.type
 						},
@@ -180,6 +189,17 @@
 	
 	.segment {
 		margin-bottom: 50upx;
+	}
+	
+	.desc-group {
+		
+		padding: 0 25%;
+		margin-bottom: 30upx;
+	}
+	.desc {
+		justify-content: space-between;
+		font-size: $uni-font-size-sm;
+		line-height: 1.6;
 	}
 	
 	.title {

@@ -12,17 +12,32 @@ class QiuzhuModel extends Model {
 
 		super(db.Qiuzhu);
 
-		this.staticValue = {
-			state: {
-				0: '处理中',
-				1: '已完成',
-				9: '作废'
-			},
-			type: {
-				1: '静态钱包',
-				2: '动态钱包'
-			}
+		this.type = {
+			1: '静态钱包',
+			2: '动态钱包'
 		};
+	}
+
+	/**
+	 * 获取全部求助记录
+	 * @param {*} user_id 
+	 * @param {*} page 
+	 * @param {*} limit 
+	 */
+	async getLists(user_id, page, limit) {
+
+		return await this.findAll({
+			where: {
+				user_id: user_id,
+			},
+			include: [{
+				model: db.QiuzhuInfo,
+				attributes: ['id', 'amount', 'state'],
+				include: [db.BangQiu]
+			}],
+			offset: (parseInt(page) - 1) * parseInt(limit),
+			limit: parseInt(limit)
+		});
 	}
 
 	/**
@@ -31,9 +46,11 @@ class QiuzhuModel extends Model {
 	 */
 	async qiuzhu(data, user) {
 		// 订单编号
-		data.ident = 'q' + moment().format('YYYYMMDDHHmmss') + Math.floor(Math.random() * 1000).toString();
+		data.ident = 'qz' + moment().format('YYYYMMDDHHmmss') + Math.floor(Math.random() * 1000).toString();
 		// 关联数据写入
-		data.qiuzhu_infos = Object.assign({}, data);
+		data.qiuzhu_infos = {
+			amount: data.amount
+		};
 
 		return await db.sequelize.transaction(t => {
 
@@ -69,19 +86,6 @@ class QiuzhuModel extends Model {
 				state: {
 					[Sequelize.Op.in]: [0, 1]
 				}
-			}
-		});
-	}
-
-
-	/**
-	 * 获取全部帮助记录
-	 * @param {*} user_id 
-	 */
-	async getLists(user_id) {
-		return await this.findAll({
-			where: {
-				user_id: user_id,
 			}
 		});
 	}

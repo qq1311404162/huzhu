@@ -39,39 +39,41 @@ class UserController {
 		if (request.prename !== undefined && request.prename != '') {
 			// 获取上级用户
 			let preUser = await userModel.findOne({
-				attributes: ['id', 'previous_thr', 'previous_id', 'previous_all'],
-				where: {
-					username: request.prename
-				}
-			});
+					attributes: ['id', 'previous_id', 'previous_two_id', 'previous_thr_id', 'previous_all'],
+					where: {
+						username: request.prename
+					}
+				}),
+				preArr = [];
 
 			if (!preUser)
 				return ctx.json(errCode.illegal_prevoius);
 
-			let preArr = preUser.getDataValue('previous_thr').split(','),
-				preAllArr = preUser.getDataValue('previous_all').split(',');
+			// 第三级
+			if (preUser.getDataValue('previous_two_id')) {
 
-			// 上家第三级上级去掉
-			if (preArr.length === 4) {
-				preArr.splice(0, 1);
+				data.previous_thr_id = preUser.getDataValue('previous_two_id');
+
+				preArr.push(preUser.getDataValue('previous_two_id'));
 			}
+			// 第二级
+			if (preUser.getDataValue('previous_id')) {
 
-			preArr.splice(preArr.length - 1, 1);
-			preAllArr.splice(preAllArr.length - 1, 1);
+				data.previous_two_id = preUser.getDataValue('previous_id');
 
-			// 上级赋值
+				preArr.push(preUser.getDataValue('previous_id'));
+			}
+			// 上级
+			data.previous_id = preUser.getDataValue('id');
+
 			preArr.push(preUser.getDataValue('id'));
-			preAllArr.push(preUser.getDataValue('id'));
-
+			// 三代内不能同名
 			let realnameStatus = await userModel.uniqueRealname(request.realname, preArr);
 
 			if (!realnameStatus)
 				return ctx.json(errCode.illegal_realname);
-			// 添加用户
-
-			data.previous_id = preUser.getDataValue('id');
-			data.previous_thr = preArr.join(',') + ',';
-			data.previous_all = preAllArr.join(',') + ',';
+			// 推广链
+			data.previous_all = preUser.getDataValue('previous_all') ? (preUser.getDataValue('previous_all') + ',' + preUser.getDataValue('id')) : preUser.getDataValue('id');
 
 		}
 
@@ -170,6 +172,35 @@ class UserController {
 			data: user.get({
 				plain: true
 			})
+		});
+	}
+
+
+	/**
+	 * 获取首页信息
+	 * @param {*} ctx 
+	 */
+	static async userIndex(ctx) {
+
+		let requestUser = ctx.state.user;
+
+		// 获取用户信息
+		let [user, count] = await Promise.all([userModel.findById(requestUser.id, {
+			attributes: ['static_wallet', 'dynamic_wallet', 'username']
+		}), userModel.getUserTeamCount(requestUser.id)]);
+
+		if (user === null) {
+
+			return ctx.json(errCode.err_user_info);
+		}
+
+		return ctx.json({
+			data: {
+				username: user.getDataValue('username'),
+				static_wallet: user.getDataValue('static_wallet'),
+				dynamic_wallet: user.getDataValue('dynamic_wallet'),
+				count: count,
+			}
 		});
 	}
 
@@ -401,17 +432,18 @@ class UserController {
 		});
 	}
 
-
 	/**
-	 * 赠送激活码页面
+	 * 赠送页面
 	 * @param {*} ctx 
 	 */
-	static async getGiveActivation(ctx) {
+	static async getGive(ctx) {
 
-		let requestUser = ctx.state.user;
+		let requestUser = ctx.state.user,
+			type = ctx.request.query.type || 'active_golds';
+
 
 		let user = await userModel.findOne({
-			attributes: ['id', 'active_golds'],
+			attributes: ['id', type],
 			where: {
 				id: requestUser.id
 			}
@@ -423,26 +455,23 @@ class UserController {
 		}
 
 		return ctx.json({
-			data: user.get({
-				plain: true
-			})
+			data: {
+				count: user.getDataValue(type)
+			}
 		});
 	}
 
+
 	/**
-	 * 赠送激活码
+	 * 赠送页面
 	 * @param {*} ctx 
-	 *      user_id         用户id
-	 *      to_username     赠送用户名
-	 *      to_nums         赠送数量
-	 *      password        用户密码
 	 */
-	static async postGiveActivation(ctx) {
+	static async postGive(ctx) {
 
 		let request = ctx.request.body,
 			requestUser = ctx.state.user;
 
-		if (!requestUser.id || !request.to_username || !request.payword) {
+		if (!requestUser.id || !request.to_username || !request.payword || !request.type) {
 
 			return ctx.json(errCode.less_params);
 		}
@@ -452,14 +481,13 @@ class UserController {
 			return ctx.json(errCode.less_activation);
 		}
 
-
 		let [user, toUser] = await Promise.all([userModel.findOne({
-			attributes: ['id', 'username', 'payword', 'active_golds'],
+			attributes: ['id', 'username', 'payword', request.type],
 			where: {
 				id: requestUser.id
 			}
 		}), userModel.findOne({
-			attributes: ['id', 'username', 'password', 'active_golds', 'previous_all'],
+			attributes: ['id', 'username', 'password', request.type, 'previous_all'],
 			where: {
 				username: request.to_username
 			}
@@ -475,16 +503,28 @@ class UserController {
 			return ctx.json(errCode.illegal_to_user);
 		}
 
+		if (user.getDataValue('id') === toUser.getDataValue('id')) {
+
+			return ctx.json(errCode.illegal_same_user);
+		}
+
 		// 校验支付密码
 		if (user.getDataValue('payword') !== request.payword) {
 
 			return ctx.json(errCode.illegal_payword);
 		}
 
-		// 校验激活码数量
-		if (user.getDataValue('active_golds') < request.to_nums) {
+		// 校验数量
+		if (user.getDataValue(request.type) < request.to_nums) {
 
-			return ctx.json(errCode.illegal_less_active);
+			if (request.type == 'active_golds') {
+
+				return ctx.json(errCode.illegal_less_active);
+			} else {
+
+				return ctx.json(errCode.illegal_less_bangzhu);
+			}
+
 		}
 
 		// 检测必须是直系才能赠送
@@ -493,22 +533,22 @@ class UserController {
 			return ctx.json(errCode.illegal_zhixi);
 		}
 
-		// 赠送激活码
-		let result = await userModel.giveActivation(user, toUser, request.to_nums);
+		// 赠送
+		let result = await userModel.give(user, toUser, request.to_nums, request.type);
 
 		if (!result) {
 
 			return ctx.json(errCode.err_give_active);
 		}
 
-		// 赠送激活码日志添加
-		userLogModel.createGiveActivationLog(user.getDataValue('id'), '赠送用户' + toUser.getDataValue('username') + '激活码' + request.to_nums + '个');
-		userLogModel.createReceiveActivationLog(toUser.getDataValue('id'), '接收用户' + user.getDataValue('username') + '激活码' + request.to_nums + '个');
+		// 赠送日志添加
+		let value = request.type == 'active_golds' ? '激活码' : '排单币';
+		userLogModel.createGiveActivationLog(user.getDataValue('id'), '赠送用户' + toUser.getDataValue('username') + value + request.to_nums + '个');
+		userLogModel.createReceiveActivationLog(toUser.getDataValue('id'), '接收用户' + user.getDataValue('username') + value + request.to_nums + '个');
 
 		return ctx.json({
 			msg: '赠送成功'
 		});
-
 	}
 
 	/**

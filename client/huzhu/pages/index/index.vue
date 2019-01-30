@@ -4,17 +4,17 @@
 			<view>
 				<image class="icon" src="../../static/dynamic.png" mode=""></image>
 				<text class="title">动态钱包</text>
-				<text class="value"><text>100</text>MYB</text>
+				<text class="value"><text>{{dynamic_wallet}}</text>MYB</text>
 			</view>
 			<view>
 				<image class="icon" src="../../static/static.png" mode=""></image>
 				<text class="title">静态钱包</text>
-				<text class="value"><text>100</text>MYB</text>
+				<text class="value"><text>{{static_wallet}}</text>MYB</text>
 			</view>
 			<view>
 				<image class="icon" src="../../static/team.png" mode=""></image>
 				<text class="title">我的团队</text>
-				<text class="value"><text>100</text>人</text>
+				<text class="value"><text>{{count}}</text>人</text>
 			</view>
 		</view>
 		
@@ -75,17 +75,45 @@
 </template>
 
 <script>
-	import { mapState } from 'vuex';
+	import ajax from '@/utils/ajax';
 	
 	
 	export default {
-		computed: mapState(['forcedLogin', 'hasLogin', 'userName']),
-		onLoad() {
 
+		data(){
+			
+			return {
+				username: '',
+				static_wallet: '0.00',
+				dynamic_wallet: '0.00',
+				count: 0
+			};
+		},
+// 		onLoad() {
+// 
+// 			this.getInfo();
+// 		},
+		onShow() {
+			this.getInfo();
 		},
 		methods:{
+			getInfo(){
+				ajax({
+				    url: '/api/user-index',
+				    success: res => {
+				        this.username = res.data.username;
+						this.static_wallet = res.data.static_wallet;
+						this.dynamic_wallet = res.data.dynamic_wallet;
+						this.count = res.data.count;
+				        
+				    },
+				    fail: function(err) {
+				        console.log('fail', err);
+				    }
+				});
+			},
 			gotoRegister(){
-				this.goto('../register/index?prename=qqq111');
+				this.goto('../register/index?prename=' + this.username);
 			},
 			gotoBangzhu() {
 				

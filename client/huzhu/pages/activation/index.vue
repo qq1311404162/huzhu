@@ -54,7 +54,8 @@
 				activation: 0,
 				to_nums: '',
 				payword: '',
-				to_username: ''
+				to_username: '',
+				type: 'active_golds'
 			}
 		},
 		onLoad() {
@@ -64,10 +65,10 @@
 		methods: {
 			getActivation(){
 				ajax({
-						url: '/api/give-activation',
+						url: '/api/give?type=' + this.type,
 						success: res => {
 							
-							this.activation = res.data.active_golds || 0;
+							this.activation = res.data.count || 0;
 						},
 						fail: function(err) {
 							console.log('fail', err);
@@ -92,7 +93,7 @@
 				if (!/^\+?[1-9][0-9]*$/.test(this.to_nums)) {
 					uni.showToast({
 						icon: 'none',
-						title: '激活码格式不正确'
+						title: '激活码数量不正确'
 					});
 					return;
 				}
@@ -107,12 +108,13 @@
 				}
 				
 				ajax({
-					url: '/api/give-activation',
+					url: '/api/give',
 					method: 'POST',
 					data: {
 						to_nums: this.to_nums,
 						to_username: this.to_username,
-						payword: this.payword
+						payword: this.payword,
+						type: this.type
 					},
 					success: res => {
 						

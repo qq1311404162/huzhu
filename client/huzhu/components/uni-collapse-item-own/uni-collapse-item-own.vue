@@ -22,7 +22,7 @@
 			</view>
 			<view class="uni-collapse-cell__title-three">
 				<view class="uni-collapse-cell__title-two-type">
-					类型：{{typeObj[infoData.type]}}
+					类型：{{typeValue}}
 				</view>
 				<view class="uni-collapse-cell__title-two-time">
 					时间：{{infoData.created_at}}
@@ -34,7 +34,7 @@
 			<view :class="setContClass" :id="elId">
 				<view class="uni-collapse-cell__content-list" v-for="(item2, index2) in (type == 'bangzhu' ? infoData.bangzhu_infos : infoData.qiuzhu_infos)" :key="index2">
 					
-					<uni-card :note="item2.created_at" :info="item2" :infoState="infoState" :bangQiuState="bangQiuState" @click="onItemClick(item2)">
+					<uni-card :note="item2.created_at" :info="item2" :state="state" @click="onItemClick(item2)">
 					</uni-card>
 				</view>
 			</view>
@@ -140,14 +140,7 @@ export default {
 			}
 		},
 		type: String,
-		// 类型
-		typeObj: {
-			type: Object,
-			default: function () {
-				
-				return {}
-			}
-		},
+		typeValue: String,	// 类型
 		// 状态
 		state: {
 			type: Object,
@@ -157,22 +150,6 @@ export default {
 			}
 			
 		},
-		// 拆分表状态
-		infoState: {
-			type: Object,
-			default: function () {
-				
-				return {}
-			}
-		},
-		// 帮求表状态
-		bangQiuState: {
-			type: Object,
-			default: function () {
-				
-				return {}
-			}
-		}
     },
     created() {
 
@@ -205,7 +182,7 @@ export default {
             this.parent.onChange && this.parent.onChange(this);
         },
 		onItemClick(item) {
-			
+
 			let url = '';
 			if (this.type == 'bangzhu') {
 				
@@ -218,7 +195,7 @@ export default {
 			if (item.bang_qiu !== null) {
 				// 跳转到详情页
 				uni.navigateTo({
-					url: url + '?id=' + item.id
+					url: url + '?id=' + item.bang_qiu.id
 				})
 			}else {
 				uni.showToast({

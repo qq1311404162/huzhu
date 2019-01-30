@@ -79,12 +79,12 @@ module.exports = function (sequelize, DataTypes) {
 		// 	defaultValue: '',
 		// 	comment: '推荐人id'
 		// },
-		previous_thr: {
-			type: DataTypes.STRING,
-			defaultValue: '',
-			allowNull: false,
-			comment: '推荐人2层id，逗号分隔'
-		},
+		// previous_thr: {
+		// 	type: DataTypes.STRING,
+		// 	defaultValue: '',
+		// 	allowNull: false,
+		// 	comment: '推荐人2层id，逗号分隔'
+		// },
 		previous_all: {
 			type: DataTypes.STRING,
 			defaultValue: '',

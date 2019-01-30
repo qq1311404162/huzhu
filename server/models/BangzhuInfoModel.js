@@ -25,6 +25,20 @@ class BangzhuInfoModel extends Model {
 
 
 	/**
+	 * 获取带帮助信息的帮助详情
+	 * @param {*} id 
+	 */
+	async getInfoWithBangzhu(id) {
+
+		return await this.findById(id, {
+			include: [{
+				model: db.Bangzhu
+			}],
+		});
+	}
+
+
+	/**
 	 * 获取帮助拆分表，关联用户表和关联匹配表的信息
 	 * @param {*} id 
 	 */
@@ -36,7 +50,8 @@ class BangzhuInfoModel extends Model {
 				id: id
 			},
 			include: [{
-				model: db.User
+				model: db.Bangzhu,
+				include: [db.User]
 			}, {
 				model: db.BangQiu
 			}]

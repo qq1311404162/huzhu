@@ -10,16 +10,9 @@ class BangzhuModel extends Model {
 
 		super(db.Bangzhu);
 
-		this.staticValue = {
-			state: {
-				0: '处理中',
-				1: '已完成',
-				9: '作废'
-			},
-			type: {
-				1: '自身额度',
-				2: '用户赠送'
-			}
+		this.type = {
+			1: '自身额度',
+			2: '用户赠送'
 		};
 	}
 
@@ -82,9 +75,11 @@ class BangzhuModel extends Model {
 	 */
 	async bangzhu(data, user, available) {
 		// 订单编号
-		data.ident = 'b' + moment().format('YYYYMMDDHHmmss') + Math.floor(Math.random() * 1000).toString();
+		data.ident = 'bz' + moment().format('YYYYMMDDHHmmss') + Math.floor(Math.random() * 1000).toString();
 		// 关联数据写入
-		data.bangzhu_infos = Object.assign({}, data);
+		data.bangzhu_infos = {
+			amount: data.amount,
+		};
 
 		return await db.sequelize.transaction(t => {
 
@@ -124,8 +119,10 @@ class BangzhuModel extends Model {
 	/**
 	 * 获取全部帮助记录
 	 * @param {*} user_id 
+	 * @param {*} page 
+	 * @param {*} limit 
 	 */
-	async getLists(user_id) {
+	async getLists(user_id, page, limit) {
 		return await this.findAll({
 			where: {
 				user_id: user_id,
@@ -134,7 +131,9 @@ class BangzhuModel extends Model {
 				model: db.BangzhuInfo,
 				attributes: ['id', 'amount', 'state'],
 				include: [db.BangQiu]
-			}]
+			}],
+			offset: (parseInt(page) - 1) * parseInt(limit),
+			limit: parseInt(limit)
 		});
 	}
 

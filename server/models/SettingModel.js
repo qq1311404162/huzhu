@@ -88,6 +88,16 @@ let settingData = [{
 	value: '10',
 	display: '完成后奖励天数'
 },
+{
+	name: 'active_gold_all',
+	value: '0',
+	display: '平台激活码总数'
+},
+{
+	name: 'bangzhu_gold_all',
+	value: '0',
+	display: '平台排单币总数'
+},
 ];
 
 class SettingModel extends Model {

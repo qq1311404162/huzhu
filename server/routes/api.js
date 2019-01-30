@@ -23,9 +23,9 @@ const UploadController = require('../controllers/api/UploadController');
 // Router.post('/edit-payword', LoginController.editPayword);
 
 
-/*----- 激活码页面 -----*/
-Router.get('/give-activation', UserController.getGiveActivation);
-Router.post('/give-activation', UserController.postGiveActivation);
+/*----- 赠送 -----*/
+Router.get('/give', UserController.getGive);
+Router.post('/give', UserController.postGive);
 /*----- 我的页面 -----*/
 // 用户注册
 Router.post('/register', UserController.register);
@@ -33,6 +33,8 @@ Router.post('/register', UserController.register);
 Router.post('/login', UserController.login);
 // 我的页面获取信息
 Router.get('/user-info', UserController.userInfo);
+// 首页获取信息
+Router.get('/user-index', UserController.userIndex);
 // 用户激活
 Router.get('/activation', UserController.activation);
 // 修改个人资料
@@ -74,8 +76,9 @@ Router.post('/bangzhu/chai', BangzhuController.bangzhuChai);
 /*----- 提现页面 -----*/
 // 获取用户提现信息
 Router.get('/qiuzhu/index', QiuzhuController.index);
-// 开始提现
-Router.post('/qiuzhu/add', QiuzhuController.add);
+// 提现
+Router.get('/qiuzhu/add', QiuzhuController.getAdd);
+Router.post('/qiuzhu/add', QiuzhuController.postAdd);
 // 匹配
 Router.post('/qiuzhu/pipei', QiuzhuController.pipei);
 // 确认匹配订单

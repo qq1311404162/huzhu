@@ -1,111 +1,125 @@
 {
-	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
-// 		{
-// 			"path": "pages/bangzhu/add",
-// 			"style": {
-// 				"navigationBarTitleText": "帮助"
-// 			}
-// 		},
+    "pages" : [
+        //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
+        // 		{
+        // 			"path": "pages/bangzhu/add",
+        // 			"style": {
+        // 				"navigationBarTitleText": "帮助"
+        // 			}
+        // 		},
+        {
+            "path" : "pages/index/index",
+            "style" : {
+                "navigationBarTitleText" : "首页"
+            }
+        },
+        {
+            "path" : "pages/index/my",
+            "style" : {
+                "navigationBarTitleText" : "我的"
+            }
+        },
+        {
+            "path" : "pages/login/index",
+            "style" : {
+                "navigationBarTitleText" : "登录"
+            }
+        },
+        {
+            "path" : "pages/register/index",
+            "style" : {
+                "navigationBarTitleText" : "注册"
+            }
+        },
+        {
+            "path" : "pages/my/edit-info",
+            "style" : {
+                "navigationBarTitleText" : "个人资料"
+            }
+        },
+        {
+            "path" : "pages/my/edit-pwd",
+            "style" : {
+                "navigationBarTitleText" : "修改密码"
+            }
+        },
+        {
+            "path" : "pages/my/edit-payword",
+            "style" : {
+                "navigationBarTitleText" : "修改交易密码"
+            }
+        },
+        {
+            "path" : "pages/bangzhu/index",
+            "style" : {
+                "navigationBarTitleText" : "帮助"
+            }
+        },
+        {
+            "path" : "pages/bangzhu/add",
+            "style" : {
+                "navigationBarTitleText" : "开始帮助"
+            }
+        },
+        {
+            "path" : "pages/bangzhu/info",
+            "style" : {
+                "navigationBarTitleText" : "帮助详情"
+            }
+        },
+        {
+            "path" : "pages/qiuzhu/index",
+            "style" : {
+                "navigationBarTitleText" : "求助"
+            }
+        },
 		{
-			"path": "pages/index/index",
-			"style": {
-				"navigationBarTitleText": "首页"
-			}
+		    "path" : "pages/qiuzhu/add",
+		    "style" : {
+		        "navigationBarTitleText" : "开始求助"
+		    }
 		},
-		{
-			"path": "pages/index/my",
-			"style": {
-				"navigationBarTitleText": "我的"
-			}
-		},
-		{
-			"path": "pages/login/index",
-			"style": {
-				"navigationBarTitleText": "登录"
-			}
-		},
-		{
-			"path": "pages/register/index",
-			"style": {
-				"navigationBarTitleText": "注册"
-			}
-		},
-		{
-			"path": "pages/my/edit-info",
-			"style": {
-				"navigationBarTitleText": "个人资料"
-			}
-		},
-		{
-			"path": "pages/my/edit-pwd",
-			"style": {
-				"navigationBarTitleText": "修改密码"
-			}
-		},
-		{
-			"path": "pages/my/edit-payword",
-			"style": {
-				"navigationBarTitleText": "修改交易密码"
-			}
-		},
-		{
-			"path": "pages/bangzhu/index",
-			"style": {
-				"navigationBarTitleText": "帮助"
-			}
-		},
-		{
-			"path": "pages/bangzhu/add",
-			"style": {
-				"navigationBarTitleText": "开始帮助"
-			}
-		},
-		{
-			"path": "pages/bangzhu/info",
-			"style": {
-				"navigationBarTitleText": "帮助详情"
-			}
-		},
-		{
-			"path": "pages/qiuzhu/index",
-			"style": {
-				"navigationBarTitleText": "求助"
-			}
-		},
-		{
-			"path": "pages/coin/index",
-			"style": {
-				"navigationBarTitleText": "排单币"
-			}
-		},
-		{
-			"path": "pages/activation/index",
-			"style": {
-				"navigationBarTitleText": "激活码"
-			}
-		}
-	],
-	"globalStyle": {
-		"navigationBarTextStyle": "black",
-		"navigationBarTitleText": "uni-app",
-		"navigationBarBackgroundColor": "#F8F8F8",
-		"backgroundColor": "#F8F8F8"
-	},
-	"tabBar": {
-		"color": "#444444",
-		"selectedColor": "#f11312",
-		"borderStyle": "black",
-		"backgroundColor": "#ffffff",
-		"list": [{
-			"pagePath": "pages/index/index",
-			"iconPath": "static/index-0.png",
-			"selectedIconPath": "static/index-1.png",
-			"text": "首页"
-		}, {
-			"pagePath": "pages/index/my",
-			"iconPath": "static/my-0.png",
-			"selectedIconPath": "static/my-1.png",
-			"text": "我的"
-		}]
-	}
+        {
+            "path" : "pages/coin/index",
+            "style" : {
+                "navigationBarTitleText" : "排单币"
+            }
+        },
+        {
+            "path" : "pages/activation/index",
+            "style" : {
+                "navigationBarTitleText" : "激活码"
+            }
+        },
+        {
+            "path" : "pages/qiuzhu/add/add",
+            "style" : {}
+        }
+    ],
+    "globalStyle" : {
+        "navigationBarTextStyle" : "black",
+        "navigationBarTitleText" : "uni-app",
+        "navigationBarBackgroundColor" : "#F8F8F8",
+        "backgroundColor" : "#F8F8F8"
+    },
+    "tabBar" : {
+        "color" : "#444444",
+        "selectedColor" : "#f11312",
+        "borderStyle" : "black",
+        "backgroundColor" : "#ffffff",
+        "list" : [
+            {
+                "pagePath" : "pages/index/index",
+                "iconPath" : "static/index-0.png",
+                "selectedIconPath" : "static/index-1.png",
+                "text" : "首页"
+            },
+            {
+                "pagePath" : "pages/index/my",
+                "iconPath" : "static/my-0.png",
+                "selectedIconPath" : "static/my-1.png",
+                "text" : "我的"
+            }
+        ]
+    }
 }

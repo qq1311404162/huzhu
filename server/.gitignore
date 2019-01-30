@@ -3,5 +3,4 @@
 node_modules/
 config/db.js
 logs/
-client/huzhu/unpackage/
 static/upload/*
