@@ -1,4 +1,4 @@
-const errCode = require('../../config/error-code');
+const errCode = require('../../../config/error-code');
 
 const userModel = require('../../models/UserModel');
 const userLogModel = require('../../models/UserLogModel');

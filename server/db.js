@@ -14,4 +14,4 @@ const sequelize = new Sequelize(config.database, config.username, config.passwor
 	underscored: true
 });
 
-module.exports = sequelize;
+// module.exports = sequelize;

@@ -1,4 +1,4 @@
-const ActiveCode = require('../../models/ActiveCode');
+// const ActiveCode = require('../../models/ActiveCode');
 
 class ActiveCodeController {
 
@@ -21,12 +21,12 @@ class ActiveCodeController {
 				'data': []
 			};
 
-		result.count = await ActiveCode.count();
+		// result.count = await ActiveCode.count();
 
-		result.data = await ActiveCode.findAll({
-			offset: (parseInt(query.page) - 1) * parseInt(query.limit),
-			limit: parseInt(query.limit)
-		});
+		// result.data = await ActiveCode.findAll({
+		// 	offset: (parseInt(query.page) - 1) * parseInt(query.limit),
+		// 	limit: parseInt(query.limit)
+		// });
 
 		ctx.body = result;
 	}
@@ -37,11 +37,11 @@ class ActiveCodeController {
 	 */
 	static async create(ctx) {
 
-		let code = await ActiveCode.setCode();
+		// let code = await ActiveCode.setCode();
 
-		let result = await ActiveCode.create({
-			code: code
-		});
+		// let result = await ActiveCode.create({
+		// 	code: code
+		// });
 
 		if (!result) {
 

@@ -6,8 +6,8 @@ const bangQiuModel = require('../../models/BangQiuModel');
 
 const Math = require('mathjs');
 
-const errCode = require('../../config/error-code');
-const config = require('../../config/config');
+const errCode = require('../../../config/error-code');
+const config = require('../../../config/config');
 
 class BangzhuController {
 

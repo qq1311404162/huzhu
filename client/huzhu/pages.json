@@ -90,10 +90,6 @@
             "style" : {
                 "navigationBarTitleText" : "激活码"
             }
-        },
-        {
-            "path" : "pages/qiuzhu/add/add",
-            "style" : {}
         }
     ],
     "globalStyle" : {
