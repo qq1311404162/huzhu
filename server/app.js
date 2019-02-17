@@ -3,6 +3,8 @@ const Koa = require('koa');
 const router = require('./app/routes');
 const middleware = require('./app/middlewares');
 
+const config = require('./config/config');
+
 const app = new Koa();
 
 
@@ -13,7 +15,7 @@ middleware(app);
 router(app);
 
 // 监听
-app.listen(3000, () => {
+app.listen(config.port, () => {
 	// console.log(ctx);
 	// ctx.log.info('server is running');
 });

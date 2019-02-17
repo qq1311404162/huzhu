@@ -2,7 +2,7 @@ const fs = require('fs');
 const path = require('path');
 const moment = require('moment');
 
-const errCode = require('../../config/error-code');
+const errCode = require('../../../config/error-code');
 
 class UploadController {
 

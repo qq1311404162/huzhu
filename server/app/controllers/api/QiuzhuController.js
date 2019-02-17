@@ -8,8 +8,8 @@ const bangQiuModel = require('../../models/BangQiuModel');
 
 const Mathjs = require('mathjs');
 
-const errCode = require('../../config/error-code');
-const config = require('../../config/config');
+const errCode = require('../../../config/error-code');
+const config = require('../../../config/config');
 const Utils = require('../utils/Util');
 
 class QiuzhuController {

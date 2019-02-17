@@ -12,7 +12,7 @@ const myError = require('./my-error');
 const STATICPATH = '../static';
 const VIEAPATH = './views';
 
-const config = require('../config/config');
+const config = require('../../config/config');
 
 
 module.exports = (app) => {
