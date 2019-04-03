@@ -1,0 +1,25 @@
+<template>
+	<div>
+		aaaaaaaaa
+	</div>
+</template>
+
+<script>
+	export default {
+		data() {
+		    return {
+		        avatar: '',
+		        realname: '',
+		        team: '',
+		        state: 0
+		    };
+		},
+		created() {
+			console.log(123);
+		}
+	}
+</script>
+
+<style>
+
+</style>

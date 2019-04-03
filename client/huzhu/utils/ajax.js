@@ -1,86 +1,83 @@
 import config from '@/config';
-
-const ajax = (options = {}) => {
-
-	let token = uni.getStorageSync('token') || '';
+import {getStorage, clearStorageAndReLogin, netErr, noAuth, showToast} from './unis';
 
 
-	uni.request({
+const validateRequestInfo = (res) => {
 
+	let statusCode = res.data.code || 500,
+		resData = res.data || {};
+		
+	// 权限不足提示
+	if (statusCode === 401) {
+		
+		noAuth();
+		return;
+	}
+	// 没有返回信息时，跳转到登录页面
+	if (!resData || resData.code === 11009) {
+		
+		clearStorageAndReLogin();
+		return;
+	}
+// 	// 错误信息提示
+// 	if (resData.data == null) {
+// 		
+// 		showToast(resData.msg);
+// 		return;
+// 	}
+	// 返回信息
+	return resData;
+}
+
+// 通用请求封装
+const request = async (options = {}) => {
+
+	let [error, res] = await uni.request({
 		url: config.server_url + (options.url || ''),
-
+		
 		method: options.method || 'GET',
-
+		
 		dataType: options.type || 'json',
-
+		
 		data: options.data || {},
-
+		
 		header: {
-
+		
 			'Accept': 'application/json',
-			'Authorization': token
+			'Authorization': getStorage()
 		},
-		success: (res) => {
-
-			if (res.statusCode === 401) {
-				// 401 跳转到登录页面
-				uni.showModal({
-					title: '权限不足',
-					content: '您需要重新登录',
-					/**
-					 * 如果需要强制登录，不显示取消按钮
-					 */
-					showCancel: false,
-					success: (res1) => {
-						if (res1.confirm) {
-							// 清除本地token
-							clearStorage();
-							/**
-							 * 如果需要强制登录，使用reLaunch方式
-							 */
-							gotoLogin();
-						}
-					}
-				});
-
-			} else if (res.statusCode !== 200) {
-			
-				options.fail(res.data);
-
-				
-			} else {
-				
-				// 用户信息不存在，跳转到登录页面
-				if (res.data.code === 11009) {
-					// 清除本地token
-					clearStorage();
-					
-					gotoLogin();
-				}else {
-					options.success(res.data);
-				}
-				
-			}
-
-
-		},
-		fail: (err) => {
-
-			options.fail(err);
-		}
-
 	});
-}
-
-function gotoLogin() {
-	uni.reLaunch({
-		url: '../login/index'
-	});
-}
-
-function clearStorage(){
 	
-	uni.setStorageSync('token', '');
+	// log
+	console.log('error', JSON.stringify(error));
+	console.log('success', JSON.stringify(res));
+
+	if (error) {
+		netErr(error);
+		return;
+	}
+	
+	
+	return validateRequestInfo(res);
 }
 
-export default ajax;
+
+export const getAjax = async (url = '') => {
+	
+	
+	return await request({
+		url: url,
+		method: 'GET'
+	});
+	
+}
+
+export const postAjax = async (url = '', data = {}) => {
+	
+	return await request({
+		url: url,
+		method: 'POST',
+		data: data
+	});
+	
+}

@@ -80,7 +80,8 @@
 </template>
 
 <script>
-import ajax from '../../utils/ajax.js';
+// import ajax from '../../utils/ajax.js';
+import {registerInfo} from '@/utils/api';
 import uniCell from '@/components/uni-cell/uni-cell.vue';
 
 export default {
@@ -151,40 +152,14 @@ export default {
             }
 
 
-            ajax({
-                url: '/api/register',
-                method: 'POST',
-                data: {
-					username: this.username,
-					password: this.password,
-					repassword: this.repassword,
-					mobile: this.mobile,
-					realname: this.realname,
-					prename: this.prename
-				},
-                success: res => {
-					
-					uni.showToast({
-						icon: 'none',
-						title: res.msg
-					});
-					
-					if (res.code === 0) {
-						
-						setTimeout(() => {
-							uni.navigateBack();
-						}, 1000);
-						
-					}
-                },
-                fail: function(err) {
-					
-                    uni.showToast({
-                    	icon: 'none',
-                    	title: '用户注册失败'
-                    });
-                }
-            });
+			registerInfo({
+				username: this.username,
+				password: this.password,
+				repassword: this.repassword,
+				mobile: this.mobile,
+				realname: this.realname,
+				prename: this.prename,
+			});
  
         }
     }

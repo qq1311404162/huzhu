@@ -25,7 +25,7 @@
 </template>
 
 <script>
-import ajax from '@/utils/ajax';
+import { userLogin } from '@/utils/api';
 
 export default {
     data() {
@@ -58,43 +58,11 @@ export default {
                 });
                 return;
             }
-
-            ajax({
-                url: '/api/login',
-                method: 'POST',
-                data: {
-                    mobile: this.mobile,
-                    password: this.password
-                },
-                success(res) {
-                    if (res.code !== 0) {
-                        uni.showToast({
-                            icon: 'none',
-                            title: res.msg
-                        });
-                    } else {
-						// 保存token
-						uni.setStorageSync('token', res.data.token || '');
-						
-                        uni.showToast({
-                            icon: 'none',
-                            title: '登录成功',
-                            success() {
-                                uni.reLaunch({
-                                    url: '../index/index'
-                                });
-                            }
-                        });
-                    }
-
-                },
-                fail(err) {
-                    uni.showToast({
-                        icon: 'none',
-                        title: '用户登录失败'
-                    });
-                }
-            });
+			
+			userLogin({
+				mobile: this.mobile,
+				password: this.password
+			});
 
         },
         toMain(userName) {
@@ -112,10 +80,9 @@ export default {
             }
         }
     },
-    onLoad() {
-        this.initPosition();
-        // this.initProvider();
-    }
+	create() {
+		this.initPosition();
+	},
 };
 </script>
 

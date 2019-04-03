@@ -7,28 +7,23 @@ module.exports = () => {
 		try {
 
 			await next();
+			// 中间件返回，如果还是 404，转换为 json 并返回 200 状态码
+
+			if (ctx.response.status === 404) return ctx.json({
+				msg: '页面不存在'
+			});
 
 		} catch (err) {
-			console.log(err);
 			// 日志记录
 			ctx.log.error(err.stack);
+			// 设置状态码
+			ctx.status = err.status || 500;
 
-			ctx.status = err.status === 401 ? err.status : ctx.response.status;
+			// 仅仅做接口服务器，所有返回值均为 json 类型
 
-			if (ctx.request.headers.accept.split(',').indexOf('application/json') !== -1) {
-				// json 请求，返回json
-				return ctx.json({
-					code: 401,
-					msg: err.status === 401 ? '用户权限不足' : err.message,
-				});
-
-			} else {
-
-				ctx.response.body = err.status === 401 ? '用户权限不足' : err.message;
-
-			}
-
-
+			return ctx.json({
+				msg: ctx.status === 401 ? '用户权限不足' : err.message,
+			});
 		}
 	};
 };

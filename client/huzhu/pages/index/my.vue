@@ -1,4 +1,4 @@
-<template>
+<!-- <template>
 	<view class="content">
 		<view class="flex-column user-info">
 			<image :src="avatar" mode="aspectFill"></image>
@@ -39,7 +39,9 @@ export default {
         };
     },
     onLoad() {
+		console.log(JSON.stringify(this));
         this.getInfo();
+		
     },
     methods: {
         // 获取个人信息
@@ -126,3 +128,4 @@ export default {
     font-weight: bold;
 }
 </style>
+ -->

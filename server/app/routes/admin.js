@@ -5,6 +5,7 @@ const UserController = require('../controllers/admin/UserController'),
 
 // 管理员首页
 Router.get('/', (async ctx => {
+
 	ctx.body = await ctx.render('admin/index');
 }));
 

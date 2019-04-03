@@ -75,7 +75,7 @@
 </template>
 
 <script>
-	import ajax from '@/utils/ajax';
+	import {getUserinfo} from '@/utils/api';
 	
 	
 	export default {
@@ -95,22 +95,22 @@
 // 		},
 		onShow() {
 			this.getInfo();
+			
 		},
 		methods:{
 			getInfo(){
-				ajax({
-				    url: '/api/user-index',
-				    success: res => {
-				        this.username = res.data.username;
-						this.static_wallet = res.data.static_wallet;
-						this.dynamic_wallet = res.data.dynamic_wallet;
-						this.count = res.data.count;
-				        
-				    },
-				    fail: function(err) {
-				        console.log('fail', err);
-				    }
+				
+				getUserinfo().then(res => {
+
+					if (res) {
+						this.username = res.username || '';
+						this.static_wallet = res.static_wallet || '0.00';
+						this.dynamic_wallet = res.dynamic_wallet || '0.00';
+						this.count = res.count || 0;
+					}
+					
 				});
+
 			},
 			gotoRegister(){
 				this.goto('../register/index?prename=' + this.username);
