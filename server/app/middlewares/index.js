@@ -9,8 +9,8 @@ const myLog = require('./my-log');
 const myJsonRender = require('./my-json-render');
 const myError = require('./my-error');
 
-const STATICPATH = '../static';
-const VIEAPATH = './views';
+const STATICPATH = '../../static';
+const VIEAPATH = '../views';
 
 const config = require('../../config/config');
 
