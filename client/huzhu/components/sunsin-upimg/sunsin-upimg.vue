@@ -106,15 +106,15 @@
 			name: 'file',
 			header: {
 				'Accept': 'application/json',
-				'Authorization': getStorage()
+				// 'Authorization': getStorage()
 			},
 			formData: {
 				'type': that.type
 			},
 			success(res) {
-				console.log(JSON.stringify(res));
-				let data = res.data;
-				
+			
+				let data = JSON.parse(res.data);
+				console.log(data);
 				let filename = data.data.file
 				upload_picture_list[j]['path_server'] = config.server_url + filename
 				that.upload_picture_list = upload_picture_list
