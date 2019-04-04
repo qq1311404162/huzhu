@@ -40,6 +40,30 @@ export const gotoLogin = () => {
 	});
 	
 }
+// 跳转到首页
+export const gotoIndex = () => {
+	
+	uni.showLoading({
+		title: '自动登录中',
+		mask: true,
+		success: () => {
+			
+			setTimeout(() => {
+				
+				uni.hideLoading();
+				
+				uni.reLaunch({
+					url: '../index/my'
+				});
+			}, 1500);
+		}
+		
+	});
+	
+	
+	
+	
+}
 
 
 export const clearStorageAndReLogin = () => {

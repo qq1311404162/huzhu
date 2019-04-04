@@ -1,7 +1,7 @@
 <script>
 	export default {
 		onLaunch: function() {
-			// console.log('App Launch')
+			
 		},
 		onShow: function() {
 			// console.log('App Show')
@@ -12,15 +12,19 @@
 	}
 </script>
 
-<style>
+<style lang="scss">
+	@import '@/common/css/variables.scss';
+	
 	page {
 		min-height: 100%;
 		display: flex;
+		
 	}
 
 	.content {
 		display: flex;
 		flex: 1;
 		flex-direction: column;
+		background: $uni-bg-color-grey;
 	}
 </style>

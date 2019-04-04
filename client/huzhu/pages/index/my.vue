@@ -1,34 +1,44 @@
-<!-- <template>
+<template>
 	<view class="content">
-		<view class="flex-column user-info">
-			<image :src="avatar" mode="aspectFill"></image>
-			<text class="name">{{realname}}</text>
-			<text v-if="state == 0">未激活</text>
-			<text v-else>{{team}}</text>
-		</view>
-		<uni-list>
-			<uni-list-item title="激活账户" v-if="state == 0"  @click="activation()"></uni-list-item>
+		<view class="top1 user-info" @click="activation()">
+			<view class="user-left">
+				<image :src="avatar" mode="aspectFill"></image>
+				<text class="name">{{realname}}</text>
+			</view>
+			<view class="user-right">
+				<text v-if="state == 0">未激活</text>
+				<text v-else>{{team}}</text>
+				<uni-icon v-if="state == 0" color="#bbb" size="20" type="arrowright"></uni-icon>
+			</view>
 			
+		</view>
+		
+		<uni-list>			
 			<uni-list-item title="个人资料" @click="goto('edit-info')"></uni-list-item>
-			<uni-list-item title="我的推广"></uni-list-item>
 			<uni-list-item title="修改密码" @click="goto('edit-pwd')"></uni-list-item>
 			<uni-list-item title="修改交易密码" @click="goto('edit-payword')"></uni-list-item>
 		</uni-list>
 		
-		<view class="btn-row">
-			<button type="primary" class="primary" @click="logout()">退出登录</button>
+		<uni-list>			
+			<uni-list-item title="我的推广"></uni-list-item>
+		</uni-list>
+		
+		<view class="btns">
+			<button type="primary" class="submit" @click="logout()">退出登录</button>
 		</view>
 	</view>
 </template>
 <script>
 import uniList from '@/components/uni-list/uni-list.vue';
 import uniListItem from '@/components/uni-list-item/uni-list-item.vue';
-import ajax from '@/utils/ajax';
+import uniIcon from '@/components/uni-icon/uni-icon.vue'
+import {getUserInfo} from '@/utils/api';
 
 export default {
     components: {
         uniList,
-        uniListItem
+        uniListItem,
+		uniIcon
     },
     data() {
         return {
@@ -38,28 +48,26 @@ export default {
             state: 0
         };
     },
-    onLoad() {
-		console.log(JSON.stringify(this));
+    created() {
+		
         this.getInfo();
 		
     },
     methods: {
         // 获取个人信息
         getInfo() {
-            ajax({
-                url: '/api/user-info',
-                data: {},
-                success: res => {
-                    this.realname = res.data.realname;
-                    this.avatar =
-                        res.data.avatar == '' ? '../../static/my-0.png' : res.data.avatar;
-                    this.state = res.data.state;
-                    this.team = res.data.team.name;
-                },
-                fail: function(err) {
-                    console.log('fail', err);
-                }
-            });
+			
+			getUserInfo().then(res => {
+				console.log(JSON.stringify(res));
+				if (!res) return;
+				
+				this.realname = res.realname;
+				this.avatar =
+				    res.avatar == '' ? '../../static/my-0.png' : res.avatar;
+				this.state = res.state;
+				this.team = res.team.name;
+				
+			});
         },
         // 跳转到指定页面
         goto(url) {
@@ -69,25 +77,25 @@ export default {
         },
         // 激活账户
         activation() {
-            ajax({
-                url: '/api/activation',
-                data: {},
-                success: res => {
-                    uni.showToast({
-                        icon: 'none',
-                        title: res.msg,
-                        success: () => {
-                            if (res.code === 0) {
-                                // 重新获取个人信息
-                                this.getInfo();
-                            }
-                        }
-                    });
-                },
-                fail: function(err) {
-                    console.log('fail', err);
-                }
-            });
+//             ajax({
+//                 url: '/api/activation',
+//                 data: {},
+//                 success: res => {
+//                     uni.showToast({
+//                         icon: 'none',
+//                         title: res.msg,
+//                         success: () => {
+//                             if (res.code === 0) {
+//                                 // 重新获取个人信息
+//                                 this.getInfo();
+//                             }
+//                         }
+//                     });
+//                 },
+//                 fail: function(err) {
+//                     console.log('fail', err);
+//                 }
+//             });
         },
 		logout(){
 			
@@ -100,32 +108,62 @@ export default {
     }
 };
 </script>
-<style>
-@import '../../common/css/common.css';
+<style lang="scss">
+@import '../../common/css/variables.scss';
+
+.top1 {
+	margin-top: 1upx;
+}
 
 .user-info {
+	display: flex;
+	flex-flow: row nowrap;
     align-items: center;
-    justify-content: center;
-    padding-top: 30upx;
-    padding-bottom: 30upx;
-    /* border-bottom: 4upx solid #f5f5f5; */
+    justify-content: space-between;
+	background: $uni-text-color-inverse;
+	padding: 30upx;
+	margin-bottom: 30upx;
+	
+	&:active {
+		background: $uni-bg-color-grey;
+	}
 }
 
-.user-info image {
-    display: inline-block;
-    width: 100upx;
-    height: 100upx;
-    margin-bottom: 20upx;
+.user-left {
+	display: flex;
+	flex-flow: row nowrap;
+	align-items: center;
+	
+}
+.user-left image {
+    width: 80upx;
+    height: 80upx;
 	border-radius: 50%;
+	margin-right: 20upx;
 }
 
-.user-info text {
-    font-size: 32upx;
+.user-left text {
+    font-size: $uni-font-size-lg;
 }
 
-.user-info .name {
-    font-size: 40upx;
-    font-weight: bold;
+.user-right text {
+	font-size: $uni-font-size-base;
+	margin-right: 10upx;
+	color: $uni-color-error;
+}
+.uni-list {
+	
+	margin-bottom: 30upx;
+	
+	&::after {
+		height: 0;
+	}
+	
+	&::before {
+		height: 0;
+	}
+}
+.btns {
+	margin: 30upx 10%;
 }
 </style>
- -->

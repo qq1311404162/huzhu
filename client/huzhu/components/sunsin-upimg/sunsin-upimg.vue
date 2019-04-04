@@ -37,7 +37,8 @@
 
 <script>
 	
-	import config from '../../config.js';
+	import config from '../../config';
+	import { getStorage } from '@/utils/unis';
 	
 	export default {
 		data() {
@@ -98,8 +99,6 @@
 	// 上传文件
 	const upload_file_server = (that, upload_picture_list, j) => {
 		
-		let token = uni.getStorageSync('token') || '';
-		
 		const upload_task = uni.uploadFile({
 			
 			url: config.server_url + '/api/upload',
@@ -107,14 +106,15 @@
 			name: 'file',
 			header: {
 				'Accept': 'application/json',
-				'Authorization': token
+				'Authorization': getStorage()
 			},
 			formData: {
 				'type': that.type
 			},
 			success(res) {
-				let data = JSON.parse(res.data);
-
+				console.log(JSON.stringify(res));
+				let data = res.data;
+				
 				let filename = data.data.file
 				upload_picture_list[j]['path_server'] = config.server_url + filename
 				that.upload_picture_list = upload_picture_list

@@ -1,31 +1,31 @@
 <template>
     <view class="content">
-        <view class="input-group mt20">
-			<view class="input-row border">
+		
+		<view class="group mt20">
+			<view class="row row-border">
+				<input type="text" v-model="mobile" placeholder="请输入手机号">
 			</view>
-            <view class="input-row border">
-                <text class="title">手机号：</text>
-                <input type="text" v-model="mobile" placeholder="请输入手机号">
-            </view>
-            <view class="input-row border">
-                <text class="title">密码：</text>
-                <input type="text" password="true" v-model="password" placeholder="请输入密码">
-            </view>
-        </view>
-        <view class="btn-row">
-            <button type="primary" class="primary" @tap="bindLogin">登录</button>
-        </view>
-        <view class="action-row">
-            <navigator url="../register/index">注册账号</navigator>
-            <text>|</text>
-            <navigator url="../pwd/pwd">忘记密码</navigator>
-        </view>
+			<view class="row">
+				<input type="text" password="true" v-model="password" placeholder="请输入密码">
+			</view>
+		</view>
+		
+		<view class="group">
+			<view class="row">
+				<button type="primary" class="login-btn" @tap="bindLogin">登录</button>
+			</view>
+			<view class="row navigate">
+				<navigator url="../register/index">注册账号</navigator>
+				<navigator url="../pwd/pwd">忘记密码</navigator>
+			</view>
+		</view>
         
     </view>
 </template>
 
 <script>
 import { userLogin } from '@/utils/api';
+import { getStorage, gotoIndex } from '@/utils/unis';
 
 export default {
     data() {
@@ -35,13 +35,7 @@ export default {
         };
     },
     methods: {
-        initPosition() {
-            /**
-             * 使用 absolute 定位，并且设置 bottom 值进行定位。软键盘弹出时，底部会因为窗口变化而被顶上来。
-             * 反向使用 top 进行定位，可以避免此问题。
-             */
-            this.positionTop = uni.getSystemInfoSync().windowHeight - 100;
-        },
+        
         bindLogin() {
             if (!/^1[3456789]\d{9}$/.test(this.mobile)) {
                 uni.showToast({
@@ -80,50 +74,54 @@ export default {
             }
         }
     },
-	create() {
-		this.initPosition();
+	beforeCreate() {
+		let token = getStorage();
+
+		if (token) gotoIndex();
+	},
+	created() {
+		
 	},
 };
 </script>
 
-<style>
-@import '../../common/css/form.css';
-@import '../../common/css/common.css';
+<style lang="scss">
 
-.action-row {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    margin-top: 25upx;
+@import '../../common/css/variables.scss';
+
+
+.group {
+	background: $uni-text-color-inverse;
+	margin: 35upx 20upx 0;
+}
+.mt20 {
+	margin-top: 20%;
+}
+.row {
+	padding: 20upx;
+}
+.row-border {
+	border-bottom: 2upx solid $uni-bg-color-grey;
 }
 
-.action-row navigator {
-    color: #007aff;
-    padding: 0 20px;
+.row input {
+	height: 40upx;
+	line-height: 70upx;
+	padding-left: 10upx;
+	padding: 15upx 10upx;
+	font-size: $uni-font-size-base;
 }
-
-.oauth-row {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
+.login-btn {
+	width: 80%;
+	margin: auto;
+	border-radius: $uni-border-radius-base;
 }
-
-.oauth-image {
-    width: 100px;
-    height: 100px;
-    border: 1px solid #dddddd;
-    border-radius: 100px;
-    margin: 0 40px;
-    background-color: #ffffff;
-}
-
-.oauth-image image {
-    width: 60px;
-    height: 60px;
-    margin: 20px;
+.navigate {
+	display: flex;
+	flex-flow: row nowrap;
+	justify-content: space-between;
+	align-items: center;
+	margin: 0 10%;
+	font-size: $uni-font-size-sm;
 }
 </style>

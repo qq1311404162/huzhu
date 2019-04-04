@@ -48,13 +48,13 @@ export default {
         justify-content: space-between;
         align-items: center;
 
-        &:after {
+        &::after {
             position: absolute;
             z-index: 3;
-            right: 30upx;
+            right: 10upx;
             bottom: 0;
             left: 30upx;
-            height: 1px;
+            height: 1upx;
             content: '';
             -webkit-transform: scaleY(0.5);
             transform: scaleY(0.5);
@@ -82,6 +82,7 @@ export default {
         flex-direction: row;
         justify-content: flex-start;
         align-items: center;
+		font-size: $uni-font-size-base;
     }
 }
 </style>

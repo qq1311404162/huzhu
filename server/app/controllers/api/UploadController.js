@@ -29,7 +29,7 @@ class UploadController {
 
 	static async save(file, type = 'avatar') {
 		// 默认上传类型为头像
-		let dirpath = path.join(__dirname, '../../static/upload/', type, '/'),
+		let dirpath = path.join(__dirname, '../../../static/upload/', type, '/'),
 			fileSavePath = '/upload/' + type + '/',
 			reader = fs.createReadStream(file.path),
 			fileName = moment().format('YYYYMMDDHHmmss') + Math.floor((Math.random() * 1000)) + '.' + file.name.split('.').pop();

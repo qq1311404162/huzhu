@@ -193,7 +193,7 @@
 		}
 	}
 
-	.uni-list>.uni-list-cell:last-child .uni-list-cell-container:after {
+	.uni-list>.uni-list-cell:last-child .uni-list-cell__container::after {
 		height: 0px;
 	}
 </style>

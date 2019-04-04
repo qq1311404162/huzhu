@@ -49,8 +49,8 @@ const request = async (options = {}) => {
 	});
 	
 	// log
-	console.log('error', JSON.stringify(error));
-	console.log('success', JSON.stringify(res));
+	// console.log(JSON.stringify(error));
+	// console.log(JSON.stringify(res));
 
 	if (error) {
 		netErr(error);

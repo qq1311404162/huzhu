@@ -25,7 +25,7 @@
 			right: 0;
 			bottom: 0;
 			left: 0;
-			height: 1px;
+			height: 1upx;
 			content: '';
 			-webkit-transform: scaleY(0.5);
 			transform: scaleY(0.5);
@@ -38,7 +38,7 @@
 			right: 0;
 			top: 0;
 			left: 0;
-			height: 1px;
+			height: 1upx;
 			content: '';
 			-webkit-transform: scaleY(0.5);
 			transform: scaleY(0.5);

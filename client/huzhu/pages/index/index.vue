@@ -75,7 +75,7 @@
 </template>
 
 <script>
-	import {getUserinfo} from '@/utils/api';
+	import {getUserIndex} from '@/utils/api';
 	
 	
 	export default {
@@ -100,7 +100,7 @@
 		methods:{
 			getInfo(){
 				
-				getUserinfo().then(res => {
+				getUserIndex().then(res => {
 
 					if (res) {
 						this.username = res.username || '';
