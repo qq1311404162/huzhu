@@ -1,47 +1,26 @@
 // const User = require('../../models/User');
 const userModel = require('../../models/userModel');
 
-class UserController {
+class UserController extends Controller {
 
-	// 用户管理首页
-	static async index(ctx) {
+	// 用户分页数据
+	static async list(ctx) {
+		console.log(this.limit);
 
-		let request = ctx.request.body,
-			data = {};
+		let query = ctx.request.query;
 
-		let users = await userModel.findAll();
-
-		return ctx.json({
-			code: 0,
-			msg: '获取成功',
-			data: users
+		let result = await findAndCountAll({
+			offset: (parseInt(query.page) - 1) * this.limit,
+			limit: this.limit
 		});
 
-		// ctx.body = await ctx.render('admin/user/index');
-	}
 
-	// 用户数据
-	static async list(ctx) {
-
-		// let query = ctx.request.query;
-
-		// let [count, result] = await Promise.all([User.count(), User.findAll({
-		// 	offset: (parseInt(query.page) - 1) * parseInt(query.limit),
-		// 	limit: parseInt(query.limit)
-		// })]);
-
-
-		// return ctx.jsonPage({
-		// 	data: result,
-		// 	count: count
-		// });
+		return ctx.jsonPage({
+			data: result
+		});
 
 	}
 
-	static async form(ctx) {
-
-		ctx.body = await ctx.render('admin/form');
-	}
 }
 
 module.exports = UserController;

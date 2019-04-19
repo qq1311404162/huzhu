@@ -1,9 +1,18 @@
 class Controller {
 
-    listRender (code = 0, msg = '', count = 0, data = []) {
-
-        return {'code': code, 'msg': msg, 'count': count, 'data': data}
+    constructor() {
+        this.limit = 15;
     }
 
-    
+    listRender(code = 0, msg = '', count = 0, data = []) {
+
+        return {
+            'code': code,
+            'msg': msg,
+            'count': count,
+            'data': data
+        }
+    }
+
+
 }

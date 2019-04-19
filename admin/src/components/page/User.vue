@@ -95,7 +95,7 @@
 </template>
 
 <script>
-import { getFetch } from "@/api/fetch";
+import { getUsers } from "@/api";
 
 export default {
   name: "user",
@@ -131,23 +131,9 @@ export default {
     },
     // 获取 easy-mock 的模拟数据
     getData() {
-      // 开发环境使用 easy-mock 数据，正式环境使用 json 文件
-      if (process.env.NODE_ENV === "development") {
-        this.url = "/admin/users";
-      }
-
-      getFetch("/ms/table/list").then(res => {});
-      // this.$axios.get(this.url).then(res => {
-      //   console.log(res.data.data);
-      //   this.tableData = res.data.data;
-      // });
-      //   this.$axios
-      //     .post(this.url, {
-      //       page: this.cur_page
-      //     })
-      //     .then(res => {
-      //       this.tableData = res.data.list;
-      //     });
+      getUsers(this.cur_page).then(res => {
+        console.log(res);
+      });
     },
     search() {
       this.is_search = true;
