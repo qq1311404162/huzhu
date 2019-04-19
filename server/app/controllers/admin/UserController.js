@@ -1,11 +1,23 @@
 // const User = require('../../models/User');
+const userModel = require('../../models/userModel');
 
 class UserController {
 
 	// 用户管理首页
 	static async index(ctx) {
 
-		ctx.body = await ctx.render('admin/user/index');
+		let request = ctx.request.body,
+			data = {};
+
+		let users = await userModel.findAll();
+
+		return ctx.json({
+			code: 0,
+			msg: '获取成功',
+			data: users
+		});
+
+		// ctx.body = await ctx.render('admin/user/index');
 	}
 
 	// 用户数据

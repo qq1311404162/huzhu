@@ -31,20 +31,6 @@
 		
 		<!-- <view class="flex-row list">
 			<view>
-				<image class="list-icon" src="../../static/pai_gold.png" mode=""></image>
-				<text class="title">排单币</text>
-			</view>
-			<view>
-				<image class="list-icon" src="../../static/active_code.png" mode=""></image>
-				<text class="title">激活码</text>
-			</view>
-			<view>
-				<image class="list-icon" src="../../static/my_rate.png" mode=""></image>
-				<text class="title">我的收益</text>
-			</view>
-		</view> -->
-		<view class="flex-row list">
-			<view>
 				<image class="list-icon" src="../../static/static_rate.png" mode=""></image>
 				<text class="title">静态收益</text>
 			</view>
@@ -56,12 +42,12 @@
 				<image class="list-icon" src="../../static/my_tg.png" mode=""></image>
 				<text class="title">我的团队</text>
 			</view>
-		</view>
+		</view> -->
 		<view class="flex-row list">
-			<view @click="gotoRegister()">
+			<!-- <view @click="gotoRegister()">
 				<image class="list-icon" src="../../static/register.png" mode=""></image>
 				<text class="title">代注册</text>
-			</view>
+			</view> -->
 			<view @click="gotoCoin()">
 				<image class="list-icon" src="../../static/pai_gold.png" mode=""></image>
 				<text class="title">排单币</text>
@@ -89,14 +75,17 @@
 				count: 0
 			};
 		},
-// 		onLoad() {
-// 
-// 			this.getInfo();
-// 		},
+		// #ifdef MP-WEIXIN
 		onShow() {
 			this.getInfo();
 			
 		},
+		// #endif
+		// #ifdef APP-PLUS
+		onLoad() {
+			this.getInfo();
+		},
+		// #endif
 		methods:{
 			getInfo(){
 				
@@ -117,11 +106,11 @@
 			},
 			gotoBangzhu() {
 				
-				this.goto('../bangzhu/index')
+				this.goto('../bangzhu/add')
 			},
 			gotoQizhu() {
 				
-				this.goto('../qiuzhu/index')
+				this.goto('../qiuzhu/add')
 			},
 			gotoCoin(){
 				this.goto('../coin/index')
@@ -139,96 +128,103 @@
 	}
 </script>
 
-<style>
-	
-	@import '../../common/css/common.css';
-	
-	.wallets {
-		
-		justify-content: space-between;
-		padding-top: 45px;
-	}
-	
-	.wallets view, .list view {
-		
-		flex: 1;
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		justify-content: center;
-		
-	}
-	
-	.wallets view .value {
-		
-		font-size: 26upx;
+<style lang="scss">
 
-		
-	}
-	
-	.wallets view .value text {
+@import '../../common/css/variables.scss';
 
-		color: red;
-		margin-right: 10upx;
+.flex-row {
+	display: flex;
+	flex-direction: row;
+}
+	
+.wallets {
+	
+	justify-content: space-between;
+	padding: 45upx 0;
+	background: $uni-text-color-inverse;
+	margin-top: 5upx;
+}
+	
+.wallets view, .list view {
+	
+	flex: 1;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
 		
-	}
+}
 	
-	.wallets view .title {
+.wallets view .value {
 		
-		font-size: 30upx;
-		padding-top: 25upx;
-		font-weight: bold;
-	}
-	
-	.icon {
+	font-size: 26upx;
 		
-		display: inline-block;
-		width: 100upx;
-		height: 100upx;
-	}
+}
 	
-	.pai {
+.wallets view .value text {
+
+	color: red;
+	margin-right: 10upx;
 		
-		justify-content: space-between;
-		padding-top: 45px;
-		padding-bottom: 15upx;
-	}
+}
 	
-	.pai button {
-		width: 38%;
-		font-size: 35upx;
-	}
-	
-	.btn-icon {
-		display: inline-block;
-		height: 35upx;
-		width: 35upx;
-		margin-right: 20upx;
-	}
-	
-	.list {
+.wallets view .title {
 		
-		border-bottom: 4upx solid #f5f5f5;
-		padding: 45upx 0;
-		justify-content: space-between;
+	font-size: 30upx;
+	padding-top: 25upx;
+	font-weight: bold;
+}
+	
+.icon {
 		
-	}
+	display: inline-block;
+	width: 100upx;
+	height: 100upx;
+}
 	
-	.list:last-child {
-		border: none;
-	}
+.pai {
+		
+	justify-content: space-between;
+	padding: 45upx 0;
+	background: $uni-text-color-inverse;
+	margin: 25upx 0;
+}
 	
-	.list-icon {
-		display: inline-block;
-		width: 70upx;
-		height: 70upx;
-		padding-bottom: 15upx;
-	}
+.pai button {
+	width: 38%;
+	font-size: 35upx;
+}
 	
-	.list view text {
-		font-size: 30upx;
-		letter-spacing: 5upx;
-		/* padding-left: 10upx; */
-	}
+.btn-icon {
+	display: inline-block;
+	height: 35upx;
+	width: 35upx;
+	margin-right: 20upx;
+}
+	
+.list {
+		
+	border-bottom: 4upx solid #f5f5f5;
+	padding: 45upx 0;
+	justify-content: space-between;
+	background: $uni-text-color-inverse;
+		
+}
+	
+.list:last-child {
+	border: none;
+}
+	
+.list-icon {
+	display: inline-block;
+	width: 70upx;
+	height: 70upx;
+	padding-bottom: 15upx;
+}
+	
+.list view text {
+	font-size: 30upx;
+	letter-spacing: 5upx;
+}
 	
 </style>

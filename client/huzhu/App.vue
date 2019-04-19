@@ -27,4 +27,9 @@
 		flex-direction: column;
 		background: $uni-bg-color-grey;
 	}
+	
+	.flex-row {
+		display: flex;
+		flex-direction: row;
+	}
 </style>

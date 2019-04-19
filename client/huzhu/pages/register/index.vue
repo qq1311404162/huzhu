@@ -15,7 +15,7 @@
 					<view v-if="!preState" class="flex-row input-row">
 						<input type="text" v-model="prename" placeholder="请输入上级推荐人"/>
 					</view>
-					<view class="flex-row input-row" v-if="preState">
+					<view v-if="preState" class="flex-row input-row">
 						<text>{{prename}}</text>
 					</view>
 				</view>
@@ -164,8 +164,9 @@ export default {
 	margin: 35upx 0;
 }
 
-.group .uni-cell:last-child .uni-cell__container::after {
-	height: 0;
+.flex-row {
+	display: flex;
+	flex-direction: row;
 }
 
 .vcode {

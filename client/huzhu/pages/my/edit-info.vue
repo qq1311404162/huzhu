@@ -76,7 +76,7 @@
 import uniCell from '@/components/uni-cell/uni-cell.vue';
 import sunsinUpimg from '@/components/sunsin-upimg/sunsin-upimg.vue';
 import ajax from '@/utils/ajax';
-import {getEditInfo} from '@/utils/api';
+import {getEditInfo, setEditInfo} from '@/utils/api';
 
 export default {
     components: {
@@ -96,7 +96,7 @@ export default {
             alipay_qrcode: ''
         };
     },
-	created(){
+	onLoad(){
 		
 		this.getEditInfo();
 	},
@@ -150,45 +150,14 @@ export default {
 				return;
 			}
 			
-// 			ajax({
-// 				url: '/api/edit-info',
-// 				method: 'POST',
-// 				data: {
-// 					avatar: this.avatar,
-// 					card_name: this.card_name,
-// 					card_nums: this.card_nums,
-// 					wechat_qrcode: this.wechat_qrcode,
-// 					alipay_qrcode: this.alipay_qrcode
-// 				},
-// 				success: res => {
-// 					
-// 					uni.showToast({
-// 						icon: 'none',
-// 						title: res.msg
-// 					});
-// 					
-// 					setTimeout(() => {
-// 						
-// 						if (res.code == 0) {
-// 							
-// 							uni.switchTab({
-// 								url: '../index/my'
-// 							});
-// 							
-// 						}
-// 						
-// 					}, 1000);
-// 					
-// 					
-// 				},
-// 				fail: function(err) {
-// 					
-// 					uni.showToast({
-// 						icon: 'none',
-// 						title: '修改用户信息失败'
-// 					});
-// 				}
-// 			});
+			// 提交信息
+			setEditInfo({
+					avatar: this.avatar,
+					card_name: this.card_name,
+					card_nums: this.card_nums,
+					wechat_qrcode: this.wechat_qrcode,
+					alipay_qrcode: this.alipay_qrcode
+				});
 		}
     }
 };
@@ -200,10 +169,6 @@ export default {
 .group {
 	background: $uni-text-color-inverse;
 	margin: 35upx 0;
-}
-
-.group .uni-cell:last-child .uni-cell__container::after {
-	height: 0;
 }
 
 .vcode {

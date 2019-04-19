@@ -17,8 +17,9 @@
 
 			<uni-load-more :status="loadMoreStatus"></uni-load-more>
 		</scroll-view>
+		<!-- #ifdef MP-WEIXIN -->
 		<my-add @click="gotoAdd"></my-add>
-
+		<!-- #endif -->
 	</view>
 </template>
 <script>
@@ -28,7 +29,7 @@ import uniCollapse from '@/components/uni-collapse/uni-collapse.vue';
 import uniCollapseItemOwn from '@/components/uni-collapse-item-own/uni-collapse-item-own.vue';
 import myAdd from '@/components/my-add/my-add.vue';
 
-import ajax from '@/utils/ajax';
+import {getBangzhuLists} from '@/utils/api.js';
 
 export default {
     components: {
@@ -80,27 +81,21 @@ export default {
 	},
     methods: {
 		getLists(page){
-			ajax({
-					url: '/api/bangzhu/index?page=' + page + '&length=' + this.pageLength, 
-					success: res => {
-						
-						for (let item of res.data.lists) {
-							
-							this.lists.push(item);
-						}
-						
-						this.typeObj = res.data.type;	// 类型
-						this.state = res.data.state;	// 状态
-						
-						this.currentLength = res.data.lists.length || 0;
-						
-						// this.loadMore = (this.lists.length < 10 && this.lists.length > 0) ? false : true;
-						
-					},
-					fail: function(err) {
-						console.log('fail', err);
-					}
-				});
+			
+			getBangzhuLists(page, this.pageLength).then(res => {
+				
+				if (!res) return;
+				
+				for (let item of res.lists) {
+					
+					this.lists.push(item);
+				}
+				
+				this.typeObj = res.type;	// 类型
+				this.state = res.state;	// 状态
+				
+				this.currentLength = res.lists.length || 0;
+			});
 		},
         loadMore() {
             
@@ -123,8 +118,26 @@ export default {
     }
 };
 </script>
-<style>
-@import '../../common/css/common.css';
+<style lang="scss">
 
+@import '../../common/css/variables.scss';
+
+.uni-collapse-cell__title {
+	background: $uni-bg-color;
+	position: relative;
+	
+	&:after {
+		position: absolute;
+		z-index: 3;
+		right: 30upx;
+		bottom: 0;
+		left: 30upx;
+		height: 1px;
+		content: '';
+		-webkit-transform: scaleY(0.5);
+		transform: scaleY(0.5);
+		background-color: $uni-border-color;
+	}
+}
 
 </style>

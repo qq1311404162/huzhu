@@ -53,16 +53,12 @@ export const gotoIndex = () => {
 				uni.hideLoading();
 				
 				uni.reLaunch({
-					url: '../index/my'
+					url: '../index/index'
 				});
 			}, 1500);
 		}
 		
 	});
-	
-	
-	
-	
 }
 
 
@@ -87,4 +83,12 @@ export const noAuth = () => {
 		}
 	});
 
+}
+
+// 指定时间后返回上一个页面
+export const naviBackWithTime = (wait = 1000) => {
+	
+	setTimeout(() => {
+		uni.navigateBack();
+	}, 1000);
 }

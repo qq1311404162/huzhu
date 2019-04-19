@@ -62,10 +62,6 @@
 	margin: 35upx 0;
 }
 
-.group .uni-cell:last-child .uni-cell__container::after {
-	height: 0;
-}
-
 .vcode {
     line-height: 60upx;
     border-radius: $uni-border-radius-lg;

@@ -20,7 +20,6 @@ const db = {
 	}),
 };
 
-
 let files = fs.readdirSync(__dirname + '/../schema');
 
 for (let f of files) {

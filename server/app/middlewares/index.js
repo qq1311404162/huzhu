@@ -4,6 +4,7 @@ const Path = require('path');
 const Json = require('koa-json');
 const Body = require('koa-body');
 const Jwt = require('koa-jwt');
+const Cors = require('koa2-cors');
 
 const myLog = require('./my-log');
 const myJsonRender = require('./my-json-render');
@@ -20,6 +21,8 @@ module.exports = (app) => {
 	// 日志操作
 	app.use(myLog());
 
+	// 跨域
+	app.use(Cors());
 	// 模板设置
 	Xtpl(app, {
 		views: VIEAPATH

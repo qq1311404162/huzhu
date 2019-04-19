@@ -19,8 +19,15 @@
 			<uni-list-item title="修改交易密码" @click="goto('edit-payword')"></uni-list-item>
 		</uni-list>
 		
-		<uni-list>			
+		<uni-list>
+			<uni-list-item title="帮助记录" @click="goto('index', 'bangzhu')"></uni-list-item>
+			<uni-list-item title="求助记录" @click="goto('index', 'qiuzhu')"></uni-list-item>
+		</uni-list>
+		
+		<uni-list>
+			<uni-list-item title="代注册" @click="toRegister"></uni-list-item>
 			<uni-list-item title="我的推广"></uni-list-item>
+			<uni-list-item title="我的团队"></uni-list-item>
 		</uni-list>
 		
 		<view class="btns">
@@ -32,7 +39,7 @@
 import uniList from '@/components/uni-list/uni-list.vue';
 import uniListItem from '@/components/uni-list-item/uni-list-item.vue';
 import uniIcon from '@/components/uni-icon/uni-icon.vue'
-import {getUserInfo} from '@/utils/api';
+import {getUserInfo, Activation, doLogout} from '@/utils/api';
 
 export default {
     components: {
@@ -44,11 +51,12 @@ export default {
         return {
             avatar: '',
             realname: '',
+			username: '',
             team: '',
             state: 0
         };
     },
-    created() {
+    onLoad() {
 		
         this.getInfo();
 		
@@ -62,6 +70,7 @@ export default {
 				if (!res) return;
 				
 				this.realname = res.realname;
+				this.username = res.username;
 				this.avatar =
 				    res.avatar == '' ? '../../static/my-0.png' : res.avatar;
 				this.state = res.state;
@@ -70,40 +79,33 @@ export default {
 			});
         },
         // 跳转到指定页面
-        goto(url) {
+        goto(url, preurl = 'my') {
             uni.navigateTo({
-                url: '../my/' + url
+                url: '../' + preurl + '/' + url
             });
         },
+		// 代注册跳转
+		toRegister(){
+			this.goto('index?prename=' + this.username, 'register');
+		},
         // 激活账户
         activation() {
-//             ajax({
-//                 url: '/api/activation',
-//                 data: {},
-//                 success: res => {
-//                     uni.showToast({
-//                         icon: 'none',
-//                         title: res.msg,
-//                         success: () => {
-//                             if (res.code === 0) {
-//                                 // 重新获取个人信息
-//                                 this.getInfo();
-//                             }
-//                         }
-//                     });
-//                 },
-//                 fail: function(err) {
-//                     console.log('fail', err);
-//                 }
-//             });
+			
+			if (this.state === 0) {
+				Activation().then((res) => {
+					
+					if (!res) return;
+					
+					if (res.code === 0)
+						this.state = 1;
+				})
+			}
+
         },
 		logout(){
 			
-			uni.setStorageSync('token', '');
+			doLogout();
 			
-			uni.reLaunch({
-				url: '../login/index'
-			});
 		}
     }
 };

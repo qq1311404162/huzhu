@@ -85,4 +85,7 @@ export default {
 		font-size: $uni-font-size-base;
     }
 }
+.uni-cell:last-child .uni-cell__container::after {
+	height: 0;
+}
 </style>

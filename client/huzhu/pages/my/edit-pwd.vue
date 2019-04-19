@@ -37,6 +37,7 @@
 <script>
 	
 	import uniCell from '@/components/uni-cell/uni-cell.vue';
+	import {editPwd} from '@/utils/api';
 	
 	export default {
 		components: {
@@ -50,6 +51,15 @@
 				new_password: '',
 				repassword: ''
 			};
+		},
+		methods:{
+			edit() {
+// 				editPwd({
+// 					password: this.password,
+// 					repassword: this.repassword,
+// 					new_password: this.new_password
+// 				});
+			}
 		}
 	}
 </script>
@@ -60,10 +70,6 @@
 .group {
 	background: $uni-text-color-inverse;
 	margin: 35upx 0;
-}
-
-.group .uni-cell:last-child .uni-cell__container::after {
-	height: 0;
 }
 
 .vcode {

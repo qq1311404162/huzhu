@@ -22,7 +22,7 @@
 				</view>
 			</uni-cell>
 			
-			<view class="btn-row">
+			<view class="btns">
 				<button type="primary" class="primary" @tap="submit">确定帮助</button>
 			</view>
 			
@@ -37,7 +37,7 @@
 	import mpvuePicker from '@/components/mpvue-picker/mpvuePicker.vue';
 	import uniCell from '@/components/uni-cell/uni-cell.vue';
 	
-	import ajax from '@/utils/ajax';
+	import {getBangzhuAvailable, bangzhuAdd} from '@/utils/api';
 	
 	export default {
 		components: {
@@ -70,22 +70,19 @@
 		},
 		methods:{
 			userAvailable(){
-				ajax({
-					url: '/api/bangzhu/add',
-					success: res => {
-						
-						for (let i = 1; i <= (res.data.user.available || 1); i++) {
-							
-							this.pickerValueArray.push({
-								label: parseInt(res.data.setting.value) * i,
-								value: i
-							});
-						}
-					},
-					fail: function(err) {
-						console.log('fail', err);
+				
+				getBangzhuAvailable().then((res) => {
+					
+					if (!res) return;
+					
+					for (let i = 1; i <= (res.user.available || 1); i++) {
+						this.pickerValueArray.push({
+							label: parseInt(res.setting.value) * i,
+							value: i
+						});
 					}
 				});
+				
 			},
 			selectType(item) {
 				if (this.type !== item.type) {
@@ -132,32 +129,13 @@
 				if (this.status) {
 					this.status = 0;
 					
-					ajax({
-						url: '/api/bangzhu/add',
-						method: 'POST',
-						data: {
+					bangzhuAdd({
 							available: this.available,
 							payword: this.payword,
 							type: this.type
-						},
-						success: res => {
-							
+						}).then(() => {
 							this.status = 1;
-							uni.showToast({
-								icon: 'none',
-								title: res.msg
-							});
-							
-							if (res.code === 0) {
-								
-								uni.navigateBack();
-							}
-						},
-						fail: function(err) {
-							this.status = 1;
-							console.log('fail', err);
-						}
-					});
+						});
 				}
 			}
 		}
@@ -166,16 +144,15 @@
 	}
 </script>
 <style lang="scss">
-	@import '../../common/css/common.css';
 	@import '../../common/css/variables.scss';
 	
 	.content {
 		
-		padding: 0 30upx;
+		padding: 10% 30upx;
 	}
 	.form {
-		
 		padding-top: 50upx;
+		background: $uni-bg-color;
 	}
 	
 	.segment {
@@ -203,6 +180,12 @@
 	
 	.input-row input {
 		text-align: right;
+	}
+	
+	.btns {
+		width: 80%;
+		margin: 10% auto 0 auto;
+		padding-bottom: 50upx;
 	}
 	
 </style>

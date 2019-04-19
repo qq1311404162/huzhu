@@ -37,7 +37,7 @@
 				</view>
 			</uni-cell>
 			
-			<view class="btn-row">
+			<view class="btns">
 				<button type="primary" class="primary" @tap="submit">开始求助</button>
 			</view>
 			
@@ -52,7 +52,7 @@
 	import mpvuePicker from '@/components/mpvue-picker/mpvuePicker.vue';
 	import uniCell from '@/components/uni-cell/uni-cell.vue';
 	
-	import ajax from '@/utils/ajax';
+	import {getQiuzhuAvailable, qiuzhuAdd} from '@/utils/api';
 	
 	export default {
 		components: {
@@ -93,17 +93,14 @@
 		},
 		methods:{
 			userAvailable(){
-				ajax({
-					url: '/api/qiuzhu/add',
-					success: res => {
-						
-						this.setting = res.data.setting;
-						this.static_wallet = res.data.user.static_wallet;
-						this.dynamic_wallet = res.data.user.dynamic_wallet;
-					},
-					fail: function(err) {
-						console.log('fail', err);
-					}
+				
+				getQiuzhuAvailable().then(res => {
+					
+					if (!res) return;
+					
+					this.setting = res.setting;
+					this.static_wallet = res.user.static_wallet;
+					this.dynamic_wallet = res.user.dynamic_wallet;
 				});
 			},
 			selectType(item) {
@@ -141,31 +138,13 @@
 				if (this.status) {
 					this.status = 0;
 					
-					ajax({
-						url: '/api/qiuzhu/add',
-						method: 'POST',
-						data: {
+					qiuzhuAdd({
 							amount: this.amount,
 							payword: this.payword,
 							type: this.type
-						},
-						success: res => {
-							
-							this.status = 1;
-							uni.showToast({
-								icon: 'none',
-								title: res.msg
-							});
-							
-							if (res.code === 0) {
-								
-								uni.navigateBack();
-							}
-						},
-						fail: function(err) {
-							this.status = 1;
-							console.log('fail', err);
-						}
+						}).then(() => {
+						
+						this.status = 1;
 					});
 				}
 			}
@@ -175,16 +154,16 @@
 	}
 </script>
 <style lang="scss">
-	@import '../../common/css/common.css';
 	@import '../../common/css/variables.scss';
 	
 	.content {
 		
-		padding: 0 30upx;
+		padding: 10% 30upx;
 	}
 	.form {
 		
 		padding-top: 50upx;
+		background: $uni-bg-color;
 	}
 	
 	.segment {
@@ -223,6 +202,12 @@
 	
 	.input-row input {
 		text-align: right;
+	}
+	
+	.btns {
+		width: 80%;
+		margin: 10% auto 0 auto;
+		padding-bottom: 50upx;
 	}
 	
 </style>
