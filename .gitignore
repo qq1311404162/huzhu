@@ -1,0 +1,24 @@
+.DS_Store
+
+admin/.DS_Store
+admin/node_modules
+admin/dist
+admin/example.html
+admin/favicon.ico
+# local env files
+admin/.env.local
+admin/.env.*.local
+
+# Log files
+admin/npm-debug.log*
+admin/yarn-debug.log*
+admin/yarn-error.log*
+
+# Editor directories and files
+admin/.idea
+admin/.vscode
+admin/*.suo
+admin/*.ntvs*
+admin/*.njsproj
+admin/*.sln
+admin/*.sw*
