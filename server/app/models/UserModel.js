@@ -220,14 +220,14 @@ class UserModel extends Model {
 		return await this.count({
 			where: {
 				[Sequelize.Op.or]: [{
-						previous_id: id
-					},
-					{
-						previous_two_id: id
-					},
-					{
-						previous_thr_id: id
-					},
+					previous_id: id
+				},
+				{
+					previous_two_id: id
+				},
+				{
+					previous_thr_id: id
+				},
 				],
 			}
 		});
@@ -242,14 +242,14 @@ class UserModel extends Model {
 		return await this.count({
 			where: {
 				[Sequelize.Op.or]: [{
-						previous_id: id
-					},
-					{
-						previous_two_id: id
-					},
-					{
-						previous_thr_id: id
-					},
+					previous_id: id
+				},
+				{
+					previous_two_id: id
+				},
+				{
+					previous_thr_id: id
+				},
 				],
 				freeze: {
 					[Sequelize.Op.ne]: '0.00'

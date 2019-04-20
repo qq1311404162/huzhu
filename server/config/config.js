@@ -1,7 +1,9 @@
 module.exports = {
 	port: 3000,
+	pageLimit: 15,
 	jwt: {
 		token: '6ff16d3b2957297735fbf4299a3c8c64', // user_token md5加密
+		adminToken: '21232f297a57a5a743894a0e4a801fc3',
 		express: 60 * 60 * 24 * 30,
 		pre: 'Bearer '
 	},

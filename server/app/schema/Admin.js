@@ -30,7 +30,7 @@ module.exports = function (sequelize, DataTypes) {
 		type: {
 			type: DataTypes.TINYINT,
 			defaultValue: 0,
-			comment: '管理员类型。0：超级管理员；。。。'
+			comment: '管理员类型。0：超级管理员；1: xxx'
 		},
 		state: {
 			type: DataTypes.TINYINT,

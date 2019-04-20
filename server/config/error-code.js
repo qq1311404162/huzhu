@@ -1,5 +1,4 @@
 module.exports = {
-
 	// 验证返回
 	illegal_user: {
 		code: 10002,
@@ -178,5 +177,31 @@ module.exports = {
 	err_get_bangzhu_info: {
 		code: 11015,
 		msg: '获取帮助详情失败'
+	},
+
+
+
+
+	// 后台 err 返回值
+	admin_less_params: {
+		code: 11001,
+		msg: '参数不足'
+	},
+	err_admin_login_less_params: {
+		code: 11002,
+		msg: '请输入用户名或密码'
+	},
+	err_admin_login: {
+		code: 11003,
+		msg: '用户名或密码错误'
+	},
+	err_admin_admin: {
+		code: 11004,
+		msg: '该管理员已存在'
+	},
+	err_admin_admin_create: {
+		code: 11005,
+		msg: '管理员创建失败'
 	}
+
 };

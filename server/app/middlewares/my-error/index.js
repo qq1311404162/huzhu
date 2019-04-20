@@ -10,7 +10,8 @@ module.exports = () => {
 			// 中间件返回，如果还是 404，转换为 json 并返回 200 状态码
 
 			if (ctx.response.status === 404) return ctx.json({
-				msg: '页面不存在'
+				msg: '页面不存在',
+				code: 404
 			});
 
 		} catch (err) {
@@ -23,6 +24,7 @@ module.exports = () => {
 
 			return ctx.json({
 				msg: ctx.status === 401 ? '用户权限不足' : err.message,
+				code: ctx.status === 401 ? 401 : 500
 			});
 		}
 	};

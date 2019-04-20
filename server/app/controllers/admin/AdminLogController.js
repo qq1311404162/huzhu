@@ -1,8 +1,8 @@
-const userModel = require('../../models/userModel');
+const adminLogModel = require('../../models/AdminLogModel');
 
 const config = require('../../../config/config');
 
-class UserController {
+class AdminLogController {
 
 	// 用户分页数据
 	async list(ctx) {
@@ -10,7 +10,7 @@ class UserController {
 		let query = ctx.request.query,
 			page = query.page || 1;
 
-		let result = await userModel.findAndCountAll({
+		let result = await adminLogModel.findAndCountAll({
 			offset: (parseInt(page) - 1) * config.pageLimit,
 			limit: config.pageLimit
 		});
@@ -23,4 +23,4 @@ class UserController {
 
 }
 
-module.exports = new UserController();
+module.exports = new AdminLogController();
